@@ -61,7 +61,7 @@ export default function Navbar() {
 
       {/* Mobile Menu */}
       <div
-        className={`md:hidden bg-white/20 backdrop-blur-lg overflow-hidden transition-all duration-500 ${isOpen ? "max-h-96 py-6" : "max-h-0 py-0"}`}
+        className={`md:hidden bg-gradient-to-r from-black/80 via-purple-900/40 to-black/80 overflow-hidden transition-all duration-700 ${isOpen ? "max-h-96 py-6" : "max-h-0 py-0"}`}
       >
         <div className="flex flex-col space-y-4 px-6">
           {navLinks.map((link) => (
