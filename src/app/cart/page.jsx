@@ -2,7 +2,6 @@
 import { useCart } from "@/context/CartContext";
 import Image from "next/image";
 import Link from "next/link";
-import { motion } from "framer-motion";
 
 export default function CartPage() {
   const { cart, removeFromCart, updateQuantity } = useCart();
@@ -35,12 +34,9 @@ export default function CartPage() {
       </h1>
 
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {/* {cart.map((item) => (
-          <motion.div
+        {cart.map((item) => (
+          <div
             key={item.id}
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
             className="flex flex-col md:flex-row items-center gap-6 bg-white/30 backdrop-blur-lg rounded-3xl p-6 shadow-xl hover:shadow-2xl transition-all duration-500"
           >
             <div className="relative w-full md:w-32 h-32 md:h-36 rounded-2xl overflow-hidden shadow-lg">
@@ -48,9 +44,11 @@ export default function CartPage() {
                 src={item.image}
                 alt={item.name}
                 fill
-                className="object-cover transition-transform duration-500 hover:scale-105"
+                sizes="(max-width: 768px) 100vw, 12rem"
+                className="object-cover"
               />
             </div>
+
             <div className="flex-1 w-full text-center md:text-left">
               <h2 className="text-2xl md:text-3xl font-bold text-purple-600 mb-2">
                 {item.name}
@@ -58,16 +56,29 @@ export default function CartPage() {
               <p className="text-yellow-400 font-extrabold text-xl md:text-2xl mb-4">
                 ₦{item.price.toLocaleString()}
               </p>
+
+              {/* Quantity Controls */}
               <div className="flex items-center justify-center md:justify-start gap-4 mt-2">
-                <input
-                  type="number"
-                  value={item.quantity}
-                  min="1"
-                  onChange={(e) =>
-                    updateQuantity(item.id, parseInt(e.target.value))
-                  }
-                  className="w-20 text-center border border-purple-300 rounded-lg p-2 shadow-inner focus:outline-none focus:ring-2 focus:ring-purple-400 transition"
-                />
+                <div className="flex items-center border border-purple-300 rounded-lg shadow-inner overflow-hidden">
+                  <button
+                    onClick={() =>
+                      updateQuantity(item.id, Math.max(1, item.quantity - 1))
+                    }
+                    className="px-3 py-2 bg-purple-100 text-purple-700 font-bold hover:bg-purple-200 transition"
+                  >
+                    -
+                  </button>
+                  <span className="px-4 py-2 text-lg font-semibold text-purple-700">
+                    {item.quantity}
+                  </span>
+                  <button
+                    onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                    className="px-3 py-2 bg-purple-100 text-purple-700 font-bold hover:bg-purple-200 transition"
+                  >
+                    +
+                  </button>
+                </div>
+
                 <button
                   onClick={() => removeFromCart(item.id)}
                   className="text-red-500 font-semibold hover:underline hover:text-red-600 transition-all duration-300"
@@ -76,55 +87,8 @@ export default function CartPage() {
                 </button>
               </div>
             </div>
-          </motion.div>
-        ))} */}
-
-        {cart.map((item) => (
-  <motion.div
-    key={item.id}
-    initial={{ opacity: 0, y: 40 }}
-    whileInView={{ opacity: 1, y: 0 }}
-    viewport={{ once: true }} // <- important
-    transition={{ duration: 0.6 }}
-    className="flex flex-col md:flex-row items-center gap-6 bg-white/30 backdrop-blur-lg rounded-3xl p-6 shadow-xl hover:shadow-2xl transition-all duration-500"
-  >
-    <div className="relative w-full md:w-32 h-32 md:h-36 rounded-2xl overflow-hidden shadow-lg">
-      <Image
-        src={item.image}
-        alt={item.name}
-        fill
-        sizes="(max-width: 768px) 100vw, 12rem"
-        className="object-cover transition-transform duration-500 hover:scale-105"
-      />
-    </div>
-    <div className="flex-1 w-full text-center md:text-left">
-      <h2 className="text-2xl md:text-3xl font-bold text-purple-600 mb-2">
-        {item.name}
-      </h2>
-      <p className="text-yellow-400 font-extrabold text-xl md:text-2xl mb-4">
-        ₦{item.price.toLocaleString()}
-      </p>
-      <div className="flex items-center justify-center md:justify-start gap-4 mt-2">
-        <input
-          type="number"
-          value={item.quantity}
-          min="1"
-          onChange={(e) =>
-            updateQuantity(item.id, parseInt(e.target.value))
-          }
-          className="w-20 text-center border border-purple-300 rounded-lg p-2 shadow-inner focus:outline-none focus:ring-2 focus:ring-purple-400 transition"
-        />
-        <button
-          onClick={() => removeFromCart(item.id)}
-          className="text-red-500 font-semibold hover:underline hover:text-red-600 transition-all duration-300"
-        >
-          Remove
-        </button>
-      </div>
-    </div>
-  </motion.div>
-))}
-
+          </div>
+        ))}
       </div>
 
       {/* Cart Total */}
@@ -133,9 +97,9 @@ export default function CartPage() {
           Total: ₦{total.toLocaleString()}
         </h3>
         <Link href="/checkout">
-         <button className="bg-yellow-400 text-purple-900 px-10 py-4 rounded-2xl font-bold shadow-xl hover:bg-yellow-300 transition-all duration-300">
-          Checkout
-        </button>
+          <button className="bg-yellow-400 text-purple-900 px-10 py-4 rounded-2xl font-bold shadow-xl hover:bg-yellow-300 transition-all duration-300">
+            Checkout
+          </button>
         </Link>
       </div>
     </section>
