@@ -37,7 +37,7 @@ export function CartProvider({ children }) {
       value={{ cart, addToCart, removeFromCart, updateQuantity }}
     >
       {children}
-      <AnimatePresence>
+      {/* <AnimatePresence>
         {flyingItem && (
           <motion.div
             className="fixed w-20 h-20 z-50 rounded-xl overflow-hidden pointer-events-none"
@@ -61,7 +61,39 @@ export function CartProvider({ children }) {
             />
           </motion.div>
         )}
-      </AnimatePresence>
+      </AnimatePresence> */}
+      // Inside CartProvider
+<AnimatePresence>
+  {flyingItem && (
+    <motion.div
+      className="fixed w-16 h-16 z-50 rounded-xl overflow-hidden pointer-events-none"
+      style={{
+        top: flyingItem.imgRect.top,
+        left: flyingItem.imgRect.left,
+      }}
+      initial={{ scale: 1, x: 0, y: 0, opacity: 1 }}
+      animate={{
+        // Fly towards top-right corner (where cart icon usually is)
+        x: window.innerWidth - flyingItem.imgRect.left - 60,
+        y: -flyingItem.imgRect.top + 80, // smoother curve upwards
+        scale: 0.4,
+        opacity: 0.7,
+      }}
+      exit={{ opacity: 0 }}
+      transition={{
+        duration: window.innerWidth < 768 ? 1 : 0.8, // slower on mobile
+        ease: "easeInOut",
+      }}
+    >
+      <img
+        src={flyingItem.image}
+        alt={flyingItem.name}
+        className="w-full h-full object-cover rounded-xl shadow-lg will-change-transform"
+      />
+    </motion.div>
+  )}
+</AnimatePresence>
+
     </CartContext.Provider>
   );
 }
