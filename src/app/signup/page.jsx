@@ -31,7 +31,7 @@ export default function SignUp() {
             className="object-cover w-full h-full"
           />
           <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
-            <h2 className="text-white text-3xl font-extrabold tracking-wide text-center px-4">
+            <h2 className="text-white font-satisfy text-3xl font-extrabold tracking-wide text-center px-4">
               Pretty Fashion Hub ✨
             </h2>
           </div>

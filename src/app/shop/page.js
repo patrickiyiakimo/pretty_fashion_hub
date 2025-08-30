@@ -10,7 +10,7 @@ export default function ShopPage() {
 
   return (
     <section className="py-24 px-6 md:px-12 bg-white/5 backdrop-blur-sm min-h-screen">
-      <h1 className="text-4xl font-extrabold text-purple-500 mb-12 text-center">
+      <h1 className="text-4xl font-satisfy font-extrabold text-purple-500 mb-12 text-center">
         Our Products
       </h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">

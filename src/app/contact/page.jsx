@@ -18,7 +18,7 @@ export default function ContactPage() {
           transition={{ duration: 1, ease: "easeOut" }}
           className="relative text-center px-6"
         >
-          <h1 className="text-4xl md:text-5xl font-extrabold text-white mb-2">
+          <h1 className="text-4xl md:text-5xl font-satisfy font-extrabold text-white mb-2">
             Get in Touch
           </h1>
           <p className="text-lg md:text-xl text-white/90">

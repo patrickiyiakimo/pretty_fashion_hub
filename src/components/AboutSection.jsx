@@ -15,7 +15,7 @@ export default function AboutSection() {
       <div className="max-w-7xl mx-auto flex flex-col-reverse lg:flex-row items-center gap-12 relative z-10">
         {/* Text Content */}
         <div className="flex-1 text-center lg:text-left">
-          <h2 className="text-4xl md:text-5xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-purple-700 via-pink-500 to-yellow-400 mb-6">
+          <h2 className="text-4xl md:text-5xl font-satisfy font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-purple-700 via-pink-500 to-yellow-400 mb-6">
             About Pretty Fashion Hub
           </h2>
 

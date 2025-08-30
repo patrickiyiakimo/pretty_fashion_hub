@@ -37,10 +37,10 @@ export default function Testimonials() {
       <div className="absolute bottom-0 right-1/3 w-56 h-56 bg-pink-400/20 rounded-full blur-3xl animate-pulse"></div>
 
       <div className="text-center mb-16 relative z-10">
-        <h2 className="text-4xl md:text-5xl font-extrabold text-purple-700 mb-4">
+        <h2 className="text-4xl md:text-5xl font-satisfy font-extrabold text-purple-700 mb-4">
           What Our Clients Say
         </h2>
-        <p className="text-gray-600 max-w-2xl mx-auto text-lg md:text-xl">
+        <p className="text-gray-600 font-oswald max-w-2xl mx-auto text-3xl md:text-xl">
           Hear from our valued clients who love Pretty Fashion Hub's luxurious and timeless collections.
         </p>
       </div>

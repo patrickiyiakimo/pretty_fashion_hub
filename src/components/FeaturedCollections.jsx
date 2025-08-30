@@ -10,10 +10,10 @@ export default function FeaturedCollections({ collections }) {
     >
       {/* Section Header */}
       <div className="text-center mb-16">
-        <h2 className="text-5xl md:text-6xl font-extrabold bg-gradient-to-r from-purple-600 to-yellow-400 bg-clip-text text-transparent mb-4">
+        <h2 className="text-5xl md:text-6xl font-satisfy font-extrabold bg-gradient-to-r from-purple-600 to-yellow-400 bg-clip-text text-transparent mb-4">
           Featured Collections
         </h2>
-        <p className="text-gray-600 max-w-2xl mx-auto text-lg">
+        <p className="text-gray-600 font-oswald max-w-2xl mx-auto text-3xl">
           Discover timeless fashion crafted with elegance, designed exclusively for you.
         </p>
       </div>

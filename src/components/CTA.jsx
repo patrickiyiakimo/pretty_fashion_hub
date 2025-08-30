@@ -19,10 +19,10 @@ export default function CTASection() {
           transition={{ duration: 0.8, ease: "easeOut" }}
           className="text-center md:text-left"
         >
-          <h2 className="text-4xl md:text-5xl font-extrabold mb-6 tracking-wide">
+          <h2 className="text-4xl font-satisfy md:text-5xl font-extrabold mb-6 tracking-wide">
             Elevate Your Wardrobe Today
           </h2>
-          <p className="text-lg md:text-xl text-white/90 mb-8 leading-relaxed">
+          <p className="text-lg md:text-2xl font-oswald text-white/90 mb-8 leading-relaxed">
             Explore Pretty Fashion Hub’s luxurious collections and experience the perfect
             blend of elegance, trendiness, and sophistication. Your style journey starts here.
           </p>

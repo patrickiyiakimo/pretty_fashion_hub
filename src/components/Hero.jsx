@@ -26,7 +26,7 @@ export default function Hero() {
             initial={{ y: 40, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.8 }}
-            className="text-5xl md:text-6xl lg:text-7xl font-extrabold leading-tight mb-6"
+            className="text-5xl md:text-6xl lg:text-7xl font-satisfy font-extrabold leading-tight mb-6"
           >
             Redefine{" "}
             <span className="bg-gradient-to-r from-yellow-400 to-yellow-200 bg-clip-text text-transparent">
@@ -38,7 +38,7 @@ export default function Hero() {
             initial={{ y: 40, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 1, delay: 0.2 }}
-            className="text-lg md:text-xl mb-10 text-gray-200"
+            className="text-lg md:text-xl mb-10 font-oswald text-gray-200"
           >
             Step into timeless elegance with{" "}
             <span className="font-semibold">Pretty Fashion Hub</span>, where every outfit tells a story of confidence, sophistication, and class.
