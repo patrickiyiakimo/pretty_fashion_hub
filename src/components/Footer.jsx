@@ -85,15 +85,15 @@ export default function Footer() {
           <p className="text-gray-300 text-sm mb-4">
             Get the latest updates on luxury collections, exclusive offers, and more.
           </p>
-          <form className="flex flex-col lg:flex-row gap-2">
+          <form className="">
             <input
               type="email"
               placeholder="Enter your email"
-              className="px-4 py-3 rounded-full text-black flex-1 focus:outline-none"
+              className="px-4 py-3 mb-3 w-full rounded-full text-black flex-1 focus:outline-none"
             />
             <button
               type="submit"
-              className="bg-yellow-400 hover:bg-yellow-300 text-purple-900 font-semibold px-6 py-3 rounded-full transition"
+              className="bg-yellow-400 hover:bg-yellow-300 w-full text-purple-900 font-semibold px-6 py-3 rounded-full transition"
             >
               Subscribe
             </button>
