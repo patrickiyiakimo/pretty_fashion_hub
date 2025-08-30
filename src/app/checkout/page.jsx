@@ -29,7 +29,7 @@ export default function CheckoutPage() {
   if (cart.length === 0) {
     return (
       <section className="py-20 pt-20 text-center">
-        <h1 className="text-3xl font-bold font-satisfy text-purple-500 mb-6">Your Cart is Empty</h1>
+        <h1 className="text-3xl pt-20 font-bold font-satisfy text-purple-500 mb-6">Your Cart is Empty</h1>
         <p className="text-gray-600 mb-6">Please add some items before checking out.</p>
       </section>
     );
