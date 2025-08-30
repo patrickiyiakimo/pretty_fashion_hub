@@ -11,10 +11,10 @@ export default function CartPage() {
   if (cart.length === 0) {
     return (
       <section className="py-32 text-center bg-gradient-to-b from-purple-50 to-white min-h-screen flex flex-col justify-center items-center">
-        <h1 className="text-4xl mt-10 md:text-5xl font-extrabold text-purple-600 mb-6">
+        <h1 className="text-4xl mt-10 font-satisfy md:text-5xl font-extrabold text-purple-600 mb-6">
           Your Cart is Empty
         </h1>
-        <p className="text-gray-600 text-lg mb-8">
+        <p className="text-gray-600  font-oswald text-2xl mb-8">
           Explore our collections and find your perfect style.
         </p>
         <Link
@@ -29,7 +29,7 @@ export default function CartPage() {
 
   return (
     <section className="py-24 px-6 md:px-12 bg-gradient-to-b from-white via-purple-50 to-white min-h-screen">
-      <h1 className="text-4xl md:text-5xl font-extrabold text-purple-700 mb-12 text-center">
+      <h1 className="text-4xl md:text-5xl font-satisfy pt-20 font-extrabold text-purple-700 mb-12 text-center">
         Your Cart
       </h1>
 
@@ -50,7 +50,7 @@ export default function CartPage() {
             </div>
 
             <div className="flex-1 w-full text-center md:text-left">
-              <h2 className="text-2xl md:text-3xl font-bold text-purple-600 mb-2">
+              <h2 className="text-2xl md:text-3xl font-oswald font-bold text-purple-600 mb-2">
                 {item.name}
               </h2>
               <p className="text-yellow-400 font-extrabold text-xl md:text-2xl mb-4">

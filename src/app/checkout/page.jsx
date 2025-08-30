@@ -29,7 +29,7 @@ export default function CheckoutPage() {
   if (cart.length === 0) {
     return (
       <section className="py-20 pt-20 text-center">
-        <h1 className="text-3xl font-bold text-purple-500 mb-6">Your Cart is Empty</h1>
+        <h1 className="text-3xl font-bold font-satisfy text-purple-500 mb-6">Your Cart is Empty</h1>
         <p className="text-gray-600 mb-6">Please add some items before checking out.</p>
       </section>
     );
@@ -37,14 +37,14 @@ export default function CheckoutPage() {
 
   return (
     <section className="py-20 px-6 md:px-12 bg-white/5 backdrop-blur-sm min-h-screen">
-      <h1 className="text-4xl md:text-5xl font-extrabold text-purple-500 mb-12 text-center">
+      <h1 className="text-4xl pt-20 md:text-5xl font-satisfy font-extrabold text-purple-500 mb-12 text-center">
         Checkout
       </h1>
 
       <div className="grid md:grid-cols-2 gap-12 max-w-6xl mx-auto">
         {/* Left: Cart Summary */}
         <div className="bg-white/20 backdrop-blur-md rounded-3xl p-6 shadow-lg">
-          <h2 className="text-2xl font-bold text-purple-600 mb-6">Order Summary</h2>
+          <h2 className="text-2xl font-bold font-satisfy text-purple-600 mb-6">Order Summary</h2>
           {cart.map((item) => (
             <div
               key={item.id}
@@ -54,7 +54,7 @@ export default function CheckoutPage() {
                 <Image src={item.image} alt={item.name} fill className="object-cover" />
               </div>
               <div className="flex-1">
-                <h3 className="text-purple-500 font-semibold">{item.name}</h3>
+                <h3 className="text-purple-500 font-oswald font-semibold">{item.name}</h3>
                 <p className="text-yellow-400 font-bold">
                   ₦{item.price.toLocaleString()} x {item.quantity}
                 </p>
@@ -79,7 +79,7 @@ export default function CheckoutPage() {
           onSubmit={handleSubmit}
           className="bg-white/20 backdrop-blur-md rounded-3xl p-8 shadow-lg flex flex-col gap-6"
         >
-          <h2 className="text-2xl font-bold text-purple-600 text-center mb-4">
+          <h2 className="text-2xl font-bold font-satisfy text-purple-600 text-center mb-4">
             Shipping Details
           </h2>
           <input

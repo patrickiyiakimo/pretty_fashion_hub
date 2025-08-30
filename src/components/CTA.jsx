@@ -47,9 +47,9 @@ export default function CTASection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.3 }}
           transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
-          className="relative hidden md:grid grid-cols-2 gap-4 md:gap-6 justify-items-center items-center"
+          className="relative hidden lg:grid grid-cols-2 gap-4 md:gap-6 justify-items-center items-center"
         >
-          <div className="relative w-36 h-52 md:w-44 md:h-64 rounded-3xl overflow-hidden shadow-2xl transform hover:scale-105 transition duration-500 z-30">
+          <div className="relative w-36 h-52 lg:w-44 lg:h-64 rounded-3xl overflow-hidden shadow-2xl transform hover:scale-105 transition duration-500 z-30">
             <Image src="/images/hand-bag-1.webp" alt="Luxury Bag" fill className="object-cover" />
           </div>
           <div className="relative w-28 h-40 md:w-32 md:h-52 rounded-3xl overflow-hidden shadow-2xl transform hover:scale-105 transition duration-500 -mt-10 md:-mt-16 z-20">

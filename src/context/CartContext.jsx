@@ -37,32 +37,8 @@ export function CartProvider({ children }) {
       value={{ cart, addToCart, removeFromCart, updateQuantity }}
     >
       {children}
-      {/* <AnimatePresence>
-        {flyingItem && (
-          <motion.div
-            className="fixed w-20 h-20 z-50 rounded-xl overflow-hidden pointer-events-none"
-            style={{
-              top: flyingItem.imgRect.top,
-              left: flyingItem.imgRect.left,
-            }}
-            initial={{ scale: 1, x: 0, y: 0, opacity: 1 }}
-            animate={{
-              x: window.innerWidth - flyingItem.imgRect.left - 80,
-              y: -flyingItem.imgRect.top + 20,
-              scale: 0.3,
-              opacity: 0.8,
-            }}
-            transition={{ duration: 0.8, ease: "easeInOut" }}
-          >
-            <img
-              src={flyingItem.image}
-              alt={flyingItem.name}
-              className="w-full h-full object-cover rounded-xl shadow-xl"
-            />
-          </motion.div>
-        )}
-      </AnimatePresence> */}
-      // Inside CartProvider
+     
+
 <AnimatePresence>
   {flyingItem && (
     <motion.div

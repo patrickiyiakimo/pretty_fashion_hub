@@ -38,7 +38,7 @@ export default function FeaturedCollections({ collections }) {
 
             {/* Text Overlay */}
             <div className="absolute bottom-6 left-6 right-6 text-white">
-              <h3 className="text-2xl font-bold mb-2">{item.title}</h3>
+              <h3 className="text-2xl font-oswald font-bold mb-2">{item.title}</h3>
               <p className="text-sm text-gray-200 mb-3 line-clamp-2">{item.description}</p>
               <span className="inline-block px-4 py-2 bg-gradient-to-r from-yellow-400 to-yellow-300 text-purple-900 font-semibold rounded-full shadow-md">
                 {item.price}

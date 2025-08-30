@@ -33,7 +33,7 @@ export default function ProductCard({ product, onAddToCart }) {
       </div>
 
       <div className="p-6 text-center space-y-3 md:space-y-4 relative z-20">
-        <h3 className="text-lg md:text-xl font-bold text-purple-600 tracking-wide drop-shadow-lg">
+        <h3 className="text-lg md:text-xl font-oswald font-bold text-purple-600 tracking-wide drop-shadow-lg">
           {product.name}
         </h3>
         <p className="text-xl md:text-2xl font-extrabold text-yellow-400 drop-shadow-md">

@@ -37,7 +37,7 @@ export default function ProductPage({ params: paramsPromise }) {
 
         {/* Product Details */}
         <div className="flex-1 text-left">
-          <h1 className="text-4xl font-extrabold text-purple-500 mb-4">
+          <h1 className="text-4xl font-oswald font-extrabold text-purple-500 mb-4">
             {product.name}
           </h1>
           <span className="text-yellow-300 font-bold text-2xl mb-6 block">
@@ -53,7 +53,7 @@ export default function ProductPage({ params: paramsPromise }) {
       {/* Related Products */}
       {relatedProducts.length > 0 && (
         <div className="mt-20">
-          <h2 className="text-3xl font-extrabold text-purple-500 mb-8">
+          <h2 className="text-3xl font-satisfy font-extrabold text-purple-500 mb-8">
             Related Products
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -72,7 +72,7 @@ export default function ProductPage({ params: paramsPromise }) {
                   />
                 </div>
                 <div className="p-4 text-center bg-white/20 backdrop-blur-sm -mt-12 mx-4 rounded-b-3xl shadow-inner">
-                  <h3 className="text-lg font-semibold text-purple-400">
+                  <h3 className="text-lg font-semibold font-oswald text-purple-400">
                     {item.name}
                   </h3>
                   <span className="text-yellow-300 font-bold">

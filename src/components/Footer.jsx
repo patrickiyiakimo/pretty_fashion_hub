@@ -43,7 +43,7 @@ export default function Footer() {
 
         {/* Quick Links */}
         <div>
-          <h4 className="text-lg font-bold text-yellow-400 mb-4">Quick Links</h4>
+          <h4 className="text-lg font-bold text-yellow-400 font-oswald mb-4">Quick Links</h4>
           <ul className="space-y-2 text-gray-300">
             <li>
               <Link href="/shop" className="hover:text-yellow-400 transition">Shop</Link>
@@ -62,7 +62,7 @@ export default function Footer() {
 
         {/* Customer Service */}
         <div>
-          <h4 className="text-lg font-bold text-yellow-400 mb-4">Customer Service</h4>
+          <h4 className="text-lg font-bold text-yellow-400 font-oswald mb-4">Customer Service</h4>
           <ul className="space-y-2 text-gray-300">
             <li>
               <Link href="#" className="hover:text-yellow-400 transition">FAQ</Link>
@@ -81,11 +81,11 @@ export default function Footer() {
 
         {/* Newsletter */}
         <div>
-          <h4 className="text-lg font-bold text-yellow-400 mb-4">Subscribe to Our Newsletter</h4>
+          <h4 className="text-lg font-bold text-yellow-400 font-oswald mb-4">Subscribe to Our Newsletter</h4>
           <p className="text-gray-300 text-sm mb-4">
             Get the latest updates on luxury collections, exclusive offers, and more.
           </p>
-          <form className="flex flex-col sm:flex-row gap-2">
+          <form className="flex flex-col lg:flex-row gap-2">
             <input
               type="email"
               placeholder="Enter your email"

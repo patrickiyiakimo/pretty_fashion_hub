@@ -26,7 +26,7 @@ export default function Hero() {
             initial={{ y: 40, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.8 }}
-            className="text-5xl md:text-6xl lg:text-7xl font-satisfy font-extrabold leading-tight mb-6"
+            className="text-5xl md:text-6xl pt-10 lg:text-7xl font-satisfy font-extrabold leading-tight mb-6"
           >
             Redefine{" "}
             <span className="bg-gradient-to-r from-yellow-400 to-yellow-200 bg-clip-text text-transparent">
@@ -50,9 +50,11 @@ export default function Hero() {
             transition={{ duration: 0.6, delay: 0.4 }}
             className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start"
           >
-            <button className="bg-yellow-400 text-purple-900 font-bold px-8 py-4 text-lg rounded-2xl shadow-lg hover:bg-yellow-300 transition">
+            <Link href="/shop">
+             <button className="bg-yellow-400 text-purple-900 font-bold px-8 py-4 text-lg rounded-2xl shadow-lg hover:bg-yellow-300 transition">
               Shop Now
             </button>
+            </Link>
             <Link href="/shop">
               <button className="bg-white/10 backdrop-blur-md text-white border border-yellow-300 font-semibold px-8 py-4 text-lg rounded-2xl shadow-lg hover:bg-yellow-400 hover:text-purple-900 transition">
                 Explore Collections

@@ -32,9 +32,9 @@ export default function Navbar() {
             <Link
               key={link.name}
               href={link.href}
-              className="relative text-gray-100 font-semibold text-lg group flex items-center"
+              className="relative text-yellow-400 font-semibold text-lg group flex items-center"
             >
-              <span className="hover:text-yellow-400 transition-colors duration-300">{link.name}</span>
+              <span className="hover:text-purple-400 transition-colors duration-300">{link.name}</span>
 
               {/* Badge for cart */}
               {link.badge > 0 && (
@@ -52,7 +52,7 @@ export default function Navbar() {
         <div className="md:hidden flex items-center">
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="text-gray-100 hover:text-yellow-400 focus:outline-none transition-colors duration-300"
+            className="text-yellow-400 focus:outline-none transition-colors duration-300"
           >
             {isOpen ? <HiX size={28} /> : <HiMenu size={28} />}
           </button>

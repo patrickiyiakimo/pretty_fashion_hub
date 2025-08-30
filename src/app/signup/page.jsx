@@ -39,7 +39,7 @@ export default function SignUp() {
 
         {/* Right Side - Form */}
         <div className="p-10 flex flex-col justify-center">
-          <h2 className="text-3xl font-bold text-yellow-400 mb-6">
+          <h2 className="text-3xl font-bold font-satisfy text-yellow-400 mb-6">
             Create Your Account
           </h2>
           <p className="text-gray-200 mb-6">

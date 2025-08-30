@@ -70,7 +70,7 @@ export default function Testimonials() {
                 />
               </div>
               <div>
-                <h3 className="text-purple-700 font-bold text-lg">{testimonial.name}</h3>
+                <h3 className="text-purple-700 font-oswald font-bold text-lg">{testimonial.name}</h3>
                 <p className="text-gray-500 text-sm">{testimonial.role}</p>
               </div>
             </div>
