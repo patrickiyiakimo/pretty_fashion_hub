@@ -1,68 +1,65 @@
 "use client";
 import { motion } from "framer-motion";
-import Image from "next/image";
 import Link from "next/link";
 
 export default function CTASection() {
   return (
-    <section className="relative bg-gradient-to-r from-purple-700 via-purple-600 to-purple-500 text-white py-24 px-6 md:px-12 overflow-hidden rounded-3xl shadow-xl mx-6 md:mx-12">
-      {/* Decorative Circles */}
-      <div className="absolute top-[-40px] left-[-40px] w-36 h-36 bg-yellow-400/30 rounded-full blur-3xl animate-pulse"></div>
-      <div className="absolute bottom-[-40px] right-[-40px] w-48 h-48 bg-pink-400/30 rounded-full blur-3xl animate-pulse"></div>
+    <section className="relative bg-gradient-to-br from-purple-900 via-purple-800 to-black text-white py-28 px-3 md:px-16 overflow-hidden rounded-3xl shadow-2xl mx-6 md:mx-12">
+      {/* Subtle background lights */}
+      <div className="absolute top-0 left-0 w-72 h-72 bg-yellow-400/20 rounded-full blur-[120px] opacity-40 animate-pulse"></div>
+      <div className="absolute bottom-0 right-0 w-96 h-96 bg-purple-500/30 rounded-full blur-[150px] opacity-30 animate-pulse"></div>
 
-      <div className="relative z-10 max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-        {/* Left - Text */}
-        <motion.div
-          initial={{ opacity: 0, y: 60 }}
+      <motion.div
+        initial={{ opacity: 0, y: 60 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.3 }}
+        transition={{ duration: 0.8, ease: "easeOut" }}
+        className="relative z-10 max-w-5xl mx-auto text-center space-y-8"
+      >
+        {/* Headline */}
+        <motion.h2
+          initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-          className="text-center md:text-left"
+          transition={{ duration: 0.6, delay: 0.1 }}
+          className="text-5xl md:text-6xl font-satisfy font-extrabold leading-tight tracking-wide"
         >
-          <h2 className="text-4xl font-satisfy md:text-5xl font-extrabold mb-6 tracking-wide">
-            Elevate Your Wardrobe Today
-          </h2>
-          <p className="text-lg md:text-2xl font-oswald text-white/90 mb-8 leading-relaxed">
-            Explore Kingz_World’s luxurious collections and experience the perfect
-            blend of elegance, trendiness, and sophistication. Your style journey starts here.
-          </p>
+          Step Into Luxury. Define Your Style.
+        </motion.h2>
 
-          <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
-            <Link href="/shop">
-              <button className="bg-yellow-400 hover:bg-yellow-300 text-purple-900 font-bold px-8 py-4 rounded-2xl shadow-lg transition-all duration-300">
-                Shop Now
-              </button>
-            </Link>
-            <Link href="/contact">
-              <button className="bg-white/20 mb-10 backdrop-blur-md text-white border border-yellow-300 font-semibold px-8 py-4 rounded-2xl shadow-lg hover:bg-yellow-400 hover:text-purple-900 transition-all duration-300">
-                Contact Us
-              </button>
-            </Link>
-          </div>
-        </motion.div>
+        {/* Subtext */}
+        <motion.p
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{ duration: 0.8, delay: 0.3 }}
+          className="text-lg md:text-xl font-oswald text-white/80 leading-relaxed max-w-3xl mx-auto"
+        >
+          Discover timeless fashion that speaks to confidence, class, and craftsmanship. 
+          Every piece from <span className="text-yellow-400 font-semibold">Kingz_World</span> 
+          is made to make you feel effortlessly royal.
+        </motion.p>
 
-        {/* Right - Overlapping Staggered Grid */}
+        {/* CTA Buttons */}
         <motion.div
-          initial={{ opacity: 0, y: 60 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
-          className="relative hidden lg:grid grid-cols-2 gap-4 md:gap-6 justify-items-center items-center"
+          initial={{ opacity: 0, scale: 0.95 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.7, delay: 0.5 }}
+          className="flex flex-col sm:flex-row justify-center gap-5 pt-6"
         >
-          <div className="relative w-36 h-52 lg:w-44 lg:h-64 rounded-3xl overflow-hidden shadow-2xl transform hover:scale-105 transition duration-500 z-30">
-            <Image src="/images/hand-bag-1.webp" alt="Luxury Bag" fill className="object-cover" />
-          </div>
-          <div className="relative w-28 h-40 md:w-32 md:h-52 rounded-3xl overflow-hidden shadow-2xl transform hover:scale-105 transition duration-500 -mt-10 md:-mt-16 z-20">
-            <Image src="/images/shoe-1.webp" alt="Luxury Shoes" fill className="object-cover" />
-          </div>
-          <div className="relative w-32 h-44 md:w-36 md:h-56 rounded-3xl overflow-hidden shadow-2xl transform hover:scale-105 transition duration-500 -ml-6 md:-ml-12 z-10">
-            <Image src="/images/shoe-2.jpg" alt="Elegant Outfit" fill className="object-cover" />
-          </div>
-          <div className="relative w-40 h-56 md:w-44 md:h-64 rounded-3xl overflow-hidden shadow-2xl transform hover:scale-105 transition duration-500 -mt-16 md:-mt-24 z-0">
-            <Image src="/images/man-shoe-2.jpg" alt="Luxury Dress" fill className="object-cover" />
-          </div>
+          <Link href="/shop">
+            <button className="bg-yellow-400 text-purple-900 font-bold text-lg px-10 py-4 shadow-lg hover:bg-yellow-300 transition-all duration-300">
+              Explore the Collection
+            </button>
+          </Link>
+          <Link href="/contact">
+            <button className="border border-yellow-400/70 text-white text-lg font-semibold px-10 py-4 backdrop-blur-sm hover:bg-yellow-400 hover:text-purple-900 transition-all duration-300">
+              Talk to a Stylist
+            </button>
+          </Link>
         </motion.div>
-      </div>
+      </motion.div>
+
+      {/* Decorative underline line */}
+      <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-1/2 h-[2px] bg-gradient-to-r from-yellow-400 via-white/60 to-yellow-400 opacity-50"></div>
     </section>
   );
 }

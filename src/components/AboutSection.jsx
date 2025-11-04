@@ -32,7 +32,7 @@ export default function AboutSection() {
         </div>
 
         {/* Image */}
-        <div className="flex-1 relative w-full h-96 rounded-3xl shadow-2xl overflow-hidden">
+        <div className="flex-1 relative w-full h-96 rounded-xl shadow-2xl overflow-hidden">
           <div className="w-full h-full rounded-3xl overflow-hidden">
             <Image
               src="/images/hand-bag-1.webp"

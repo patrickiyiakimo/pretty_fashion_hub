@@ -48,26 +48,26 @@ export default function ContactPage() {
           <input
             type="text"
             placeholder="Full Name"
-            className="p-4 rounded-xl border-2 border-purple-600 bg-white/10 text-gray-600 placeholder-gray-400 focus:outline-none focus:ring-2 transition"
+            className="p-4 border-2 border-purple-600 bg-white/10 text-gray-600 placeholder-gray-400 focus:outline-none focus:ring-2 transition"
           />
           <input
             type="email"
             placeholder="Email Address"
-            className="p-4 rounded-xl border-2 border-purple-600 bg-white/10 text-gray-600 placeholder-gray-400 focus:outline-none focus:ring-2 transition"
+            className="p-4 border-2 border-purple-600 bg-white/10 text-gray-600 placeholder-gray-400 focus:outline-none focus:ring-2 transition"
           />
           <input
             type="text"
             placeholder="Subject"
-            className="p-4 rounded-xl border-2 border-purple-600 bg-white/10 text-gray-600 placeholder-gray-400 focus:outline-none focus:ring-2 transition"
+            className="p-4 border-2 border-purple-600 bg-white/10 text-gray-600 placeholder-gray-400 focus:outline-none focus:ring-2 transition"
           />
           <textarea
             placeholder="Your Message"
             rows={5}
-             className="p-4 rounded-xl border-2 border-purple-600 bg-white/10 text-gray-600 placeholder-gray-400 focus:outline-none focus:ring-2 transition"
+             className="p-4 border-2 border-purple-600 bg-white/10 text-gray-600 placeholder-gray-400 focus:outline-none focus:ring-2 transition"
           />
           <button
             type="submit"
-            className="bg-gradient-to-r from-yellow-400 to-yellow-300 text-purple-900 font-bold py-3 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300"
+            className="bg-gradient-to-r from-purple-400 to-purple-300 text-purple-900 font-bold py-3 shadow-lg hover:shadow-xl transition-all duration-300"
           >
             Send Message
           </button>

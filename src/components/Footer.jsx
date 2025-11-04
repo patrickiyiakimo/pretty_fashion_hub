@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import Image from "next/image";
-import { FaFacebookF, FaInstagram, FaTwitter, FaYoutube } from "react-icons/fa";
+import { FaFacebookF, FaInstagram, FaTwitter } from "react-icons/fa";
 
 export default function Footer() {
   return (
@@ -35,9 +35,9 @@ export default function Footer() {
             <Link href="#" className="text-white hover:text-yellow-400 transition">
               <FaTwitter size={18} />
             </Link>
-            <Link href="#" className="text-white hover:text-yellow-400 transition">
+            {/* <Link href="#" className="text-white hover:text-yellow-400 transition">
               <FaYoutube size={18} />
-            </Link>
+            </Link> */}
           </div>
         </div>
 
@@ -89,11 +89,11 @@ export default function Footer() {
             <input
               type="email"
               placeholder="Enter your email"
-              className="px-4 py-3 mb-3 w-full rounded-full text-black flex-1 focus:outline-none"
+              className="px-4 py-3 mb-3 w-full text-black flex-1 focus:outline-none"
             />
             <button
               type="submit"
-              className="bg-yellow-400 hover:bg-yellow-300 w-full text-purple-900 font-semibold px-6 py-3 rounded-full transition"
+              className="bg-yellow-400 hover:bg-yellow-300 w-full text-purple-900 font-semibold px-6 py-3 transition"
             >
               Subscribe
             </button>

@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { FaQuoteLeft } from "react-icons/fa";
 
 const testimonials = [
   {
@@ -31,7 +32,7 @@ const testimonials = [
 
 export default function Testimonials() {
   return (
-    <section className="relative bg-purple-50 py-24 px-6 md:px-12 overflow-hidden">
+    <section className="relative bg-purple-50 py-24 px-3 md:px-12 overflow-hidden">
       {/* Decorative floating shapes */}
       <div className="absolute top-0 left-1/4 w-40 h-40 bg-yellow-400/20 rounded-full blur-3xl animate-pulse"></div>
       <div className="absolute bottom-0 right-1/3 w-56 h-56 bg-pink-400/20 rounded-full blur-3xl animate-pulse"></div>
@@ -46,37 +47,39 @@ export default function Testimonials() {
       </div>
 
       <div className="grid gap-10 md:grid-cols-3 relative z-10">
-        {testimonials.map((testimonial) => (
-          <div
-            key={testimonial.id}
-            className="bg-gradient-to-tr from-white/80 via-white/60 to-white/70 rounded-3xl shadow-2xl p-8 relative overflow-hidden hover:scale-105 transition-transform duration-500 border border-purple-200"
-          >
-            {/* Quote Icon */}
-            <div className="absolute top-6 left-6 text-purple-200 text-6xl opacity-20 select-none">“</div>
+          {testimonials.map((testimonial) => (
+            <div
+              key={testimonial.id}
+              className="bg-gradient-to-tr from-white/80 via-white/60 to-white/70 p-8 relative overflow-hidden border border-purple-200 shadow-md"
+            >
+              {/* Quote Icon */}
+              <FaQuoteLeft className="absolute top-6 left-6 text-purple-400 text-5xl opacity-25 select-none" />
 
-            {/* Testimonial Text */}
-            <p className="text-gray-700 text-lg mb-6 leading-relaxed">
-              {testimonial.message}
-            </p>
+              {/* Testimonial Text */}
+              <p className="text-gray-700 text-lg mb-6 leading-relaxed z-10 relative">
+                {testimonial.message}
+              </p>
 
-            {/* Client Info */}
-            <div className="flex items-center gap-4 mt-6">
-              <div className="w-16 h-16 relative rounded-full overflow-hidden shadow-lg border-2 border-yellow-400">
-                <Image
-                  src={testimonial.photo}
-                  alt={testimonial.name}
-                  fill
-                  className="object-cover"
-                />
-              </div>
-              <div>
-                <h3 className="text-purple-700 font-oswald font-bold text-lg">{testimonial.name}</h3>
-                <p className="text-gray-500 text-sm">{testimonial.role}</p>
+              {/* Client Info */}
+              <div className="flex items-center gap-4 mt-6">
+                <div className="w-16 h-16 relative rounded-full overflow-hidden shadow-lg border-2 border-yellow-400">
+                  <Image
+                    src={testimonial.photo}
+                    alt={testimonial.name}
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+                <div>
+                  <h3 className="text-purple-700 font-oswald font-bold text-lg">
+                    {testimonial.name}
+                  </h3>
+                  <p className="text-gray-500 text-sm">{testimonial.role}</p>
+                </div>
               </div>
             </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
     </section>
   );
 }

@@ -6,7 +6,7 @@ export default function FeaturedCollections({ collections }) {
   return (
     <section
       id="collections"
-      className="relative py-20 px-6 md:px-12 bg-gradient-to-b from-white via-purple-50 to-white"
+      className="relative py-20 px-3 md:px-12 bg-gradient-to-b from-white via-purple-50 to-white"
     >
       {/* Section Header */}
       <div className="text-center mb-16">
@@ -23,7 +23,7 @@ export default function FeaturedCollections({ collections }) {
         {collections.map((item) => (
           <div
             key={item.id}
-            className="relative group rounded-3xl overflow-hidden shadow-2xl hover:shadow-purple-200/50 transition-all"
+            className="relative group overflow-hidden shadow-2xl hover:shadow-purple-200/50 transition-all"
           >
             {/* Image with Overlay */}
             <div className="relative h-80 w-full">

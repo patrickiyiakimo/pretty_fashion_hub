@@ -57,7 +57,7 @@ export default function SignUp() {
                 value={form.name}
                 onChange={handleChange}
                 required
-                className="w-full px-4 py-3 rounded-xl bg-white/20 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-400"
+                className="w-full px-4 py-3 bg-white/20 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-400"
                 placeholder="Enter your full name"
               />
             </div>
@@ -72,10 +72,26 @@ export default function SignUp() {
                 value={form.email}
                 onChange={handleChange}
                 required
-                className="w-full px-4 py-3 rounded-xl bg-white/20 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-400"
+                className="w-full px-4 py-3 bg-white/20 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-400"
                 placeholder="Enter your email"
               />
             </div>
+
+             <div>
+              <label className="block text-sm font-medium text-white mb-1">
+                Phone Number
+              </label>
+              <input
+                type="number"
+                name="number"
+                value={form.number}
+                onChange={handleChange}
+                required
+                className="w-full px-4 py-3 bg-white/20 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-400"
+                placeholder="Enter your phone number"
+              />
+            </div>
+
 
             <div>
               <label className="block text-sm font-medium text-white mb-1">
@@ -87,14 +103,14 @@ export default function SignUp() {
                 value={form.password}
                 onChange={handleChange}
                 required
-                className="w-full px-4 py-3 rounded-xl bg-white/20 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-400"
+                className="w-full px-4 py-3 bg-white/20 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-400"
                 placeholder="Create a password"
               />
             </div>
 
             <button
               type="submit"
-              className="w-full py-3 bg-yellow-400 text-black font-semibold rounded-xl shadow-lg hover:bg-yellow-500 transition duration-300"
+              className="w-full py-3 bg-purple-400 text-black font-semibold shadow-lg hover:bg-purple-500 transition duration-300"
             >
               Sign Up
             </button>

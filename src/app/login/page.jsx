@@ -26,7 +26,7 @@ export default function LoginPage() {
     <div className="min-h-screen mb-20 flex items-center justify-center bg-gradient-to-br from-purple-900 via-black to-purple-800">
       <div className="w-full max-w-md bg-white/10 backdrop-blur-lg rounded-3xl shadow-2xl p-8">
         <h1 className="text-3xl font-bold text-center font-satisfy text-yellow-400 mb-2">
-          Welcome Back ✨
+          Welcome Back
         </h1>
         <p className="text-center text-gray-300 mb-6">
           Log in to your boutique account
@@ -42,7 +42,7 @@ export default function LoginPage() {
               onChange={handleChange}
               placeholder="you@example.com"
               required
-              className="w-full px-4 py-3 rounded-xl border border-white/20 bg-white/5 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-400"
+              className="w-full px-4 py-3 border border-white/20 bg-white/5 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-400"
             />
           </div>
 
@@ -55,13 +55,13 @@ export default function LoginPage() {
               onChange={handleChange}
               placeholder="••••••••"
               required
-              className="w-full px-4 py-3 rounded-xl border border-white/20 bg-white/5 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-400"
+              className="w-full px-4 py-3 border border-white/20 bg-white/5 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-400"
             />
           </div>
 
           <button
             type="submit"
-            className="w-full py-3 rounded-xl bg-gradient-to-r from-yellow-400 to-yellow-300 text-purple-900 font-bold hover:opacity-90 transition-all"
+            className="w-full py-3 bg-gradient-to-r from-purple-400 to-purple-300 text-white font-bold hover:opacity-90 transition-all"
           >
             Log In
           </button>

@@ -37,7 +37,7 @@ export default function CartPage() {
         {cart.map((item) => (
           <div
             key={item.id}
-            className="flex flex-col md:flex-row items-center gap-6 bg-white/30 backdrop-blur-lg rounded-3xl p-6 shadow-xl hover:shadow-2xl transition-all duration-500"
+            className="flex flex-col md:flex-row items-center gap-6 bg-white/30 backdrop-blur-lg p-3 shadow-xl hover:shadow-2xl transition-all duration-500"
           >
             <div className="relative w-full md:w-32 h-32 md:h-36 rounded-2xl overflow-hidden shadow-lg">
               <Image
@@ -97,7 +97,7 @@ export default function CartPage() {
           Total: ₦{total.toLocaleString()}
         </h3>
         <Link href="/checkout">
-          <button className="bg-yellow-400 text-purple-900 px-10 py-4 rounded-2xl font-bold shadow-xl hover:bg-yellow-300 transition-all duration-300">
+          <button className="bg-yellow-400 text-purple-900 px-10 py-4 font-bold shadow-xl hover:bg-yellow-300 transition-all duration-300">
             Checkout
           </button>
         </Link>

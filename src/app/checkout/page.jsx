@@ -88,7 +88,7 @@ export default function CheckoutPage() {
             placeholder="Full Name"
             value={formData.name}
             onChange={handleChange}
-            className="p-4 rounded-xl border-2 border-purple-600 bg-white/10 text-gray-600 placeholder-gray-400 focus:outline-none focus:ring-2 transition"
+            className="p-4 border-2 border-purple-600 bg-white/10 text-gray-600 placeholder-gray-400 focus:outline-none focus:ring-2 transition"
             required
           />
           <input
@@ -97,7 +97,7 @@ export default function CheckoutPage() {
             placeholder="Email Address"
             value={formData.email}
             onChange={handleChange}
-            className="p-4 rounded-xl border-2 border-purple-600 bg-white/10 text-gray-600 placeholder-gray-400 focus:outline-none focus:ring-2 transition"
+            className="p-4 border-2 border-purple-600 bg-white/10 text-gray-600 placeholder-gray-400 focus:outline-none focus:ring-2 transition"
             required
           />
           <input
@@ -106,7 +106,7 @@ export default function CheckoutPage() {
             placeholder="Phone Number"
             value={formData.phone}
             onChange={handleChange}
-            className="p-4 rounded-xl border-2 border-purple-600 bg-white/10 text-gray-600 placeholder-gray-400 focus:outline-none focus:ring-2 transition"
+            className="p-4 border-2 border-purple-600 bg-white/10 text-gray-600 placeholder-gray-400 focus:outline-none focus:ring-2 transition"
             required
           />
           <textarea
@@ -114,13 +114,13 @@ export default function CheckoutPage() {
             placeholder="Delivery Address"
             value={formData.address}
             onChange={handleChange}
-            className="p-4 rounded-xl border-2 border-purple-600 bg-white/10 text-gray-600 placeholder-gray-400 focus:outline-none focus:ring-2 transition"
+            className="p-4 border-2 border-purple-600 bg-white/10 text-gray-600 placeholder-gray-400 focus:outline-none focus:ring-2 transition"
             rows={4}
             required
           />
           <button
             type="submit"
-            className="mt-4 bg-yellow-400 text-purple-900 px-8 py-4 rounded-2xl font-bold shadow-lg hover:bg-yellow-300 transition"
+            className="mt-4 bg-purple-400 text-white px-8 py-4 font-bold shadow-lg hover:bg-purple-600 transition"
           >
             Place Order
           </button>
