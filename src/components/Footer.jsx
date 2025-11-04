@@ -16,14 +16,14 @@ export default function Footer() {
           <Link href="/">
             {/* <Image
               src="/images/logo.png"
-              alt="Pretty Fashion Hub"
+              alt="Kingz_World"
               width={150}
               height={50}
               className="object-contain"
             /> */}
           </Link>
           <p className="text-gray-300 text-sm">
-            Pretty Fashion Hub brings you timeless luxury and elegance. Explore our curated collections and elevate your style.
+            Kingz_World brings you timeless luxury and elegance. Explore our curated collections and elevate your style.
           </p>
           <div className="flex space-x-4 mt-2">
             <Link href="#" className="text-white hover:text-yellow-400 transition">
@@ -103,7 +103,7 @@ export default function Footer() {
 
       {/* Bottom */}
       <div className="mt-12 border-t border-gray-800 pt-6 text-center text-gray-500 text-sm">
-        &copy; {new Date().getFullYear()} Pretty Fashion Hub. All rights reserved.
+        &copy; {new Date().getFullYear()} Kingz_World. All rights reserved.
       </div>
     </footer>
   );

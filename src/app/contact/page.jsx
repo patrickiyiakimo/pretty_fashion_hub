@@ -85,7 +85,7 @@ export default function ContactPage() {
             Our Boutique
           </h2>
           <p className="text-gray-700 text-lg leading-relaxed">
-            <strong>Pretty Fashion Hub</strong> — Luxury Women & Men Clothing
+            <strong>Kingz_World</strong> — Luxury Women & Men Clothing
             <br />
             🛍️ Open Monday to Saturday
             <br />

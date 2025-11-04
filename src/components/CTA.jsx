@@ -23,7 +23,7 @@ export default function CTASection() {
             Elevate Your Wardrobe Today
           </h2>
           <p className="text-lg md:text-2xl font-oswald text-white/90 mb-8 leading-relaxed">
-            Explore Pretty Fashion Hub’s luxurious collections and experience the perfect
+            Explore Kingz_World’s luxurious collections and experience the perfect
             blend of elegance, trendiness, and sophistication. Your style journey starts here.
           </p>
 

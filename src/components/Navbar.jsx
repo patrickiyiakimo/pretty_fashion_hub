@@ -23,7 +23,7 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-6 lg:px-12 flex justify-between items-center h-20">
         {/* Logo */}
         <Link href="/" className="text-2xl md:text-3xl font-satisfy font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-yellow-400 to-purple-600">
-          Pretty Fashion Hub
+          Kingz_World
         </Link>
 
         {/* Desktop Menu */}

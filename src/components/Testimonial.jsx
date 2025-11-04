@@ -9,7 +9,7 @@ const testimonials = [
     role: "Fashion Enthusiast",
     photo: "/images/profile-image-1.jpg",
     message:
-      "Pretty Fashion Hub has completely transformed my wardrobe! Every piece exudes elegance and class.",
+      "Kingz_World has completely transformed my wardrobe! Every piece exudes elegance and class.",
   },
   {
     id: 2,
@@ -41,7 +41,7 @@ export default function Testimonials() {
           What Our Clients Say
         </h2>
         <p className="text-gray-600 font-oswald max-w-2xl mx-auto text-3xl md:text-xl">
-          Hear from our valued clients who love Pretty Fashion Hub's luxurious and timeless collections.
+          Hear from our valued clients who love Kingz_World's luxurious and timeless collections.
         </p>
       </div>
 

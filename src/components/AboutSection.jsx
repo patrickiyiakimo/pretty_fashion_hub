@@ -15,13 +15,13 @@ export default function AboutSection() {
       <div className="max-w-7xl mx-auto flex flex-col-reverse lg:flex-row items-center gap-12 relative z-10">
         {/* Text Content */}
         <div className="flex-1 text-center lg:text-left">
-          <h2 className="text-4xl md:text-5xl font-satisfy font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-purple-700 via-pink-500 to-yellow-400 mb-6">
-            About Pretty Fashion Hub
+          <h2 className="text-4xl md:text-5xl font-satisfy font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-purple-700 via-pink-500 to-yellow-400 pb-6">
+            About Kingz_World
           </h2>
 
-          <div className="bg-white/30 backdrop-blur-lg rounded-3xl p-8 shadow-xl border border-white/20 space-y-4">
+          <div className="backdrop-blur-lg p-8 border border-white/20 space-y-4">
             <p className="text-gray-800 text-lg leading-relaxed">
-              At <span className="font-semibold">Pretty Fashion Hub</span>, fashion is more than clothing — it's a statement of your personality.
+              At <span className="font-semibold">Kingz_World</span>, fashion is more than clothing — it's a statement of your personality.
               Our curated collections merge elegance, trendiness, and timeless style to make you stand out effortlessly.
             </p>
             <p className="text-gray-800 text-lg leading-relaxed">
@@ -36,7 +36,7 @@ export default function AboutSection() {
           <div className="w-full h-full rounded-3xl overflow-hidden">
             <Image
               src="/images/hand-bag-1.webp"
-              alt="About Pretty Fashion Hub"
+              alt="About Kingz_World"
               fill
               className="object-cover w-full h-full"
             />

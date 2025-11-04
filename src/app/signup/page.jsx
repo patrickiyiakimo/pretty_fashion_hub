@@ -32,7 +32,7 @@ export default function SignUp() {
           />
           <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
             <h2 className="text-white font-satisfy text-3xl font-extrabold tracking-wide text-center px-4">
-              Pretty Fashion Hub ✨
+              Kingz_World ✨
             </h2>
           </div>
         </div>

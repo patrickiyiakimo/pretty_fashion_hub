@@ -41,7 +41,7 @@ export default function Hero() {
             className="text-lg md:text-xl mb-10 font-oswald text-gray-200"
           >
             Step into timeless elegance with{" "}
-            <span className="font-semibold">Pretty Fashion Hub</span>, where every outfit tells a story of confidence, sophistication, and class.
+            <span className="font-semibold">Kingz_World</span>, where every outfit tells a story of confidence, sophistication, and class.
           </motion.p>
 
           <motion.div
@@ -51,12 +51,12 @@ export default function Hero() {
             className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start"
           >
             <Link href="/shop">
-             <button className="bg-yellow-400 text-purple-900 font-bold px-8 py-4 text-lg rounded-2xl shadow-lg hover:bg-yellow-300 transition">
+             <button className="bg-yellow-400 text-purple-900 font-bold px-8 py-4 text-lg shadow-lg hover:bg-yellow-300 transition">
               Shop Now
             </button>
             </Link>
             <Link href="/shop">
-              <button className="bg-white/10 backdrop-blur-md text-white border border-yellow-300 font-semibold px-8 py-4 text-lg rounded-2xl shadow-lg hover:bg-yellow-400 hover:text-purple-900 transition">
+              <button className="bg-white/10 backdrop-blur-md text-white border border-yellow-300 font-semibold px-8 py-4 text-lg shadow-lg hover:bg-yellow-400 hover:text-purple-900 transition">
                 Explore Collections
               </button>
             </Link>
@@ -64,13 +64,13 @@ export default function Hero() {
         </div>
 
         {/* Right Side - Grid Images (Visible on all screens) */}
-        <motion.div
+        {/* <motion.div
           initial={{ opacity: 0, x: 80 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 1 }}
           className="grid grid-cols-2 gap-4 md:gap-6"
         >
-          {/* Column 1 */}
+
           <div className="space-y-4 md:space-y-6">
             <div className="relative w-full h-48 md:h-72 rounded-2xl overflow-hidden shadow-xl">
               <Image
@@ -90,7 +90,6 @@ export default function Hero() {
             </div>
           </div>
 
-          {/* Column 2 */}
           <div className="space-y-4 md:space-y-6 mt-6 md:mt-12">
             <div className="relative w-full h-40 md:h-56 rounded-2xl overflow-hidden shadow-xl">
               <Image
@@ -109,7 +108,8 @@ export default function Hero() {
               />
             </div>
           </div>
-        </motion.div>
+        </motion.div> */}
+        
       </div>
     </section>
   );

@@ -52,7 +52,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "Pretty Fashion Hub",
+  title: "Kingz_World",
   description: "Luxury fashion boutique in Gwarimpa, Abuja",
 };
 
