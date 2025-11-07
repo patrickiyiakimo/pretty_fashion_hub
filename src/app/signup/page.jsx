@@ -4,6 +4,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { Toaster, toast } from "react-hot-toast";
 
 export default function SignUp() {
   const router = useRouter();
@@ -15,12 +16,9 @@ export default function SignUp() {
   });
 
   const [loading, setLoading] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
 
-  
   // ✅ Load API endpoint from environment variable
   const API_ENDPOINT = process.env.NEXT_PUBLIC_API_ENDPOINT;
-
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -44,44 +42,28 @@ export default function SignUp() {
         if (data.accessToken) localStorage.setItem("token", data.accessToken);
         if (data.user) localStorage.setItem("user", JSON.stringify(data.user));
 
-        setSubmitted(true);
+        // ✅ Show success toast instead of redirect message
+        toast.success("Signed up successfully");
 
-        // Redirect to partner dashboard (or homepage) after a short delay
+        // Redirect to partner dashboard (or homepage) after short delay
         setTimeout(() => router.push("/shop"), 2000);
       } else {
         // show backend message if available
-        alert(data.message || data.error || "Failed to register. Try again.");
+        toast.error(data.message || data.error || "Failed to register. Try again.");
       }
     } catch (error) {
       console.error("❌ Signup error:", error);
-      alert("An error occurred. Please try again.");
+      toast.error("An error occurred. Please try again.");
     } finally {
       setLoading(false);
     }
   };
 
-  if (submitted) {
-    return (
-      <section className="min-h-screen flex items-center justify-center bg-white px-3">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="max-w-xl w-full bg-white border-l-4 border-purple-700 p-12 shadow-lg"
-        >
-          <h2 className="text-2xl md:text-3xl font-oswald text-purple-800 mb-3">
-            Welcome to Kingz_World 👑
-          </h2>
-          <p className="text-gray-700">
-            Your account has been created successfully. Redirecting you to your dashboard...
-          </p>
-        </motion.div>
-      </section>
-    );
-  }
-
   return (
     <section className="min-h-screen bg-white text-gray-900 py-40 px-3 md:px-12">
+      {/* ✅ React Hot Toast container */}
+      <Toaster position="top-right" />
+
       <div className="max-w-4xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 18 }}
@@ -166,14 +148,6 @@ export default function SignUp() {
             </div>
 
             <div className="flex items-center justify-between">
-              {/* <div className="text-sm text-gray-600">
-                By creating an account, you agree to our{" "}
-                <Link href="/terms" className="text-purple-700 underline">
-                  Terms
-                </Link>
-                .
-              </div> */}
-
               <div className="text-sm">
                 <Link href="/forgot-password" className="text-purple-700 hover:underline">
                   Forgot Password?
