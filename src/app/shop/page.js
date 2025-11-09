@@ -9,7 +9,7 @@ export default function ShopPage() {
   const [products] = useState(allProducts);
 
   return (
-    <section className="py-24 px-6 md:px-12 bg-white/5 backdrop-blur-sm min-h-screen">
+    <section className="py-24 px-3 md:px-12 bg-white/5 backdrop-blur-sm min-h-screen">
       <h1 className="text-4xl font-satisfy font-extrabold text-purple-500 mb-12 text-center">
         Our Products
       </h1>

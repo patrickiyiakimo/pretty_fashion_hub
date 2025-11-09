@@ -43,7 +43,7 @@ export default function ProductCard({ product, onAddToCart }) {
       transition={{ duration: 0.3 }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
-      className="relative rounded-2xl overflow-hidden bg-gradient-to-b from-gray-900/70 via-gray-800/80 to-gray-900 border border-white/10 shadow-[0_4px_20px_rgba(0,0,0,0.4)] hover:shadow-[0_8px_25px_rgba(0,0,0,0.6)] transition-all duration-300"
+      className="relative rounded-md overflow-hidden bg-gradient-to-b from-gray-900/70 via-gray-800/80 to-gray-900 border border-white/10 transition-all duration-300"
     >
       <Link
         href={`/shop/${product.id}`}
@@ -57,15 +57,12 @@ export default function ProductCard({ product, onAddToCart }) {
               alt={product.name}
               fill
               sizes="(max-width: 768px) 100vw, 50vw"
-              className="object-cover w-full h-full transition-transform duration-700 group-hover:scale-110"
+              className="object-cover w-full h-full transition-transform duration-700"
               priority={false}
               placeholder="blur"
               blurDataURL="/images/placeholder-blur.png"
             />
           </div>
-
-          {/* Gradient Overlay */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-80 pointer-events-none" />
 
           {/* Vendor Badge */}
           <div className="absolute top-4 right-4 z-20 text-xs font-medium bg-black/50 text-white px-3 py-1.5 rounded-full backdrop-blur-sm">
@@ -201,16 +198,14 @@ export default function ProductCard({ product, onAddToCart }) {
                 onClick={handleAddToCart}
                 type="button"
                 aria-pressed={added}
-                className={`px-6 py-3 rounded-lg font-semibold text-sm shadow-md transition-all duration-200 ${
+                className={`px-6 py-3 font-semibold text-sm shadow-md transition-all duration-200 ${
                   added
                     ? "bg-green-500 text-white scale-105"
-                    : "bg-gradient-to-r from-yellow-400 via-yellow-300 to-amber-400 text-purple-900 hover:brightness-105"
+                    : "bg-gradient-to-r from-purple-400 w-full whitespace-nowrap via-purple-300 to-purple-400 text-purple-900 hover:brightness-105"
                 }`}
               >
                 {added ? "✓ Added" : "Add to cart"}
               </button>
-
-            
             </div>
           </div>
         </div>
