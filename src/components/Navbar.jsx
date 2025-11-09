@@ -12,11 +12,11 @@ export default function Navbar() {
 
   const navLinks = [
     { name: "Home", href: "/" },
-    { name: "Shop", href: "/shop" },
+    // { name: "Shop", href: "/shop" },
     { name: "Contact", href: "/contact" },
     { name: "Partner", href: "/partner" },
     { name: "Cart", href: "/cart", badge: cartCount },
-    { name: "Sign Up", href: "/signup" },
+    { name: "Log In", href: "/login" },
   ];
 
   return (

@@ -16,17 +16,14 @@ export default function AboutSection() {
         {/* Text Content */}
         <div className="flex-1 text-center lg:text-left">
           <h2 className="text-4xl md:text-5xl font-satisfy font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-purple-700 via-pink-500 to-yellow-400 pb-6">
-            About Kingz_World
+            About Kingz_Styles
           </h2>
 
           <div className="backdrop-blur-lg p-8 border border-white/20 space-y-4">
             <p className="text-gray-800 text-lg leading-relaxed">
-              At <span className="font-semibold">Kingz_World</span>, fashion is more than clothing — it's a statement of your personality.
-              Our curated collections merge elegance, trendiness, and timeless style to make you stand out effortlessly.
-            </p>
-            <p className="text-gray-800 text-lg leading-relaxed">
-              From luxurious evening gowns to chic everyday wear, each piece is carefully handpicked for quality, style, and sophistication.
-              Elevate your wardrobe with fashion that speaks to your individuality and confidence.
+              At <span className="font-semibold">Kingz_Stylez</span>, Kingz Stylez is a lifestyle and fashion brand inspired by my personal journey of rebuilding self-trust, confidence, discipline, and growth.
+                This brand represents becoming better than who you were yesterday — mentally, emotionally, and personally.
+                It comes from a place of learning how to believe in myself again, how to stay committed to my growth, and how to turn pain into purpose. Every design and message reflects that journey of rising, evolving, and choosing the life you were created for.
             </p>
           </div>
         </div>
