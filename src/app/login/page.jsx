@@ -4,7 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import toast, { Toaster } from "react-hot-toast";
+import { Toaster, toast } from "react-hot-toast";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -14,7 +14,6 @@ export default function LoginPage() {
   });
   const [loading, setLoading] = useState(false);
 
-  // ✅ Load API endpoint from environment variable
   const API_ENDPOINT = process.env.NEXT_PUBLIC_API_ENDPOINT;
 
   const handleChange = (e) => {
@@ -26,6 +25,8 @@ export default function LoginPage() {
     setLoading(true);
 
     try {
+      console.log("🚀 Logging in with:", formData);
+
       const res = await fetch(`${API_ENDPOINT}/api/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -33,11 +34,17 @@ export default function LoginPage() {
       });
 
       const data = await res.json();
+      console.log("✅ Login response:", data);
 
       if (res.ok) {
-        // Save user + token to local storage
-        if (data.accessToken) localStorage.setItem("token", data.accessToken);
-        if (data.user) localStorage.setItem("user", JSON.stringify(data.user));
+        // Combine user and token together for CartContext compatibility
+        if (data.user && data.token) {
+          const userData = { ...data.user, token: data.token };
+          localStorage.setItem("user", JSON.stringify(userData));
+          console.log("💾 Saved user with token:", userData);
+        } else {
+          console.warn("⚠️ Missing user or token in response:", data);
+        }
 
         toast.success("Login successful!");
         setTimeout(() => router.push("/shop"), 2000);
@@ -73,7 +80,7 @@ export default function LoginPage() {
             </p>
           </div>
 
-          {/* Login Form */}
+          {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="md:col-span-2">

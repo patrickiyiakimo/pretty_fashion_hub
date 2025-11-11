@@ -43,7 +43,7 @@ export default function CheckoutPage() {
 
       <div className="grid md:grid-cols-2 gap-12 max-w-6xl mx-auto">
         {/* Left: Cart Summary */}
-        <div className="bg-white/20 backdrop-blur-md rounded-3xl p-6 shadow-lg">
+        <div className="bg-white/20 backdrop-blur-md">
           <h2 className="text-2xl font-bold font-satisfy text-purple-600 mb-6">Order Summary</h2>
           {cart.map((item) => (
             <div
@@ -77,7 +77,7 @@ export default function CheckoutPage() {
         {/* Right: Checkout Form */}
         <form
           onSubmit={handleSubmit}
-          className="bg-white/20 backdrop-blur-md rounded-3xl p-8 shadow-lg flex flex-col gap-6"
+          className="bg-white/20 backdrop-blur-md flex flex-col gap-6"
         >
           <h2 className="text-2xl font-bold font-satisfy text-purple-600 text-center mb-4">
             Shipping Details

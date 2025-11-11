@@ -17,7 +17,6 @@ export default function SignUp() {
 
   const [loading, setLoading] = useState(false);
 
-  // ✅ Load API endpoint from environment variable
   const API_ENDPOINT = process.env.NEXT_PUBLIC_API_ENDPOINT;
 
   const handleChange = (e) => {
@@ -38,17 +37,15 @@ export default function SignUp() {
       const data = await res.json();
 
       if (res.ok) {
-        // Save token and user for auth-protected routes
+        // Save token + user for auth-protected routes
         if (data.accessToken) localStorage.setItem("token", data.accessToken);
         if (data.user) localStorage.setItem("user", JSON.stringify(data.user));
 
-        // ✅ Show success toast instead of redirect message
         toast.success("Signed up successfully");
 
-        // Redirect to partner dashboard (or homepage) after short delay
+        // Redirect after short delay
         setTimeout(() => router.push("/shop"), 2000);
       } else {
-        // show backend message if available
         toast.error(data.message || data.error || "Failed to register. Try again.");
       }
     } catch (error) {
@@ -61,9 +58,7 @@ export default function SignUp() {
 
   return (
     <section className="min-h-screen bg-white text-gray-900 py-40 px-3 md:px-12">
-      {/* ✅ React Hot Toast container */}
       <Toaster position="top-right" />
-
       <div className="max-w-4xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 18 }}

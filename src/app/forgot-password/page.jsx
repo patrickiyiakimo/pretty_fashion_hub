@@ -4,8 +4,8 @@ import toast, { Toaster } from "react-hot-toast";
 
 export default function ForgotPassword() {
 
-  // ✅ Load API endpoint from environment variable
-  const API_ENDPOINT = process.env.NEXT_PUBLIC_API_ENDPOINT;
+    // ✅ Use environment variable
+  const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
@@ -15,7 +15,7 @@ export default function ForgotPassword() {
     setLoading(true);
 
     try {
-      const res = await fetch(`${API_ENDPOINT}/api/auth/forgot-password`, {
+      const res = await fetch(`${API_URL}/api/auth/forgot-password`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email }),
@@ -55,7 +55,7 @@ export default function ForgotPassword() {
         <button
           type="submit"
           disabled={loading}
-          className="w-full bg-purple-500 text-white p-3 rounded-md hover:bg-purple-400 disabled:opacity-50"
+          className="w-full bg-yellow-500 text-white p-3 rounded-md hover:bg-yellow-600 disabled:opacity-50"
         >
           {loading ? "Sending..." : "Send Reset Link"}
         </button>
