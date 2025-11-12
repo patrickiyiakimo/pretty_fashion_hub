@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { Toaster, toast } from "react-hot-toast";
+import axios from "axios";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -14,7 +15,7 @@ export default function LoginPage() {
   });
   const [loading, setLoading] = useState(false);
 
-  const API_ENDPOINT = process.env.NEXT_PUBLIC_API_ENDPOINT;
+  const API_ENDPOINT = process.env.NEXT_PUBLIC_API_ENDPOINT || "http://localhost:4000";
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -27,33 +28,59 @@ export default function LoginPage() {
     try {
       console.log("🚀 Logging in with:", formData);
 
-      const res = await fetch(`${API_ENDPOINT}/api/auth/login`, {
-        method: "POST",
+      const response = await axios.post(`${API_ENDPOINT}/api/auth/login`, formData, {
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+        withCredentials: true // Important for cookies
       });
 
-      const data = await res.json();
+      const data = response.data;
       console.log("✅ Login response:", data);
 
-      if (res.ok) {
-        // Combine user and token together for CartContext compatibility
-        if (data.user && data.token) {
-          const userData = { ...data.user, token: data.token };
-          localStorage.setItem("user", JSON.stringify(userData));
-          console.log("💾 Saved user with token:", userData);
-        } else {
-          console.warn("⚠️ Missing user or token in response:", data);
-        }
+      if (response.status === 200) {
+        const { accessToken, refreshToken, user } = data;
 
-        toast.success("Login successful!");
-        setTimeout(() => router.push("/shop"), 2000);
+        if (accessToken && user) {
+          // ✅ Store tokens consistently in localStorage
+          localStorage.setItem("accessToken", accessToken);
+          if (refreshToken) {
+            localStorage.setItem("refreshToken", refreshToken);
+          }
+          localStorage.setItem("user", JSON.stringify(user));
+
+          console.log("💾 Saved user & tokens:", {
+            user,
+            accessToken,
+            refreshToken: refreshToken ? "stored" : "not provided",
+          });
+
+          toast.success("Login successful! Redirecting...");
+          
+          // Redirect after successful login
+          setTimeout(() => {
+            router.push("/shop");
+          }, 1000);
+        } else {
+          toast.error("Missing token or user data from server");
+        }
       } else {
         toast.error(data.message || data.error || "Invalid credentials, please try again.");
       }
     } catch (error) {
       console.error("❌ Login error:", error);
-      toast.error("An error occurred. Please try again later.");
+      
+      if (error.response) {
+        // Server responded with error status
+        const errorMessage = error.response.data?.message || 
+                           error.response.data?.error || 
+                           "Login failed. Please try again.";
+        toast.error(errorMessage);
+      } else if (error.request) {
+        // Request was made but no response received
+        toast.error("Network error. Please check your connection.");
+      } else {
+        // Other errors
+        toast.error("An unexpected error occurred. Please try again.");
+      }
     } finally {
       setLoading(false);
     }
@@ -122,7 +149,7 @@ export default function LoginPage() {
                 Forgot Password?
               </Link>
               <div className="text-sm text-gray-600">
-                Don’t have an account?{" "}
+                Don't have an account?{" "}
                 <Link href="/signup" className="text-purple-700 underline">
                   Sign Up
                 </Link>

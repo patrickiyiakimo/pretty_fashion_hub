@@ -5,6 +5,7 @@ import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
 import { CartProvider } from "../context/CartContext";
 import LiveNotifications from "@/components/LiveNotifications";
+import { AuthProvider } from "@/context/AuthContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -25,6 +26,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
+        <AuthProvider>
         <CartProvider>
           <Navbar />
           {children}
@@ -32,6 +34,7 @@ export default function RootLayout({ children }) {
           <Footer />
           <LiveNotifications />
         </CartProvider>
+        </AuthProvider>
       </body>
     </html>
   );

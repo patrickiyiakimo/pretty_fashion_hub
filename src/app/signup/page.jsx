@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Toaster, toast } from "react-hot-toast";
+import axios from "axios";
 
 export default function SignUp() {
   const router = useRouter();
@@ -17,7 +18,7 @@ export default function SignUp() {
 
   const [loading, setLoading] = useState(false);
 
-  const API_ENDPOINT = process.env.NEXT_PUBLIC_API_ENDPOINT;
+  const API_ENDPOINT = process.env.NEXT_PUBLIC_API_ENDPOINT || "http://localhost:4000";
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -28,29 +29,68 @@ export default function SignUp() {
     setLoading(true);
 
     try {
-      const res = await fetch(`${API_ENDPOINT}/api/auth/register`, {
-        method: "POST",
+      console.log("🚀 Creating account with:", form);
+
+      const response = await axios.post(`${API_ENDPOINT}/api/auth/register`, form, {
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
+        withCredentials: true // Important for cookies
       });
 
-      const data = await res.json();
+      const data = response.data;
+      console.log("✅ Signup response:", data);
 
-      if (res.ok) {
-        // Save token + user for auth-protected routes
-        if (data.accessToken) localStorage.setItem("token", data.accessToken);
-        if (data.user) localStorage.setItem("user", JSON.stringify(data.user));
+      if (response.status === 201) {
+        const { accessToken, refreshToken, user } = data;
 
-        toast.success("Signed up successfully");
+        if (accessToken && user) {
+          // ✅ Store all tokens consistently
+          localStorage.setItem("accessToken", accessToken);
+          if (refreshToken) {
+            localStorage.setItem("refreshToken", refreshToken);
+          }
+          localStorage.setItem("user", JSON.stringify(user));
 
-        // Redirect after short delay
-        setTimeout(() => router.push("/shop"), 2000);
+          console.log("💾 Saved user & tokens:", {
+            user,
+            accessToken,
+            refreshToken: refreshToken ? "stored" : "not provided",
+          });
+
+          toast.success("Account created successfully! Welcome to Kingz_World!");
+
+          // Redirect after successful signup
+          setTimeout(() => {
+            router.push("/shop");
+          }, 1500);
+        } else {
+          toast.error("Missing token or user data from server");
+        }
       } else {
-        toast.error(data.message || data.error || "Failed to register. Try again.");
+        toast.error(data.message || data.error || "Failed to register. Please try again.");
       }
     } catch (error) {
       console.error("❌ Signup error:", error);
-      toast.error("An error occurred. Please try again.");
+      
+      if (error.response) {
+        // Server responded with error status
+        const errorMessage = error.response.data?.message || 
+                           error.response.data?.error || 
+                           "Registration failed. Please try again.";
+        toast.error(errorMessage);
+        
+        // Specific handling for common errors
+        if (error.response.status === 400) {
+          if (error.response.data?.message?.includes("already registered")) {
+            toast.error("Email already registered. Please use a different email or login.");
+          }
+        }
+      } else if (error.request) {
+        // Request was made but no response received
+        toast.error("Network error. Please check your connection and try again.");
+      } else {
+        // Other errors
+        toast.error("An unexpected error occurred. Please try again.");
+      }
     } finally {
       setLoading(false);
     }
