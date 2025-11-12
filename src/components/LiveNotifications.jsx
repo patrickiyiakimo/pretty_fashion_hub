@@ -2,99 +2,163 @@
 
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { FaBell, FaBoxOpen, FaShoppingBag, FaTshirt, FaGift, FaTruck } from "react-icons/fa";
+import { 
+  HiShoppingBag, 
+  HiTruck, 
+  HiGift, 
+  HiSparkles, 
+  HiClock,
+  HiCheckCircle,
+  HiFire,
+  HiStar
+} from "react-icons/hi";
 
-const Bell = FaBell;
-const PackageCheck = FaBoxOpen;
-const ShoppingBag = FaShoppingBag;
-
-// ✅ 50 unique, professional, and localized notifications
+// Premium notification data with enhanced content
 const notifications = [
-  { id: 1, text: "Chika from Lagos just bought a Luxury Handbag 👜", icon: ShoppingBag },
-  { id: 2, text: "Order delivered to Abuja 🚚💨", icon: PackageCheck },
-  { id: 3, text: "Amaka from Enugu just placed an order for Heels 👠", icon: ShoppingBag },
-  { id: 4, text: "New arrivals just dropped! Don’t miss out 👗", icon: Bell },
-  { id: 5, text: "Delivery completed in Port Harcourt 🎉", icon: PackageCheck },
-  { id: 6, text: "Tunde from Ibadan ordered a pair of sneakers 👟", icon: ShoppingBag },
-  { id: 7, text: "Ada from Owerri just purchased a Silk Scarf 🧣", icon: ShoppingBag },
-  { id: 8, text: "Customer in Benin City received their order 📦", icon: PackageCheck },
-  { id: 9, text: "New Limited Edition Dress now available 👗✨", icon: Bell },
-  { id: 10, text: "Delivery completed in Kano State 🚛", icon: PackageCheck },
-  { id: 11, text: "Ngozi from Asaba just bought a Tote Bag 👜", icon: ShoppingBag },
-  { id: 12, text: "Premium wristwatches just restocked ⌚", icon: Bell },
-  { id: 13, text: "Efe from Warri received her shoe order 👠", icon: PackageCheck },
-  { id: 14, text: "Funmi from Lagos Island ordered a Denim Jacket 🧥", icon: ShoppingBag },
-  { id: 15, text: "New collection alert! Ankara gowns live now 💃", icon: Bell },
-  { id: 16, text: "Gift delivery completed in Ilorin 🎁", icon: PackageCheck },
-  { id: 17, text: "Sarah from Calabar ordered a pair of heels 👠", icon: ShoppingBag },
-  { id: 18, text: "Order delivered successfully in Uyo 🚚", icon: PackageCheck },
-  { id: 19, text: "David from Jos just bought a Polo Shirt 👕", icon: FaTshirt },
-  { id: 20, text: "Fresh arrivals for men just launched 🧍‍♂️", icon: Bell },
-  { id: 21, text: "Kemi from Abeokuta purchased a Designer Bag 👜", icon: ShoppingBag },
-  { id: 22, text: "Express delivery completed in Minna 🚛", icon: FaTruck },
-  { id: 23, text: "Uche from Onitsha ordered Classic Loafers 👞", icon: ShoppingBag },
-  { id: 24, text: "Vera from Owerri just received her Jewelry order 💍", icon: PackageCheck },
-  { id: 25, text: "🔥 Trending: Summer Collection now in store!", icon: Bell },
-  { id: 26, text: "New bag collection available in stock 👜", icon: ShoppingBag },
-  { id: 27, text: "Order completed in Ado-Ekiti successfully ✅", icon: PackageCheck },
-  { id: 28, text: "Blessing from Nsukka just ordered Sunglasses 🕶️", icon: ShoppingBag },
-  { id: 29, text: "Caleb from Lagos just grabbed a Hoodie 🧥", icon: ShoppingBag },
-  { id: 30, text: "Delivery confirmed in Yola 🚚💨", icon: PackageCheck },
-  { id: 31, text: "Customer from Akure ordered a Leather Purse 👛", icon: ShoppingBag },
-  { id: 32, text: "Fresh stock alert: African Prints now available 🪡", icon: Bell },
-  { id: 33, text: "Order delivered in Bauchi successfully 🎉", icon: PackageCheck },
-  { id: 34, text: "Lilian from Makurdi bought a Classic Wristwatch ⌚", icon: ShoppingBag },
-  { id: 35, text: "Delivery truck just left our warehouse 🚚", icon: FaTruck },
-  { id: 36, text: "Ope from Ibadan purchased a Handcrafted Shoe 👞", icon: ShoppingBag },
-  { id: 37, text: "Ruth from Lagos received her weekend dress 👗", icon: PackageCheck },
-  { id: 38, text: "Gift Box shipment arrived in Calabar 🎁", icon: FaGift },
-  { id: 39, text: "Exclusive offer: Buy 2 Get 1 Free 👚👗", icon: Bell },
-  { id: 40, text: "Femi from Abuja just bought a Smartwatch ⌚", icon: ShoppingBag },
-  { id: 41, text: "Shipment to Kano successfully delivered 📦", icon: PackageCheck },
-  { id: 42, text: "Patience from Enugu ordered a Leather Jacket 🧥", icon: ShoppingBag },
-  { id: 43, text: "Fresh stock: Designer heels restocked 👠", icon: Bell },
-  { id: 44, text: "Goods delivered to Owerri branch 🚛", icon: PackageCheck },
-  { id: 45, text: "Peace from Aba purchased a Maxi Gown 💃", icon: ShoppingBag },
-  { id: 46, text: "New bag design now trending across Nigeria 👜", icon: Bell },
-  { id: 47, text: "Customer from Lokoja confirmed package delivery 🎉", icon: PackageCheck },
-  { id: 48, text: "Moses from Benin City ordered a pair of slides 🩴", icon: ShoppingBag },
-  { id: 49, text: "Latest collection for 2025 just arrived ✨", icon: Bell },
-  { id: 50, text: "Order delivered to customer in Kaduna 🏆", icon: PackageCheck },
+  { id: 1, text: "Chika from Lagos just purchased a Luxury Handbag 👜", icon: HiShoppingBag, type: "purchase", location: "Lagos", time: "2 min ago" },
+  { id: 2, text: "Order successfully delivered to Abuja 🚚", icon: HiTruck, type: "delivery", location: "Abuja", time: "5 min ago" },
+  { id: 3, text: "Amaka from Enugu ordered Premium Heels 👠", icon: HiShoppingBag, type: "purchase", location: "Enugu", time: "8 min ago" },
+  { id: 4, text: "New Luxury Collection Just Dropped! ✨", icon: HiSparkles, type: "announcement", location: "Featured", time: "10 min ago" },
+  { id: 5, text: "Delivery completed in Port Harcourt 🎉", icon: HiCheckCircle, type: "delivery", location: "Port Harcourt", time: "12 min ago" },
+  { id: 6, text: "Tunde from Ibadan ordered Designer Sneakers 👟", icon: HiShoppingBag, type: "purchase", location: "Ibadan", time: "15 min ago" },
+  { id: 7, text: "Ada from Owerri purchased Silk Scarf Collection 🧣", icon: HiShoppingBag, type: "purchase", location: "Owerri", time: "18 min ago" },
+  { id: 8, text: "Customer in Benin City received premium package 📦", icon: HiTruck, type: "delivery", location: "Benin City", time: "20 min ago" },
+  { id: 9, text: "Limited Edition Dresses Now Available! 👗", icon: HiFire, type: "announcement", location: "Exclusive", time: "22 min ago" },
+  { id: 10, text: "Express delivery completed in Kano 🚛", icon: HiTruck, type: "delivery", location: "Kano", time: "25 min ago" },
+  { id: 11, text: "Ngozi from Asaba bought Designer Tote Bag 👜", icon: HiShoppingBag, type: "purchase", location: "Asaba", time: "28 min ago" },
+  { id: 12, text: "Premium Watch Collection Restocked ⌚", icon: HiSparkles, type: "restock", location: "Accessories", time: "30 min ago" },
+  { id: 13, text: "Efe from Warri received luxury shoe order 👠", icon: HiCheckCircle, type: "delivery", location: "Warri", time: "32 min ago" },
+  { id: 14, text: "Funmi from Lagos Island ordered Denim Jacket 🧥", icon: HiShoppingBag, type: "purchase", location: "Lagos Island", time: "35 min ago" },
+  { id: 15, text: "New Ankara Gown Collection Live! 💃", icon: HiFire, type: "announcement", location: "African Wear", time: "38 min ago" },
+  { id: 16, text: "Gift package delivered in Ilorin 🎁", icon: HiGift, type: "delivery", location: "Ilorin", time: "40 min ago" },
+  { id: 17, text: "Sarah from Calabar ordered Premium Heels 👠", icon: HiShoppingBag, type: "purchase", location: "Calabar", time: "42 min ago" },
+  { id: 18, text: "Order delivered successfully in Uyo 🚚", icon: HiTruck, type: "delivery", location: "Uyo", time: "45 min ago" },
+  { id: 19, text: "David from Jos purchased Luxury Polo Shirt 👕", icon: HiShoppingBag, type: "purchase", location: "Jos", time: "48 min ago" },
+  { id: 20, text: "Men's Premium Collection Just Launched 🧍‍♂️", icon: HiSparkles, type: "announcement", location: "Men's Wear", time: "50 min ago" },
 ];
 
 export default function LiveNotifications() {
   const [activeNotification, setActiveNotification] = useState(null);
+  const [notificationQueue, setNotificationQueue] = useState([]);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      const random = notifications[Math.floor(Math.random() * notifications.length)];
-      setActiveNotification(random);
-
-      // Hide after 4 seconds
-      setTimeout(() => setActiveNotification(null), 4000);
-    }, 7000);
+      if (notificationQueue.length === 0) {
+        const shuffled = [...notifications].sort(() => 0.5 - Math.random());
+        setNotificationQueue(shuffled.slice(0, 5));
+      }
+      
+      const nextNotification = notificationQueue[0];
+      if (nextNotification) {
+        setActiveNotification(nextNotification);
+        setNotificationQueue(prev => prev.slice(1));
+        
+        // Auto-remove after display duration
+        setTimeout(() => {
+          setActiveNotification(null);
+        }, 5000);
+      }
+    }, 6000);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [notificationQueue]);
+
+  const getNotificationStyle = (type) => {
+    switch (type) {
+      case "purchase":
+        return { border: "border-l-blue-500", bg: "bg-blue-50", icon: "text-blue-600" };
+      case "delivery":
+        return { border: "border-l-green-500", bg: "bg-green-50", icon: "text-green-600" };
+      case "announcement":
+        return { border: "border-l-purple-500", bg: "bg-purple-50", icon: "text-purple-600" };
+      case "restock":
+        return { border: "border-l-orange-500", bg: "bg-orange-50", icon: "text-orange-600" };
+      default:
+        return { border: "border-l-gray-500", bg: "bg-gray-50", icon: "text-gray-600" };
+    }
+  };
 
   return (
-    <div className="fixed bottom-6 left-4 sm:left-8 z-50">
-      <AnimatePresence>
+    <div className="fixed top-24 right-6 z-50">
+      <AnimatePresence mode="popLayout">
         {activeNotification && (
           <motion.div
             key={activeNotification.id}
-            initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 50 }}
-            transition={{ duration: 0.6, ease: "easeInOut" }}
-            className="flex items-center gap-3 bg-white dark:bg-gray-800 shadow-lg px-2 py-3 max-w-xs border border-gray-100 dark:border-gray-700"
+            initial={{ opacity: 0, x: 100, scale: 0.9 }}
+            animate={{ opacity: 1, x: 0, scale: 1 }}
+            exit={{ opacity: 0, x: 100, scale: 0.9 }}
+            transition={{ 
+              type: "spring", 
+              stiffness: 500, 
+              damping: 30 
+            }}
+            className={`relative mb-4 w-80 rounded-xl shadow-2xl border-l-4 ${
+              getNotificationStyle(activeNotification.type).border
+            } ${
+              getNotificationStyle(activeNotification.type).bg
+            } backdrop-blur-sm bg-white/95 border border-gray-200/50 overflow-hidden`}
           >
-            <div className="p-2 bg-yellow-100 dark:bg-yellow-600 rounded-full">
-              <activeNotification.icon className="w-5 h-5 text-yellow-600 dark:text-yellow-200" />
+            {/* Header with location and time */}
+            <div className="flex items-center justify-between px-4 pt-3 pb-2">
+              <div className="flex items-center gap-2">
+                <div className={`p-1.5 rounded-lg ${
+                  getNotificationStyle(activeNotification.type).bg
+                }`}>
+                  <activeNotification.icon className={`w-4 h-4 ${
+                    getNotificationStyle(activeNotification.type).icon
+                  }`} />
+                </div>
+                <span className="text-xs font-semibold text-gray-700 uppercase tracking-wide">
+                  {activeNotification.location}
+                </span>
+              </div>
+              <div className="flex items-center gap-1 text-gray-500">
+                <HiClock className="w-3 h-3" />
+                <span className="text-xs">{activeNotification.time}</span>
+              </div>
             </div>
-            <p className="text-sm text-gray-700 dark:text-gray-100 font-medium leading-tight">
-              {activeNotification.text}
-            </p>
+
+            {/* Notification content */}
+            <div className="px-4 pb-3">
+              <p className="text-sm text-gray-800 leading-relaxed font-medium">
+                {activeNotification.text}
+              </p>
+            </div>
+
+            {/* Progress bar */}
+            <motion.div
+              initial={{ scaleX: 1 }}
+              animate={{ scaleX: 0 }}
+              transition={{ duration: 5, ease: "linear" }}
+              className={`h-1 ${
+                getNotificationStyle(activeNotification.type).border.replace("border-l-", "bg-")
+              } origin-left`}
+            />
+
+            {/* Decorative corner */}
+            <div className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-bl from-white/20 to-transparent rounded-bl-3xl" />
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Notification indicator when no active notification */}
+      <AnimatePresence>
+        {!activeNotification && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0 }}
+            className="flex items-center gap-2 px-3 py-2 bg-white/90 backdrop-blur-sm rounded-lg shadow-lg border border-gray-200/50"
+          >
+            <div className="relative">
+              <HiSparkles className="w-4 h-4 text-purple-600" />
+              <motion.div
+                animate={{ scale: [1, 1.2, 1] }}
+                transition={{ duration: 2, repeat: Infinity }}
+                className="absolute inset-0 bg-purple-600/20 rounded-full"
+              />
+            </div>
+            <span className="text-xs font-medium text-gray-700">Live Activity</span>
           </motion.div>
         )}
       </AnimatePresence>

@@ -8,157 +8,276 @@ import Link from "next/link";
 const slides = [
   {
     id: 1,
-    title: (
-      <>
-        Redefine{" "}
-        <span className="bg-gradient-to-r from-yellow-400 to-yellow-200 bg-clip-text text-transparent">
-          Luxury Fashion
-        </span>
-      </>
-    ),
-    subtitle: (
-      <>
-        Discover timeless pieces and bold statements.{" "}
-        <span className="font-semibold">Kingz_World</span> blends heritage and
-        modern elegance to inspire confidence, class, and power.
-      </>
-    ),
-    image: "/images/shoe-1.webp",
+    title: "Elevate Your Style",
+    highlight: "Premium Collection",
+    description: "Discover curated fashion pieces that blend timeless elegance with contemporary trends. Experience luxury redefined.",
+    image: "/images/man-shoe-4.jpg",
+    cta: "Shop Now",
+    badge: "New Arrivals",
+    color: "from-blue-600/20 to-purple-600/20"
   },
   {
     id: 2,
-    title: (
-      <>
-        Build Your{" "}
-        <span className="bg-gradient-to-r from-yellow-400 to-yellow-200 bg-clip-text text-transparent">
-          Fashion Empire
-        </span>
-      </>
-    ),
-    subtitle: (
-      <>
-        Turn your creativity into income. Open a store on{" "}
-        <span className="font-semibold">Kingz_World Marketplace</span> and reach
-        thousands of fashion lovers across Nigeria, all from your dashboard.
-      </>
-    ),
-    image: "/images/shoe-2.jpg",
+    title: "Start Your Fashion Journey",
+    highlight: "Become a Seller",
+    description: "Join our marketplace and showcase your creations to thousands of style enthusiasts. Build your brand with us.",
+    image: "/images/man-shoe-2.jpg",
+    cta: "Start Selling",
+    badge: "Partner Program",
+    color: "from-emerald-600/20 to-cyan-600/20"
   },
   {
     id: 3,
-    title: (
-      <>
-        Nigeria’s Home of{" "}
-        <span className="bg-gradient-to-r from-yellow-400 to-yellow-200 bg-clip-text text-transparent">
-          Style & Culture
-        </span>
-      </>
-    ),
-    subtitle: (
-      <>
-        Celebrate local designers, global brands, and emerging talent in one
-        vibrant community.{" "}
-        <span className="font-semibold">Kingz_World</span> — where fashion meets
-        purpose.
-      </>
-    ),
-    image: "/images/shoe-3.jpg",
+    title: "Where Style Meets",
+    highlight: "Cultural Heritage",
+    description: "Celebrate African craftsmanship with modern luxury. Each piece tells a story of tradition and innovation.",
+    image: "/images/man-shoe-3.jpg",
+    cta: "Explore Collection",
+    badge: "Limited Edition",
+    color: "from-amber-600/20 to-orange-600/20"
   },
 ];
 
 export default function Hero() {
-  const [index, setIndex] = useState(0);
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [isAutoPlaying, setIsAutoPlaying] = useState(true);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setIndex((prev) => (prev + 1) % slides.length);
-    }, 7000);
-    return () => clearInterval(interval);
-  }, []);
+    if (!isAutoPlaying) return;
 
-  const slide = slides[index];
+    const interval = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % slides.length);
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, [isAutoPlaying]);
+
+  const goToSlide = (index) => {
+    setCurrentSlide(index);
+    setIsAutoPlaying(false);
+    setTimeout(() => setIsAutoPlaying(true), 10000);
+  };
+
+  const nextSlide = () => {
+    setCurrentSlide((prev) => (prev + 1) % slides.length);
+    setIsAutoPlaying(false);
+    setTimeout(() => setIsAutoPlaying(true), 10000);
+  };
+
+  const prevSlide = () => {
+    setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
+    setIsAutoPlaying(false);
+    setTimeout(() => setIsAutoPlaying(true), 10000);
+  };
+
+  const slide = slides[currentSlide];
 
   return (
-    <section
-      className="
-        relative 
-        flex items-center justify-center overflow-hidden text-white
-        h-[80vh] sm:h-[75vh] md:h-[70vh] lg:min-h-screen
-      "
-    >
-      {/* Background Image + Purple Overlay */}
+    <section className="relative h-screen min-h-[800px] overflow-hidden">
+      {/* Background Slides */}
       <AnimatePresence mode="wait">
         <motion.div
           key={slide.id}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0, backgroundColor: "#6B21A8" }} // purple fade transition
-          transition={{ duration: 1 }}
+          initial={{ opacity: 0, scale: 1.1 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 1.1 }}
+          transition={{ duration: 1.2, ease: [0.25, 0.46, 0.45, 0.94] }}
           className="absolute inset-0"
         >
-          {/* Slight zoom animation for depth */}
-          <motion.div
-            initial={{ scale: 1.05 }}
-            animate={{ scale: 1 }}
-            transition={{ duration: 7, ease: "easeOut" }}
-            className="absolute inset-0"
-          >
+          {/* Background Image */}
+          <div className="absolute inset-0">
             <Image
               src={slide.image}
-              alt="Luxury Fashion"
+              alt={slide.title}
               fill
               priority
-              className="object-cover object-center brightness-[45%] saturate-125"
+              className="object-cover object-center"
+              quality={100}
             />
-          </motion.div>
+          </div>
 
-          {/* Purple Gradient Overlay */}
-          <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-purple-900/40 to-black/80" />
+          {/* Gradient Overlay */}
+          <div className={`absolute inset-0 bg-gradient-to-r ${slide.color} via-black/40`} />
+          
+          {/* Additional Dark Overlay for Better Text Readability */}
+          <div className="absolute inset-0 bg-black/30" />
         </motion.div>
       </AnimatePresence>
 
-      {/* Content Section */}
-      <div className="relative z-10 text-center px-6 max-w-3xl">
-        <motion.h1
-          key={slide.id + '-title'}
-          initial={{ y: 40, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.8 }}
-          className="text-5xl md:text-6xl lg:text-7xl font-satisfy font-extrabold leading-tight mb-6"
-        >
-          {slide.title}
-        </motion.h1>
+      {/* Navigation Arrows */}
+      <button
+        onClick={prevSlide}
+        className="absolute left-6 top-1/2 -translate-y-1/2 z-20 w-12 h-12 bg-white/10 backdrop-blur-md rounded-full flex items-center justify-center hover:bg-white/20 transition-all duration-300 group"
+        aria-label="Previous slide"
+      >
+        <svg className="w-6 h-6 text-white group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+        </svg>
+      </button>
 
-        <motion.p
-          key={slide.id + '-text'}
-          initial={{ y: 40, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 1, delay: 0.2 }}
-          className="text-lg md:text-xl mb-10 font-oswald text-gray-200"
-        >
-          {slide.subtitle}
-        </motion.p>
+      <button
+        onClick={nextSlide}
+        className="absolute right-6 top-1/2 -translate-y-1/2 z-20 w-12 h-12 bg-white/10 backdrop-blur-md rounded-full flex items-center justify-center hover:bg-white/20 transition-all duration-300 group"
+        aria-label="Next slide"
+      >
+        <svg className="w-6 h-6 text-white group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+        </svg>
+      </button>
 
-        <motion.div
-          initial={{ scale: 0.8, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ duration: 0.6, delay: 0.4 }}
-          className="flex flex-col sm:flex-row gap-4 justify-center"
-        >
-          <Link href="/shop">
-            <button className="bg-yellow-400 text-purple-900 font-bold px-8 py-4 text-lg shadow-lg hover:bg-yellow-300 transition">
-              Shop Now
-            </button>
-          </Link>
-          <Link href="/partner">
-            <button className="bg-white/10 backdrop-blur-md text-white border border-yellow-300 font-semibold px-8 py-4 text-lg shadow-lg hover:bg-yellow-400 hover:text-purple-900 transition">
-              Start Selling
-            </button>
-          </Link>
-        </motion.div>
+      {/* Content Container */}
+      <div className="relative z-10 h-full flex items-center">
+        <div className="container mx-auto px-6 lg:px-8">
+          <div className="max-w-2xl">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={slide.id}
+                initial={{ opacity: 0, y: 60 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -60 }}
+                transition={{ duration: 0.8, ease: "easeOut" }}
+                className="space-y-6"
+              >
+                {/* Badge */}
+                <motion.div
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.2 }}
+                  className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md px-4 py-2 rounded-full border border-white/20"
+                >
+                  <div className="w-2 h-2 bg-yellow-400 rounded-full animate-pulse" />
+                  <span className="text-sm font-semibold text-white tracking-wide">
+                    {slide.badge}
+                  </span>
+                </motion.div>
+
+                {/* Title */}
+                <div className="space-y-4">
+                  <h1 className="text-5xl lg:text-7xl font-bold text-white leading-tight">
+                    {slide.title}
+                    <br />
+                    <span className="bg-gradient-to-r from-yellow-400 via-amber-300 to-yellow-400 bg-clip-text text-transparent">
+                      {slide.highlight}
+                    </span>
+                  </h1>
+                  
+                  {/* Description */}
+                  <motion.p
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.4 }}
+                    className="text-xl lg:text-2xl text-gray-200 leading-relaxed max-w-lg"
+                  >
+                    {slide.description}
+                  </motion.p>
+                </div>
+
+                {/* CTA Buttons */}
+                <motion.div
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.6 }}
+                  className="flex flex-col sm:flex-row gap-4 pt-4"
+                >
+                  <Link href={slide.cta === "Shop Now" ? "/shop" : "/partner"}>
+                    <button className="group relative bg-gradient-to-r from-yellow-400 to-amber-500 text-gray-900 font-bold px-8 py-4 rounded-lg text-lg shadow-2xl hover:shadow-yellow-500/25 transition-all duration-300 hover:scale-105 hover:from-yellow-300 hover:to-amber-400">
+                      <span className="relative z-10">{slide.cta}</span>
+                      <div className="absolute inset-0 bg-white/20 rounded-lg scale-0 group-hover:scale-100 transition-transform duration-300" />
+                    </button>
+                  </Link>
+                  
+                  {/* <Link href="/shop">
+                    <button className="group border-2 border-white/30 text-white font-semibold px-8 py-4 rounded-lg text-lg backdrop-blur-md hover:bg-white/10 hover:border-white/50 transition-all duration-300 hover:scale-105">
+                      <span className="relative z-10">Explore More</span>
+                    </button>
+                  </Link> */}
+                </motion.div>
+
+                {/* Additional Info */}
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.8 }}
+                  className="flex items-center gap-6 pt-8 text-sm text-gray-300"
+                >
+                  <div className="flex items-center gap-2">
+                    <svg className="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                    Free Shipping Nationwide
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <svg className="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                    Secure Payment
+                  </div>
+                </motion.div>
+              </motion.div>
+            </AnimatePresence>
+          </div>
+        </div>
       </div>
+
+      {/* Slide Indicators */}
+      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex items-center gap-3">
+        {slides.map((_, idx) => (
+          <button
+            key={idx}
+            onClick={() => goToSlide(idx)}
+            className={`w-3 h-3 rounded-full transition-all duration-300 ${
+              currentSlide === idx
+                ? 'bg-yellow-400 w-8'
+                : 'bg-white/50 hover:bg-white/80'
+            }`}
+            aria-label={`Go to slide ${idx + 1}`}
+          />
+        ))}
+      </div>
+
+      {/* Scroll Indicator */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1.5 }}
+        className="absolute bottom-8 right-8 z-20 hidden lg:block"
+      >
+        <div className="flex items-center gap-2 text-white/70 text-sm">
+          <span className="rotate-90 whitespace-nowrap">Scroll to explore</span>
+          <motion.div
+            animate={{ y: [0, 8, 0] }}
+            transition={{ duration: 2, repeat: Infinity }}
+            className="w-px h-8 bg-white/50"
+          />
+        </div>
+      </motion.div>
+
+      {/* Social Proof Bar */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 1 }}
+        className="absolute bottom-0 left-0 right-0 bg-black/20 backdrop-blur-md border-t border-white/10 py-4"
+      >
+        <div className="container mx-auto px-6">
+          <div className="flex items-center justify-between text-sm text-white/80">
+            <div className="flex items-center gap-8">
+              <div className="flex items-center gap-2">
+                <span className="text-2xl font-bold text-white">10K+</span>
+                <span>Happy Customers</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="text-2xl font-bold text-white">500+</span>
+                <span>Premium Brands</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="text-2xl font-bold text-white">24/7</span>
+                <span>Customer Support</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </motion.div>
     </section>
   );
 }
