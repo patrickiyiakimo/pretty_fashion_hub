@@ -1,741 +1,109 @@
-// "use client";
-
-// import { useEffect, useState } from "react";
-// import { motion } from "framer-motion";
-// import toast, { Toaster } from "react-hot-toast";
-
-// export default function PartnerPage() {
-//   const [formData, setFormData] = useState({
-//     businessName: "",
-//     email: "",
-//     phone: "",
-//     category: "",
-//     description: "",
-//     website: "",
-//   });
-
-//   const [submitted, setSubmitted] = useState(false);
-//   const [loading, setLoading] = useState(false);
-//   const [status, setStatus] = useState("");
-//   const [user, setUser] = useState(null);
-
-  
-//   // ✅ Load API endpoint from environment variable
-//   const API_ENDPOINT = process.env.NEXT_PUBLIC_API_ENDPOINT;
-
-
-//   // ✅ Load user from localStorage (after login)
-//   useEffect(() => {
-//     const savedUser = localStorage.getItem("user");
-//     const token = localStorage.getItem("token");
-
-//     if (!token || !savedUser) {
-//       toast.error("You must be signed in to apply for partnership.");
-//       window.location.href = "/login";
-//     } else {
-//       setUser(JSON.parse(savedUser));
-//     }
-//   }, []);
-
-//   const handleChange = (e) => {
-//     setFormData({ ...formData, [e.target.name]: e.target.value });
-//   };
-
-//   const handleSubmit = async (e) => {
-//     e.preventDefault();
-//     setLoading(true);
-
-//     const token = localStorage.getItem("token");
-//     if (!token) {
-//       toast.error("Token missing. Please log in again.");
-//       window.location.href = "/login";
-//       return;
-//     }
-
-//     try {
-//       const res = await fetch(`${API_ENDPOINT}/api/partners/apply`, {
-//         method: "POST",
-//         headers: {
-//           "Content-Type": "application/json",
-//           Authorization: `Bearer ${token}`,
-//         },
-//         body: JSON.stringify(formData),
-//       });
-
-//       const data = await res.json();
-
-//       if (res.status === 401 && data.error === "Token invalid or expired") {
-//         toast.error("Session expired. Please log in again.");
-//         localStorage.removeItem("token");
-//         localStorage.removeItem("user");
-//         window.location.href = "/login";
-//         return;
-//       }
-
-//       if (res.ok) {
-//         setSubmitted(true);
-//         setStatus(data.partner.status);
-//         toast.success("Application submitted successfully!");
-//       } else if (data?.error?.includes("already submitted")) {
-//         toast("You’ve already applied for partnership. Please wait for review.", {
-//           icon: "⏳",
-//         });
-//         setSubmitted(true);
-//         setStatus("pending");
-//       } else {
-//         toast.error(data.error || "Failed to submit application. Please try again.");
-//       }
-//     } catch (error) {
-//       console.error(error);
-//       toast.error("An error occurred while submitting your application.");
-//     } finally {
-//       setLoading(false);
-//     }
-//   };
-
-//   // ✅ Refresh partner status (for pending applications)
-//   const handleRefreshStatus = async () => {
-//     const token = localStorage.getItem("token");
-//     if (!token) {
-//       toast.error("Token missing. Please log in again.");
-//       window.location.href = "/login";
-//       return;
-//     }
-
-//     try {
-//       const res = await fetch(`${API_ENDPOINT}/api/partners`, {
-//         headers: { Authorization: `Bearer ${token}` },
-//       });
-
-//       const partners = await res.json();
-//       const myPartner = partners.find((p) => p.email === user.email);
-//       if (myPartner) {
-//         setStatus(myPartner.status);
-//         toast.success(`Status updated: ${myPartner.status}`);
-//       }
-//     } catch (error) {
-//       console.error(error);
-//       toast.error("Failed to refresh status.");
-//     }
-//   };
-
-//   // ✅ Submitted Message
-//   if (submitted) {
-//     return (
-//       <section className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-purple-50 via-white to-purple-100 px-3">
-//         <Toaster position="top-right" />
-//         <motion.div
-//           initial={{ opacity: 0, y: 30 }}
-//           animate={{ opacity: 1, y: 0 }}
-//           transition={{ duration: 0.6 }}
-//           className="bg-white border-l-4 border-purple-700 p-5 text-center max-w-xl shadow-xl"
-//         >
-//           <h2 className="text-3xl font-oswald text-purple-700 mb-4 uppercase tracking-wide">
-//             Application Received 💼
-//           </h2>
-//           {status === "pending" && (
-//             <>
-//               <p className="text-gray-700 text-lg">
-//                 Thank you for partnering with{" "}
-//                 <span className="text-purple-800 font-bold">Kingz_World</span>.
-//                 <br />
-//                 Your application is currently{" "}
-//                 <span className="text-yellow-600 font-semibold">pending review</span>.
-//               </p>
-//               <button
-//                 onClick={handleRefreshStatus}
-//                 className="mt-6 bg-purple-700 text-white px-6 py-3 rounded-lg shadow hover:bg-purple-800 transition"
-//               >
-//                 Refresh Status
-//               </button>
-//             </>
-//           )}
-//           {status === "approved" && (
-//             <p className="text-gray-700 text-lg">
-//               Congratulations 🎉! You’ve been{" "}
-//               <span className="text-green-600 font-semibold">approved</span> as a verified partner.
-//               You can now upload and manage your products on your{" "}
-//               <a href="/dashboard" className="text-purple-700 underline">
-//                 dashboard
-//               </a>.
-//             </p>
-//           )}
-//           {status === "rejected" && (
-//             <p className="text-red-600 text-lg">
-//               Unfortunately, your application was not approved. Please contact support for more information.
-//             </p>
-//           )}
-//         </motion.div>
-//       </section>
-//     );
-//   }
-
-//   return (
-//     <section className="min-h-screen bg-white text-gray-900 py-40 px-6 md:px-16">
-//       <Toaster position="top-right" />
-//       <div className="max-w-6xl mx-auto">
-//         <motion.div
-//           initial={{ opacity: 0, y: 30 }}
-//           animate={{ opacity: 1, y: 0 }}
-//           transition={{ duration: 0.6 }}
-//           className="text-center mb-20"
-//         >
-//           <h1 className="text-5xl md:text-6xl font-oswald font-bold text-purple-800 uppercase tracking-wide">
-//             Become a Kingz_World Partner
-//           </h1>
-//           <div className="w-24 h-1 bg-gradient-to-r from-purple-600 to-yellow-400 mx-auto mt-4 mb-6"></div>
-//           <p className="text-gray-600 text-lg max-w-3xl mx-auto leading-relaxed">
-//             Join our network of fashion innovators and entrepreneurs. Get verified, showcase your products, and reach customers across Nigeria.
-//           </p>
-//         </motion.div>
-
-//         <motion.form
-//           onSubmit={handleSubmit}
-//           initial={{ opacity: 0 }}
-//           animate={{ opacity: 1 }}
-//           transition={{ duration: 0.8 }}
-//           className="grid grid-cols-1 md:grid-cols-2 gap-10 border-purple-200 p-12 bg-gradient-to-br from-purple-50 via-white to-purple-100"
-//         >
-//           {[
-//             { name: "businessName", label: "Business Name", type: "text", placeholder: "Enter your brand name" },
-//             { name: "email", label: "Business Email", type: "email", placeholder: "youremail@business.com" },
-//             { name: "phone", label: "Phone Number", type: "text", placeholder: "+234..." },
-//             { name: "category", label: "Product Category", type: "text", placeholder: "e.g. Shoes, Bags, Accessories" },
-//           ].map(({ name, label, type, placeholder }) => (
-//             <div key={name}>
-//               <label className="block text-purple-700 font-semibold mb-2 uppercase text-sm">{label}</label>
-//               <input
-//                 type={type}
-//                 name={name}
-//                 value={formData[name]}
-//                 onChange={handleChange}
-//                 required
-//                 className="w-full border border-purple-300 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-purple-600 bg-white text-gray-800"
-//                 placeholder={placeholder}
-//               />
-//             </div>
-//           ))}
-
-//           {/* Description */}
-//           <div className="md:col-span-2">
-//             <label className="block text-purple-700 font-semibold mb-2 uppercase text-sm">
-//               Business Description
-//             </label>
-//             <textarea
-//               name="description"
-//               value={formData.description}
-//               onChange={handleChange}
-//               rows="5"
-//               required
-//               className="w-full border border-purple-300 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-purple-600 bg-white text-gray-800"
-//               placeholder="Tell us about your brand and what makes it stand out."
-//             ></textarea>
-//           </div>
-
-//           {/* Website */}
-//           <div className="md:col-span-2">
-//             <label className="block text-purple-700 font-semibold mb-2 uppercase text-sm">
-//               Website or Social Media Link
-//             </label>
-//             <input
-//               type="text"
-//               name="website"
-//               value={formData.website}
-//               onChange={handleChange}
-//               className="w-full border border-purple-300 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-purple-600 bg-white text-gray-800"
-//               placeholder="https://instagram.com/yourbrand"
-//             />
-//           </div>
-
-//           <div className="md:col-span-2 flex justify-center mt-8">
-//             <button
-//               type="submit"
-//               disabled={loading}
-//               className={`bg-gradient-to-r from-purple-700 to-purple-900 text-white font-bold tracking-wide uppercase px-16 py-4 shadow-md transition-all duration-300 ${
-//                 loading ? "opacity-70 cursor-not-allowed" : "hover:opacity-90"
-//               }`}
-//             >
-//               {loading ? "Submitting..." : "Submit Application"}
-//             </button>
-//           </div>
-//         </motion.form>
-//       </div>
-//     </section>
-//   );
-// }
-
-
-
-
-
-
-
-
-// "use client";
-
-// import { useEffect, useState, useRef } from "react";
-// import { motion } from "framer-motion";
-// import toast, { Toaster } from "react-hot-toast";
-// import Confetti from "react-confetti";
-
-// /**
-//  * PartnerPage
-//  *
-//  * Behavior:
-//  * - On mount, checks localStorage for user + token; if missing, redirect to /login.
-//  * - Fetches partner records and checks if current user's email exists:
-//  *    -> approved  => show congratulations + confetti
-//  *    -> pending   => show "Application Received" with Refresh Status
-//  *    -> rejected  => show rejected message
-//  *    -> none      => show the application form
-//  *
-//  * - On submit: posts to /api/partners/apply and handles server responses
-//  *
-//  * Environment: expects NEXT_PUBLIC_API_ENDPOINT (e.g. http://localhost:4000)
-//  */
-
-// const API_ENDPOINT = process.env.NEXT_PUBLIC_API_ENDPOINT || "";
-
-// export default function PartnerPage() {
-//   const [formData, setFormData] = useState({
-//     businessName: "",
-//     email: "",
-//     phone: "",
-//     category: "",
-//     description: "",
-//     website: "",
-//   });
-
-//   const [submitted, setSubmitted] = useState(false);
-//   const [loading, setLoading] = useState(false);
-//   const [status, setStatus] = useState(""); // pending | approved | rejected | ""
-//   const [user, setUser] = useState(null);
-//   const [checking, setChecking] = useState(true);
-//   const [error, setError] = useState("");
-//   const confettiRef = useRef(null);
-//   const [dimensions, setDimensions] = useState({ width: 300, height: 300 });
-
-//   // read user & token, redirect if missing
-//   useEffect(() => {
-//     const savedUser = localStorage.getItem("user");
-//     const token = localStorage.getItem("token");
-
-//     if (!token || !savedUser) {
-//       toast.error("You must be signed in to apply for partnership.");
-//       // small delay so user sees toast
-//       setTimeout(() => (window.location.href = "/login"), 700);
-//       return;
-//     }
-
-//     const parsedUser = JSON.parse(savedUser);
-//     setUser(parsedUser);
-//     // pre-fill email on form if available
-//     setFormData((prev) => ({ ...prev, email: parsedUser.email || prev.email }));
-
-//     // Wait until we set user then check partner status
-//     checkPartnerStatus(parsedUser);
-//     // eslint-disable-next-line react-hooks/exhaustive-deps
-//   }, []);
-
-//   useEffect(() => {
-//     // set confetti size to window size
-//     function handleResize() {
-//       setDimensions({ width: window.innerWidth, height: window.innerHeight });
-//     }
-//     handleResize();
-//     window.addEventListener("resize", handleResize);
-//     return () => window.removeEventListener("resize", handleResize);
-//   }, []);
-
-//   async function checkPartnerStatus(currentUser) {
-//     setChecking(true);
-//     setError("");
-//     try {
-//       const token = localStorage.getItem("token");
-//       const res = await fetch(`${API_ENDPOINT}/api/partners`, {
-//         headers: {
-//           Authorization: token ? `Bearer ${token}` : "",
-//         },
-//       });
-
-//       const ct = res.headers.get("content-type") || "";
-//       let payload = null;
-//       if (ct.includes("application/json")) {
-//         payload = await res.json();
-//       } else {
-//         // if server returned HTML or something else, warn and bail
-//         const text = await res.text();
-//         console.warn("Partners endpoint returned non-json:", text.slice(0, 300));
-//         throw new Error("Unexpected server response while checking partner status.");
-//       }
-
-//       // payload may be an array, or { partners: [...] }, or { success, partners }
-//       let list = [];
-//       if (Array.isArray(payload)) list = payload;
-//       else if (payload.partners && Array.isArray(payload.partners)) list = payload.partners;
-//       else if (payload.data && Array.isArray(payload.data)) list = payload.data;
-//       else {
-//         // try to extract the first array property
-//         const maybeArray = Object.values(payload).find((v) => Array.isArray(v));
-//         if (maybeArray) list = maybeArray;
-//       }
-
-//       // find partner by email (case-insensitive)
-//       const myPartner = list.find(
-//         (p) => p && (p.email || p.clientEmail || p.businessEmail) && (p.email || p.clientEmail || p.businessEmail).toLowerCase() === (currentUser.email || "").toLowerCase()
-//       );
-
-//       if (myPartner) {
-//         // normalize status strings
-//         const s = (myPartner.status || myPartner.state || myPartner.approval || "").toLowerCase();
-//         if (s.includes("approve")) {
-//           setStatus("approved");
-//           setSubmitted(true); // show congrats
-//         } else if (s.includes("pend")) {
-//           setStatus("pending");
-//           setSubmitted(true); // show "Application Received"
-//         } else if (s.includes("reject")) {
-//           setStatus("rejected");
-//           setSubmitted(true);
-//         } else {
-//           // unknown status text — treat as pending
-//           setStatus(myPartner.status || "pending");
-//           setSubmitted(true);
-//         }
-//       } else {
-//         // no partner found; show form
-//         setSubmitted(false);
-//         setStatus("");
-//       }
-//     } catch (err) {
-//       console.error("checkPartnerStatus error:", err);
-//       setError(err.message || "Failed to check partner status");
-//     } finally {
-//       setChecking(false);
-//     }
-//   }
-
-//   const handleChange = (e) => {
-//     setFormData((p) => ({ ...p, [e.target.name]: e.target.value }));
-//   };
-
-//   const handleSubmit = async (e) => {
-//     e.preventDefault();
-//     setLoading(true);
-//     setError("");
-
-//     const token = localStorage.getItem("token");
-//     if (!token) {
-//       toast.error("Token missing. Please log in again.");
-//       localStorage.removeItem("token");
-//       localStorage.removeItem("user");
-//       window.location.href = "/login";
-//       return;
-//     }
-
-//     try {
-//       const res = await fetch(`${API_ENDPOINT}/api/partners/apply`, {
-//         method: "POST",
-//         headers: {
-//           "Content-Type": "application/json",
-//           Authorization: `Bearer ${token}`,
-//         },
-//         body: JSON.stringify(formData),
-//       });
-
-//       const ct = res.headers.get("content-type") || "";
-//       let data = null;
-//       if (ct.includes("application/json")) data = await res.json();
-//       else {
-//         const text = await res.text();
-//         console.warn("Apply returned non-json:", text.slice(0, 300));
-//         throw new Error("Unexpected server response when applying.");
-//       }
-
-//       if (res.status === 401 && data.error && data.error.toLowerCase().includes("token")) {
-//         toast.error("Session expired. Please log in again.");
-//         localStorage.removeItem("token");
-//         localStorage.removeItem("user");
-//         window.location.href = "/login";
-//         return;
-//       }
-
-//       // server might return { success: true, partner } or { partner } or { error }
-//       if (res.ok) {
-//         const partnerObj = data.partner || data.data || data;
-//         // determine status
-//         const st = (partnerObj && (partnerObj.status || partnerObj.state)) || "pending";
-//         setStatus(st.toLowerCase());
-//         setSubmitted(true);
-
-//         toast.success("Application submitted successfully!");
-//       } else {
-//         // server responded 4xx/5xx
-//         if (data && data.error && typeof data.error === "string" && data.error.toLowerCase().includes("already")) {
-//           toast("You’ve already applied for partnership. Please wait for review.", { icon: "⏳" });
-//           setSubmitted(true);
-//           setStatus("pending");
-//         } else {
-//           const msg = (data && (data.error || JSON.stringify(data))) || "Failed to submit application";
-//           toast.error(msg);
-//           setError(msg);
-//         }
-//       }
-//     } catch (err) {
-//       console.error("handleSubmit error:", err);
-//       const msg = err.message || "An error occurred while submitting your application.";
-//       toast.error(msg);
-//       setError(msg);
-//     } finally {
-//       setLoading(false);
-//     }
-//   };
-
-//   // Refresh partner status (for pending applications)
-//   const handleRefreshStatus = async () => {
-//     if (!user) return;
-//     try {
-//       await checkPartnerStatus(user);
-//       toast.success("Status refreshed");
-//     } catch (err) {
-//       toast.error("Failed to refresh status");
-//     }
-//   };
-
-//   // UI: if still checking initial status, show loader
-//   if (checking) {
-//     return (
-//       <section className="min-h-screen flex items-center justify-center">
-//         <div className="text-center text-gray-600">Checking partner status...</div>
-//       </section>
-//     );
-//   }
-
-//   // Approved view — show confetti + congrats (no form)
-//   if (submitted && status === "approved") {
-//     return (
-//       <section className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-purple-50 via-white to-purple-100 px-3">
-//         <Toaster position="top-right" />
-//         <Confetti width={dimensions.width} height={dimensions.height} numberOfPieces={250} recycle={false} />
-//         <motion.div
-//           initial={{ opacity: 0, y: 30 }}
-//           animate={{ opacity: 1, y: 0 }}
-//           transition={{ duration: 0.6 }}
-//           className="bg-white border-l-4 border-green-600 p-6 text-center max-w-xl shadow-xl rounded"
-//         >
-//           <h2 className="text-3xl md:text-4xl font-oswald text-green-700 mb-4 uppercase tracking-wide">
-//             Congratulations 🎉
-//           </h2>
-//           <p className="text-gray-700 text-lg mb-4">
-//             You’ve been <span className="font-semibold text-green-600">approved</span> as a verified partner on{" "}
-//             <span className="text-purple-800 font-bold">Kingz_World</span>!
-//           </p>
-//           <p className="text-gray-600 mb-6">
-//             You can now upload and manage your products from your{" "}
-//             <a href="/dashboard" className="text-purple-700 underline">
-//               dashboard
-//             </a>.
-//           </p>
-//           <div className="flex justify-center gap-3">
-//             <a href="/dashboard" className="bg-purple-700 text-white px-6 py-3 rounded-lg shadow hover:bg-purple-800">Go to Dashboard</a>
-//             <button onClick={() => { setSubmitted(false); setStatus(""); }} className="bg-gray-100 px-4 py-3 rounded-lg">Sign out</button>
-//           </div>
-//         </motion.div>
-//       </section>
-//     );
-//   }
-
-//   // Submitted (pending / rejected) view
-//   if (submitted && status && status !== "approved") {
-//     return (
-//       <section className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-purple-50 via-white to-purple-100 px-3">
-//         <Toaster position="top-right" />
-//         <motion.div
-//           initial={{ opacity: 0, y: 30 }}
-//           animate={{ opacity: 1, y: 0 }}
-//           transition={{ duration: 0.6 }}
-//           className="bg-white border-l-4 border-purple-700 p-5 text-center max-w-xl shadow-xl rounded"
-//         >
-//           <h2 className="text-3xl font-oswald text-purple-700 mb-4 uppercase tracking-wide">
-//             Application Received 💼
-//           </h2>
-
-//           {status === "pending" && (
-//             <>
-//               <p className="text-gray-700 text-lg">
-//                 Thank you for partnering with <span className="text-purple-800 font-bold">Kingz_World</span>.
-//                 <br />
-//                 Your application is currently <span className="text-yellow-600 font-semibold">pending review</span>.
-//               </p>
-//               <button
-//                 onClick={handleRefreshStatus}
-//                 className="mt-6 bg-purple-700 text-white px-6 py-3 rounded-lg shadow hover:bg-purple-800 transition"
-//               >
-//                 Refresh Status
-//               </button>
-//             </>
-//           )}
-
-//           {status === "rejected" && (
-//             <>
-//               <p className="text-red-600 text-lg">
-//                 Unfortunately, your application was not approved. Please contact support for more information.
-//               </p>
-//               <div className="mt-6">
-//                 <a href="/support" className="text-purple-700 underline">Contact Support</a>
-//               </div>
-//             </>
-//           )}
-//         </motion.div>
-//       </section>
-//     );
-//   }
-
-//   // Default: show form
-//   return (
-//     <section className="min-h-screen bg-white text-gray-900 py-20 px-6 md:px-16">
-//       <Toaster position="top-right" />
-//       <div className="max-w-6xl mx-auto">
-//         <motion.div
-//           initial={{ opacity: 0, y: 30 }}
-//           animate={{ opacity: 1, y: 0 }}
-//           transition={{ duration: 0.6 }}
-//           className="text-center mb-12"
-//         >
-//           <h1 className="text-4xl md:text-5xl font-oswald font-bold text-purple-800 uppercase tracking-wide">
-//             Become a Kingz_World Partner
-//           </h1>
-//           <div className="w-20 h-1 bg-gradient-to-r from-purple-600 to-yellow-400 mx-auto mt-4 mb-6"></div>
-//           <p className="text-gray-600 text-lg max-w-3xl mx-auto leading-relaxed">
-//             Join our network of fashion innovators and entrepreneurs. Get verified, showcase your products, and reach customers across Nigeria.
-//           </p>
-//         </motion.div>
-
-//         <motion.form
-//           onSubmit={handleSubmit}
-//           initial={{ opacity: 0 }}
-//           animate={{ opacity: 1 }}
-//           transition={{ duration: 0.8 }}
-//           className="grid grid-cols-1 md:grid-cols-2 gap-8 border-purple-200 p-8 bg-gradient-to-br from-purple-50 via-white to-purple-100 rounded"
-//         >
-//           {[
-//             { name: "businessName", label: "Business Name", type: "text", placeholder: "Enter your brand name" },
-//             { name: "email", label: "Business Email", type: "email", placeholder: "youremail@business.com" },
-//             { name: "phone", label: "Phone Number", type: "text", placeholder: "+234..." },
-//             { name: "category", label: "Product Category", type: "text", placeholder: "e.g. Shoes, Bags, Accessories" },
-//           ].map(({ name, label, type, placeholder }) => (
-//             <div key={name}>
-//               <label className="block text-purple-700 font-semibold mb-2 uppercase text-sm">{label}</label>
-//               <input
-//                 type={type}
-//                 name={name}
-//                 value={formData[name] || ""}
-//                 onChange={handleChange}
-//                 required
-//                 className="w-full border border-purple-300 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-purple-600 bg-white text-gray-800 rounded"
-//                 placeholder={placeholder}
-//               />
-//             </div>
-//           ))}
-
-//           {/* Description */}
-//           <div className="md:col-span-2">
-//             <label className="block text-purple-700 font-semibold mb-2 uppercase text-sm">
-//               Business Description
-//             </label>
-//             <textarea
-//               name="description"
-//               value={formData.description || ""}
-//               onChange={handleChange}
-//               rows="5"
-//               required
-//               className="w-full border border-purple-300 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-purple-600 bg-white text-gray-800 rounded"
-//               placeholder="Tell us about your brand and what makes it stand out."
-//             ></textarea>
-//           </div>
-
-//           {/* Website */}
-//           <div className="md:col-span-2">
-//             <label className="block text-purple-700 font-semibold mb-2 uppercase text-sm">
-//               Website or Social Media Link
-//             </label>
-//             <input
-//               type="text"
-//               name="website"
-//               value={formData.website || ""}
-//               onChange={handleChange}
-//               className="w-full border border-purple-300 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-purple-600 bg-white text-gray-800 rounded"
-//               placeholder="https://instagram.com/yourbrand"
-//             />
-//           </div>
-
-//           <div className="md:col-span-2 flex justify-center mt-4">
-//             <button
-//               type="submit"
-//               disabled={loading}
-//               className={`bg-gradient-to-r from-purple-700 to-purple-900 text-white font-bold tracking-wide uppercase px-10 py-3 shadow-md transition-all duration-300 rounded ${
-//                 loading ? "opacity-70 cursor-not-allowed" : "hover:opacity-90"
-//               }`}
-//             >
-//               {loading ? "Submitting..." : "Submit Application"}
-//             </button>
-//           </div>
-
-//           {error && <div className="md:col-span-2 text-red-600 text-center">{error}</div>}
-//         </motion.form>
-//       </div>
-//     </section>
-//   );
-// }
-
-
-
-
-
-
 "use client";
 
 import { useEffect, useState, useRef } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
+import { 
+  HiBuildingStorefront, 
+  HiCheckCircle, 
+  HiClock, 
+  HiXCircle,
+  HiArrowPath,
+  HiEnvelope,
+  HiPhone,
+  HiGlobeAlt,
+  HiUserCircle,
+  HiMapPin,
+  HiIdentification,
+  HiBriefcase,
+  HiDocumentText,
+  HiBanknotes
+} from "react-icons/hi2";
 import toast, { Toaster } from "react-hot-toast";
 import Confetti from "react-confetti";
 
-const API_ENDPOINT = process.env.NEXT_PUBLIC_API_ENDPOINT || "";
+const API_ENDPOINT = process.env.NEXT_PUBLIC_API_ENDPOINT || "http://localhost:4000";
 
 export default function PartnerPage() {
   const [formData, setFormData] = useState({
+    // Business Information
     businessName: "",
+    businessType: "",
+    taxId: "",
+    yearsInBusiness: "",
+    
+    // Contact Information
     email: "",
     phone: "",
-    category: "",
+    
+    // Address Information
+    address: {
+      street: "",
+      city: "",
+      state: "",
+      country: "Nigeria",
+      postalCode: ""
+    },
+    
+    // Business Details
     description: "",
     website: "",
+    productCategories: [],
+    annualRevenue: "",
+    numberOfEmployees: "",
+    
+    // Legal & Compliance
+    businessRegistrationNumber: "",
+    hasPhysicalStore: false,
+    acceptTerms: false
   });
 
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [status, setStatus] = useState(""); // pending | approved | rejected | ""
+  const [status, setStatus] = useState("");
   const [user, setUser] = useState(null);
   const [checking, setChecking] = useState(true);
   const [error, setError] = useState("");
   const [dimensions, setDimensions] = useState({ width: 300, height: 300 });
+  const [partnerData, setPartnerData] = useState(null);
+  const [currentStep, setCurrentStep] = useState(1);
+
+  const formRef = useRef();
+
+  const productCategories = [
+    "Men's Fashion",
+    "Women's Fashion",
+    "Children's Clothing",
+    "Footwear",
+    "Accessories",
+    "Jewelry & Watches",
+    "Bags & Luggage",
+    "Beauty & Cosmetics",
+    "Sportswear",
+    "Traditional Attire",
+    "Luxury Items",
+    "Other"
+  ];
+
+  const businessTypes = [
+    "Retail Store",
+    "Online Store",
+    "Manufacturer",
+    "Wholesaler",
+    "Fashion Designer",
+    "Boutique",
+    "Distributor",
+    "Other"
+  ];
+
+  const nigerianStates = [
+    "Abia", "Adamawa", "Akwa Ibom", "Anambra", "Bauchi", "Bayelsa", "Benue", "Borno",
+    "Cross River", "Delta", "Ebonyi", "Edo", "Ekiti", "Enugu", "Gombe", "Imo", "Jigawa",
+    "Kaduna", "Kano", "Katsina", "Kebbi", "Kogi", "Kwara", "Lagos", "Nasarawa", "Niger",
+    "Ogun", "Ondo", "Osun", "Oyo", "Plateau", "Rivers", "Sokoto", "Taraba", "Yobe", "Zamfara"
+  ];
 
   useEffect(() => {
-    const savedUser = localStorage.getItem("user");
-    const token = localStorage.getItem("token");
-
-    if (!token || !savedUser) {
-      toast.error("You must be signed in to apply for partnership.");
-      setTimeout(() => (window.location.href = "/login"), 700);
-      return;
-    }
-
-    const parsedUser = JSON.parse(savedUser);
-    setUser(parsedUser);
-    setFormData((prev) => ({ ...prev, email: parsedUser.email || prev.email }));
-
-    checkPartnerStatus(parsedUser);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    checkAuthAndStatus();
   }, []);
 
   useEffect(() => {
@@ -747,133 +115,188 @@ export default function PartnerPage() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  async function checkPartnerStatus(currentUser) {
+  const checkAuthAndStatus = async () => {
+    const token = localStorage.getItem("accessToken");
+    const savedUser = localStorage.getItem("user");
+
+    if (!token || !savedUser) {
+      toast.error("Authentication required. Redirecting to login...");
+      setTimeout(() => window.location.href = "/login", 2000);
+      return;
+    }
+
+    try {
+      const parsedUser = JSON.parse(savedUser);
+      setUser(parsedUser);
+      setFormData(prev => ({ 
+        ...prev, 
+        email: parsedUser.email || prev.email 
+      }));
+
+      await checkPartnerStatus(parsedUser);
+    } catch (error) {
+      console.error("Auth check error:", error);
+      toast.error("Authentication failed");
+      setTimeout(() => window.location.href = "/login", 2000);
+    }
+  };
+
+  const checkPartnerStatus = async (currentUser) => {
     setChecking(true);
     setError("");
+    
     try {
-      const token = localStorage.getItem("token");
-      const res = await fetch(`${API_ENDPOINT}/api/partners`, {
+      const token = localStorage.getItem("accessToken");
+      
+      const response = await fetch(`${API_ENDPOINT}/api/partners/me`, {
+        method: "GET",
         headers: {
-          Authorization: token ? `Bearer ${token}` : "",
-        },
+          "Authorization": `Bearer ${token}`,
+          "Content-Type": "application/json"
+        }
       });
 
-      const ct = res.headers.get("content-type") || "";
-      let payload = null;
-      if (ct.includes("application/json")) {
-        payload = await res.json();
-      } else {
-        const text = await res.text();
-        console.warn("Partners endpoint returned non-json:", text.slice(0, 300));
-        throw new Error("Unexpected server response while checking partner status.");
+      // Handle 404 - endpoint doesn't exist, which means no application
+      if (response.status === 404) {
+        console.log("No partner application found (404)");
+        setSubmitted(false);
+        setStatus("");
+        setChecking(false);
+        return;
       }
 
-      let list = [];
-      if (Array.isArray(payload)) list = payload;
-      else if (payload.partners && Array.isArray(payload.partners)) list = payload.partners;
-      else if (payload.data && Array.isArray(payload.data)) list = payload.data;
-      else {
-        const maybeArray = Object.values(payload).find((v) => Array.isArray(v));
-        if (maybeArray) list = maybeArray;
+      if (response.status === 401) {
+        throw new Error("Authentication expired");
       }
 
-      const myPartner = list.find(
-        (p) => p && (p.email || p.clientEmail || p.businessEmail) && (p.email || p.clientEmail || p.businessEmail).toLowerCase() === (currentUser.email || "").toLowerCase()
-      );
-
-      if (myPartner) {
-        const s = (myPartner.status || myPartner.state || myPartner.approval || "").toLowerCase();
-        if (s.includes("approve")) {
-          setStatus("approved");
-          setSubmitted(true);
-        } else if (s.includes("pend")) {
-          setStatus("pending");
-          setSubmitted(true);
-        } else if (s.includes("reject")) {
-          setStatus("rejected");
-          setSubmitted(true);
-        } else {
-          setStatus(myPartner.status || "pending");
-          setSubmitted(true);
+      // Check if response is JSON
+      const contentType = response.headers.get('content-type');
+      if (!contentType || !contentType.includes('application/json')) {
+        const text = await response.text();
+        if (text.startsWith('<!DOCTYPE') || text.startsWith('<')) {
+          throw new Error("Server returned HTML page. Check API endpoint.");
         }
+        throw new Error(`Invalid response format: ${contentType}`);
+      }
+
+      const data = await response.json();
+
+      if (data.hasApplication && data.partner) {
+        setPartnerData(data.partner);
+        setStatus(data.partner.status);
+        setSubmitted(true);
       } else {
         setSubmitted(false);
         setStatus("");
       }
     } catch (err) {
-      console.error("checkPartnerStatus error:", err);
-      setError(err.message || "Failed to check partner status");
+      console.error("Status check error:", err);
+      if (err.message === "Authentication expired") {
+        toast.error("Session expired. Please login again.");
+        localStorage.clear();
+        setTimeout(() => window.location.href = "/login", 2000);
+      } else if (err.message.includes("HTML") || err.message.includes("Invalid response")) {
+        // Don't show error for 404, it's expected
+        if (!err.message.includes("404")) {
+          toast.error("Server configuration error. Please try again later.");
+        }
+      }
+      // For 404 and other errors, assume no application exists
+      setSubmitted(false);
+      setStatus("");
     } finally {
       setChecking(false);
     }
-  }
+  };
 
-  const handleChange = (e) => setFormData((p) => ({ ...p, [e.target.name]: e.target.value }));
+  const handleChange = (e) => {
+    const { name, value, type, checked } = e.target;
+    
+    if (name.startsWith('address.')) {
+      const addressField = name.split('.')[1];
+      setFormData(prev => ({
+        ...prev,
+        address: {
+          ...prev.address,
+          [addressField]: value
+        }
+      }));
+    } else if (type === 'checkbox' && name === 'productCategories') {
+      setFormData(prev => ({
+        ...prev,
+        productCategories: checked
+          ? [...prev.productCategories, value]
+          : prev.productCategories.filter(cat => cat !== value)
+      }));
+    } else {
+      setFormData(prev => ({ 
+        ...prev, 
+        [name]: type === 'checkbox' ? checked : value
+      }));
+    }
+  };
+
+  const nextStep = () => {
+    setCurrentStep(prev => Math.min(prev + 1, 4));
+  };
+
+  const prevStep = () => {
+    setCurrentStep(prev => Math.max(prev - 1, 1));
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError("");
 
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("accessToken");
     if (!token) {
-      toast.error("Token missing. Please log in again.");
-      localStorage.removeItem("token");
-      localStorage.removeItem("user");
-      window.location.href = "/login";
+      toast.error("Authentication required");
+      setTimeout(() => window.location.href = "/login", 2000);
+      return;
+    }
+
+    // Validate required fields
+    if (!formData.acceptTerms) {
+      toast.error("Please accept the terms and conditions");
+      setLoading(false);
       return;
     }
 
     try {
-      const res = await fetch(`${API_ENDPOINT}/api/partners/apply`, {
+      const response = await fetch(`${API_ENDPOINT}/api/partners/apply`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
+          "Authorization": `Bearer ${token}`
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(formData)
       });
 
-      const ct = res.headers.get("content-type") || "";
-      let data = null;
-      if (ct.includes("application/json")) data = await res.json();
-      else {
-        const text = await res.text();
-        console.warn("Apply returned non-json:", text.slice(0, 300));
-        throw new Error("Unexpected server response when applying.");
-      }
-
-      if (res.status === 401 && data.error && data.error.toLowerCase().includes("token")) {
-        toast.error("Session expired. Please log in again.");
-        localStorage.removeItem("token");
-        localStorage.removeItem("user");
-        window.location.href = "/login";
-        return;
-      }
-
-      if (res.ok) {
-        const partnerObj = data.partner || data.data || data;
-        const st = (partnerObj && (partnerObj.status || partnerObj.state)) || "pending";
-        setStatus(st.toLowerCase());
-        setSubmitted(true);
-
-        toast.success("Application submitted successfully!");
-      } else {
-        if (data && data.error && typeof data.error === "string" && data.error.toLowerCase().includes("already")) {
-          toast("You’ve already applied for partnership. Please wait for review.", { icon: "⏳" });
-          setSubmitted(true);
-          setStatus("pending");
-        } else {
-          const msg = (data && (data.error || JSON.stringify(data))) || "Failed to submit application";
-          toast.error(msg);
-          setError(msg);
+      // Check if response is JSON
+      const contentType = response.headers.get('content-type');
+      if (!contentType || !contentType.includes('application/json')) {
+        const text = await response.text();
+        if (text.startsWith('<!DOCTYPE') || text.startsWith('<')) {
+          throw new Error("Server error. Please try again later.");
         }
+        throw new Error(`Invalid response: ${response.status}`);
+      }
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setPartnerData(data.partner);
+        setStatus(data.partner.status);
+        setSubmitted(true);
+        toast.success("Application submitted successfully! 🎉");
+      } else {
+        throw new Error(data.error || "Failed to submit application");
       }
     } catch (err) {
-      console.error("handleSubmit error:", err);
-      const msg = err.message || "An error occurred while submitting your application.";
-      toast.error(msg);
-      setError(msg);
+      console.error("Submission error:", err);
+      toast.error(err.message);
+      setError(err.message);
     } finally {
       setLoading(false);
     }
@@ -881,178 +304,808 @@ export default function PartnerPage() {
 
   const handleRefreshStatus = async () => {
     if (!user) return;
+    setChecking(true);
     try {
       await checkPartnerStatus(user);
-      toast.success("Status refreshed");
+      toast.success("Status updated");
     } catch (err) {
       toast.error("Failed to refresh status");
+    } finally {
+      setChecking(false);
     }
   };
 
+  const getStatusConfig = (status) => {
+    const configs = {
+      pending: {
+        icon: HiClock,
+        color: "text-amber-500",
+        bgColor: "bg-amber-50",
+        borderColor: "border-amber-200",
+        label: "Under Review"
+      },
+      approved: {
+        icon: HiCheckCircle,
+        color: "text-emerald-500",
+        bgColor: "bg-emerald-50",
+        borderColor: "border-emerald-200",
+        label: "Approved"
+      },
+      rejected: {
+        icon: HiXCircle,
+        color: "text-red-500",
+        bgColor: "bg-red-50",
+        borderColor: "border-red-200",
+        label: "Not Approved"
+      }
+    };
+    return configs[status] || configs.pending;
+  };
+
+  const renderStep1 = () => (
+    <div className="space-y-6">
+      <div className="text-center mb-6">
+        <HiBuildingStorefront className="w-12 h-12 text-blue-600 mx-auto mb-4" />
+        <h3 className="text-2xl font-bold text-gray-900">Business Information</h3>
+        <p className="text-gray-600">Tell us about your business</p>
+      </div>
+
+      <div className="grid md:grid-cols-2 gap-6">
+        <div className="space-y-2">
+          <label className="block text-sm font-semibold text-gray-700">
+            Business Name *
+          </label>
+          <input
+            type="text"
+            name="businessName"
+            value={formData.businessName}
+            onChange={handleChange}
+            required
+            className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 bg-white"
+            placeholder="Your official business name"
+          />
+        </div>
+
+        <div className="space-y-2">
+          <label className="block text-sm font-semibold text-gray-700">
+            Business Type *
+          </label>
+          <select
+            name="businessType"
+            value={formData.businessType}
+            onChange={handleChange}
+            required
+            className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 bg-white"
+          >
+            <option value="">Select business type</option>
+            {businessTypes.map(type => (
+              <option key={type} value={type}>{type}</option>
+            ))}
+          </select>
+        </div>
+
+        <div className="space-y-2">
+          <label className="block text-sm font-semibold text-gray-700">
+            Tax Identification Number
+          </label>
+          <div className="relative">
+            <HiIdentification className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+            <input
+              type="text"
+              name="taxId"
+              value={formData.taxId}
+              onChange={handleChange}
+              className="w-full px-12 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 bg-white"
+              placeholder="TIN or equivalent"
+            />
+          </div>
+        </div>
+
+        <div className="space-y-2">
+          <label className="block text-sm font-semibold text-gray-700">
+            Years in Business *
+          </label>
+          <select
+            name="yearsInBusiness"
+            value={formData.yearsInBusiness}
+            onChange={handleChange}
+            required
+            className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 bg-white"
+          >
+            <option value="">Select years</option>
+            <option value="0-1">0-1 years</option>
+            <option value="1-3">1-3 years</option>
+            <option value="3-5">3-5 years</option>
+            <option value="5-10">5-10 years</option>
+            <option value="10+">10+ years</option>
+          </select>
+        </div>
+      </div>
+
+      <div className="space-y-2">
+        <label className="block text-sm font-semibold text-gray-700">
+          Business Registration Number *
+        </label>
+        <input
+          type="text"
+          name="businessRegistrationNumber"
+          value={formData.businessRegistrationNumber}
+          onChange={handleChange}
+          required
+          className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 bg-white"
+          placeholder="CAC registration number"
+        />
+      </div>
+    </div>
+  );
+
+  const renderStep2 = () => (
+    <div className="space-y-6">
+      <div className="text-center mb-6">
+        <HiMapPin className="w-12 h-12 text-green-600 mx-auto mb-4" />
+        <h3 className="text-2xl font-bold text-gray-900">Contact & Location</h3>
+        <p className="text-gray-600">Where can we reach you?</p>
+      </div>
+
+      <div className="grid md:grid-cols-2 gap-6">
+        <div className="space-y-2">
+          <label className="block text-sm font-semibold text-gray-700">
+            Business Email *
+          </label>
+          <div className="relative">
+            <HiEnvelope className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+            <input
+              type="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              required
+              className="w-full px-12 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 bg-white"
+              placeholder="business@example.com"
+            />
+          </div>
+        </div>
+
+        <div className="space-y-2">
+          <label className="block text-sm font-semibold text-gray-700">
+            Phone Number *
+          </label>
+          <div className="relative">
+            <HiPhone className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+            <input
+              type="tel"
+              name="phone"
+              value={formData.phone}
+              onChange={handleChange}
+              required
+              className="w-full px-12 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 bg-white"
+              placeholder="+234 XXX XXX XXXX"
+            />
+          </div>
+        </div>
+      </div>
+
+      <div className="grid md:grid-cols-2 gap-6">
+        <div className="space-y-2">
+          <label className="block text-sm font-semibold text-gray-700">
+            Street Address *
+          </label>
+          <input
+            type="text"
+            name="address.street"
+            value={formData.address.street}
+            onChange={handleChange}
+            required
+            className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 bg-white"
+            placeholder="123 Business Street"
+          />
+        </div>
+
+        <div className="space-y-2">
+          <label className="block text-sm font-semibold text-gray-700">
+            City *
+          </label>
+          <input
+            type="text"
+            name="address.city"
+            value={formData.address.city}
+            onChange={handleChange}
+            required
+            className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 bg-white"
+            placeholder="City"
+          />
+        </div>
+
+        <div className="space-y-2">
+          <label className="block text-sm font-semibold text-gray-700">
+            State *
+          </label>
+          <select
+            name="address.state"
+            value={formData.address.state}
+            onChange={handleChange}
+            required
+            className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 bg-white"
+          >
+            <option value="">Select state</option>
+            {nigerianStates.map(state => (
+              <option key={state} value={state}>{state}</option>
+            ))}
+          </select>
+        </div>
+
+        <div className="space-y-2">
+          <label className="block text-sm font-semibold text-gray-700">
+            Postal Code
+          </label>
+          <input
+            type="text"
+            name="address.postalCode"
+            value={formData.address.postalCode}
+            onChange={handleChange}
+            className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 bg-white"
+            placeholder="Postal code"
+          />
+        </div>
+      </div>
+    </div>
+  );
+
+  const renderStep3 = () => (
+    <div className="space-y-6">
+      <div className="text-center mb-6">
+        <HiBriefcase className="w-12 h-12 text-purple-600 mx-auto mb-4" />
+        <h3 className="text-2xl font-bold text-gray-900">Business Details</h3>
+        <p className="text-gray-600">Tell us more about your operations</p>
+      </div>
+
+      <div className="space-y-2">
+        <label className="block text-sm font-semibold text-gray-700">
+          Business Description *
+        </label>
+        <textarea
+          name="description"
+          value={formData.description}
+          onChange={handleChange}
+          rows={4}
+          required
+          className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 bg-white resize-none"
+          placeholder="Describe your business, products, target market, and unique selling points..."
+        />
+      </div>
+
+      <div className="space-y-2">
+        <label className="block text-sm font-semibold text-gray-700 mb-3">
+          Product Categories *
+        </label>
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+          {productCategories.map(category => (
+            <label key={category} className="flex items-center space-x-2 p-3 border border-gray-300 rounded-lg hover:bg-gray-50 cursor-pointer">
+              <input
+                type="checkbox"
+                name="productCategories"
+                value={category}
+                checked={formData.productCategories.includes(category)}
+                onChange={handleChange}
+                className="rounded text-blue-600 focus:ring-blue-500"
+              />
+              <span className="text-sm text-gray-700">{category}</span>
+            </label>
+          ))}
+        </div>
+      </div>
+
+      <div className="grid md:grid-cols-2 gap-6">
+        <div className="space-y-2">
+          <label className="block text-sm font-semibold text-gray-700">
+            Annual Revenue Range
+          </label>
+          <select
+            name="annualRevenue"
+            value={formData.annualRevenue}
+            onChange={handleChange}
+            className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 bg-white"
+          >
+            <option value="">Select revenue range</option>
+            <option value="0-1M">₦0 - ₦1 Million</option>
+            <option value="1M-5M">₦1M - ₦5 Million</option>
+            <option value="5M-10M">₦5M - ₦10 Million</option>
+            <option value="10M-50M">₦10M - ₦50 Million</option>
+            <option value="50M+">₦50M+</option>
+          </select>
+        </div>
+
+        <div className="space-y-2">
+          <label className="block text-sm font-semibold text-gray-700">
+            Number of Employees
+          </label>
+          <select
+            name="numberOfEmployees"
+            value={formData.numberOfEmployees}
+            onChange={handleChange}
+            className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 bg-white"
+          >
+            <option value="">Select employees</option>
+            <option value="1-5">1-5 employees</option>
+            <option value="6-10">6-10 employees</option>
+            <option value="11-50">11-50 employees</option>
+            <option value="51-100">51-100 employees</option>
+            <option value="100+">100+ employees</option>
+          </select>
+        </div>
+      </div>
+
+      <div className="space-y-2">
+        <label className="block text-sm font-semibold text-gray-700">
+          Website or Social Media
+        </label>
+        <div className="relative">
+          <HiGlobeAlt className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+          <input
+            type="url"
+            name="website"
+            value={formData.website}
+            onChange={handleChange}
+            className="w-full px-12 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 bg-white"
+            placeholder="https://yourwebsite.com or social media link"
+          />
+        </div>
+      </div>
+
+      <div className="flex items-center space-x-3 p-4 border border-gray-300 rounded-xl">
+        <input
+          type="checkbox"
+          name="hasPhysicalStore"
+          checked={formData.hasPhysicalStore}
+          onChange={handleChange}
+          className="rounded text-blue-600 focus:ring-blue-500"
+        />
+        <span className="text-sm text-gray-700">I have a physical store location</span>
+      </div>
+    </div>
+  );
+
+  const renderStep4 = () => (
+    <div className="space-y-6">
+      <div className="text-center mb-6">
+        <HiDocumentText className="w-12 h-12 text-orange-600 mx-auto mb-4" />
+        <h3 className="text-2xl font-bold text-gray-900">Review & Submit</h3>
+        <p className="text-gray-600">Review your information and accept terms</p>
+      </div>
+
+      <div className="bg-gray-50 rounded-2xl p-6 space-y-4">
+        <h4 className="font-semibold text-gray-900">Application Summary</h4>
+        
+        <div className="grid md:grid-cols-2 gap-4 text-sm">
+          <div>
+            <strong>Business Name:</strong> {formData.businessName}
+          </div>
+          <div>
+            <strong>Business Type:</strong> {formData.businessType}
+          </div>
+          <div>
+            <strong>Email:</strong> {formData.email}
+          </div>
+          <div>
+            <strong>Phone:</strong> {formData.phone}
+          </div>
+          <div>
+            <strong>Location:</strong> {formData.address.city}, {formData.address.state}
+          </div>
+          <div>
+            <strong>Years in Business:</strong> {formData.yearsInBusiness}
+          </div>
+        </div>
+
+        <div className="text-sm">
+          <strong>Product Categories:</strong> {formData.productCategories.join(', ')}
+        </div>
+      </div>
+
+      <div className="space-y-4">
+        <div className="flex items-start space-x-3 p-4 border border-gray-300 rounded-xl">
+          <input
+            type="checkbox"
+            name="acceptTerms"
+            checked={formData.acceptTerms}
+            onChange={handleChange}
+            required
+            className="rounded text-blue-600 focus:ring-blue-500 mt-1"
+          />
+          <div className="text-sm text-gray-700">
+            <strong>I agree to the Terms and Conditions</strong>
+            <p className="mt-1">
+              I confirm that all information provided is accurate and complete. 
+              I understand that Kingz World will review my application and may 
+              contact me for additional information. I agree to comply with all 
+              platform policies and requirements.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
   if (checking) {
     return (
-      <section className="min-h-screen flex items-center justify-center">
-        <div className="text-center text-gray-600 text-lg font-medium">Checking partner status...</div>
+      <section className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50 flex items-center justify-center">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="text-center"
+        >
+          <div className="w-16 h-16 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-gray-600 text-lg font-medium">Checking your application status...</p>
+        </motion.div>
       </section>
     );
   }
 
   if (submitted && status === "approved") {
     return (
-      <section className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-purple-50 via-white to-purple-100 px-4">
+      <section className="min-h-screen bg-gradient-to-br from-emerald-50 via-white to-green-50 flex items-center justify-center p-4">
         <Toaster position="top-right" />
-        <Confetti width={dimensions.width} height={dimensions.height} numberOfPieces={300} recycle={false} />
+        <Confetti 
+          width={dimensions.width} 
+          height={dimensions.height} 
+          numberOfPieces={400} 
+          recycle={false}
+          gravity={0.15}
+        />
+        
         <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7 }}
-          className="bg-white shadow-2xl max-w-lg w-full p-8 md:p-12 text-center border border-purple-200"
+          initial={{ opacity: 0, y: 40, scale: 0.9 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          transition={{ duration: 0.8, type: "spring" }}
+          className="max-w-2xl w-full"
         >
-          <h2 className="text-4xl md:text-5xl font-bold text-purple-800 mb-6 tracking-tight">🎉 Congratulations!</h2>
-          <p className="text-gray-700 text-lg md:text-xl mb-6 leading-relaxed">
-            Your application has been <span className="font-semibold text-green-600">approved</span> as a verified partner on <span className="text-purple-700 font-bold">Kingz_World</span>.
-          </p>
-          <p className="text-gray-600 mb-8">
-            You can now upload and manage your products from your dashboard.
-          </p>
-          <div className="flex flex-col md:flex-row justify-center gap-4">
-            <a
-              href="/dashboard"
-              className="bg-purple-700 text-white font-semibold px-6 py-3 shadow-lg hover:bg-purple-800 transition"
-            >
-              Go to Dashboard
-            </a>
-            <button
-              onClick={() => { setSubmitted(false); setStatus(""); localStorage.removeItem("user"); localStorage.removeItem("token"); window.location.href="/login"; }}
-              className="border border-purple-700 text-white bg-purple-700 font-semibold px-6 py-3 hover:bg-red-400 transition"
-            >
-              Sign Out
-            </button>
+          <div className="bg-white/80 my-24 backdrop-blur-lg rounded-3xl shadow-2xl border border-emerald-200 overflow-hidden">
+            <div className="bg-gradient-to-r from-emerald-600 to-green-600 p-8 text-center">
+              <motion.div
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                transition={{ delay: 0.3, type: "spring" }}
+                className="w-20 h-20 bg-white rounded-full flex items-center justify-center mx-auto mb-6"
+              >
+                <HiCheckCircle className="w-12 h-12 text-emerald-600" />
+              </motion.div>
+              <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
+                Welcome to Kingz World!
+              </h1>
+              <p className="text-emerald-100 text-xl">
+                Your partnership application has been approved
+              </p>
+            </div>
+
+            <div className="p-8 md:p-12">
+              <div className="text-center mb-8">
+                <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">
+                  Congratulations, {partnerData?.businessName}! 🎉
+                </h2>
+                <p className="text-gray-600 text-lg leading-relaxed">
+                  You are now an official partner of Kingz World. Start growing your business 
+                  with our premium platform and reach thousands of fashion enthusiasts.
+                </p>
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-6 mb-8">
+                <div className="bg-gray-50 rounded-2xl p-6 text-center">
+                  <HiBuildingStorefront className="w-12 h-12 text-blue-600 mx-auto mb-4" />
+                  <h3 className="font-semibold text-gray-900 mb-2">Business Dashboard</h3>
+                  <p className="text-gray-600 text-sm">Manage your products and track performance</p>
+                </div>
+                <div className="bg-gray-50 rounded-2xl p-6 text-center">
+                  <HiUserCircle className="w-12 h-12 text-purple-600 mx-auto mb-4" />
+                  <h3 className="font-semibold text-gray-900 mb-2">Partner Support</h3>
+                  <p className="text-gray-600 text-sm">Dedicated support for your business growth</p>
+                </div>
+              </div>
+
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <motion.a
+                  href="/dashboard"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="bg-gradient-to-r from-emerald-600 to-green-600 text-white font-semibold px-8 py-4 rounded-xl hover:shadow-lg transition-all duration-300 text-center"
+                >
+                  Go to Dashboard
+                </motion.a>
+                <motion.button
+                  onClick={() => {
+                    localStorage.clear();
+                    window.location.href = "/login";
+                  }}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="border-2 border-gray-300 text-gray-700 font-semibold px-8 py-4 rounded-xl hover:border-gray-400 transition-all duration-300"
+                >
+                  Sign Out
+                </motion.button>
+              </div>
+            </div>
           </div>
         </motion.div>
       </section>
     );
   }
 
-  if (submitted && status && status !== "approved") {
+  if (submitted && status) {
+    const statusConfig = getStatusConfig(status);
+    const StatusIcon = statusConfig.icon;
+
     return (
-      <section className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-purple-50 via-white to-purple-100 px-4">
+      <section className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50 flex items-center justify-center p-4">
         <Toaster position="top-right" />
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="bg-white rounded-2xl shadow-lg max-w-lg w-full p-8 text-center border border-purple-200"
+          className="max-w-lg w-full"
         >
-          <h2 className="text-3xl md:text-4xl font-bold text-purple-700 mb-4 tracking-wide">Application Status 💼</h2>
-          {status === "pending" && (
-            <>
-              <p className="text-gray-700 text-lg md:text-xl mb-6 leading-relaxed">
-                Thank you for partnering with <span className="text-purple-800 font-bold">Kingz_World</span>.<br />
-                Your application is currently <span className="text-yellow-600 font-semibold">pending review</span>.
+          <div className={`bg-white rounded-3xl shadow-xl border-2 ${statusConfig.borderColor} overflow-hidden`}>
+            <div className={`${statusConfig.bgColor} p-8 text-center`}>
+              <StatusIcon className={`w-16 h-16 ${statusConfig.color} mx-auto mb-4`} />
+              <h1 className="text-3xl font-bold text-gray-900 mb-2">
+                Application {statusConfig.label}
+              </h1>
+              <p className="text-gray-600">
+                {partnerData?.businessName}
               </p>
-              <button
-                onClick={handleRefreshStatus}
-                className="bg-purple-700 text-white font-semibold px-6 py-3 rounded-lg shadow hover:bg-purple-800 transition"
-              >
-                Refresh Status
-              </button>
-            </>
-          )}
-          {status === "rejected" && (
-            <>
-              <p className="text-red-600 text-lg md:text-xl mb-6 leading-relaxed">
-                Unfortunately, your application was not approved. Please contact support for more information.
-              </p>
-              <a href="/support" className="text-purple-700 font-semibold underline hover:text-purple-900 transition">Contact Support</a>
-            </>
-          )}
+            </div>
+
+            <div className="p-8">
+              {status === "pending" && (
+                <div className="text-center space-y-6">
+                  <div>
+                    <h3 className="text-xl font-semibold text-gray-900 mb-3">
+                      Thank You for Applying!
+                    </h3>
+                    <p className="text-gray-600 leading-relaxed">
+                      Your application is currently under review by our team. 
+                      We'll notify you via email once a decision has been made.
+                    </p>
+                  </div>
+                  
+                  <div className="bg-amber-50 rounded-2xl p-4 border border-amber-200">
+                    <p className="text-amber-800 text-sm">
+                      <strong>Estimated review time:</strong> 2-3 business days
+                    </p>
+                  </div>
+
+                  <motion.button
+                    onClick={handleRefreshStatus}
+                    disabled={checking}
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    className="bg-blue-600 text-white font-semibold px-6 py-3 rounded-xl hover:bg-blue-700 transition-all duration-300 disabled:opacity-50 flex items-center gap-2 mx-auto"
+                  >
+                    <HiArrowPath className={`w-5 h-5 ${checking ? 'animate-spin' : ''}`} />
+                    {checking ? "Checking..." : "Refresh Status"}
+                  </motion.button>
+                </div>
+              )}
+
+              {status === "rejected" && (
+                <div className="text-center space-y-6">
+                  <div>
+                    <h3 className="text-xl font-semibold text-gray-900 mb-3">
+                      Application Review Complete
+                    </h3>
+                    <p className="text-gray-600 leading-relaxed">
+                      After careful consideration, we're unable to approve your 
+                      application at this time. You may reapply after 30 days.
+                    </p>
+                  </div>
+
+                  <div className="bg-red-50 rounded-2xl p-4 border border-red-200">
+                    <p className="text-red-800 text-sm">
+                      For more information about this decision, please contact our partner support team.
+                    </p>
+                  </div>
+
+                  <div className="flex flex-col sm:flex-row gap-3 justify-center">
+                    <a 
+                      href="/contact" 
+                      className="bg-red-600 text-white font-semibold px-6 py-3 rounded-xl hover:bg-red-700 transition-all duration-300 text-center"
+                    >
+                      Contact Support
+                    </a>
+                    <button
+                      onClick={() => {
+                        setSubmitted(false);
+                        setStatus("");
+                        setPartnerData(null);
+                      }}
+                      className="border-2 border-gray-300 text-gray-700 font-semibold px-6 py-3 rounded-xl hover:border-gray-400 transition-all duration-300"
+                    >
+                      Apply Again
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
         </motion.div>
       </section>
     );
   }
 
   return (
-    <section className="min-h-screen bg-white text-gray-900 py-16 px-4 md:px-16">
+    <section className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50 py-12 px-4 sm:px-6 lg:px-8">
       <Toaster position="top-right" />
-      <div className="max-w-6xl mx-auto">
+      
+      <div className="max-w-4xl mx-auto">
+        {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-12 px-2"
+          className="text-center mb-16"
         >
-          <h1 className="text-4xl md:text-5xl font-bold font-oswald text-purple-800 uppercase tracking-wide">Become a Kingz_World Partner</h1>
-          <div className="w-24 h-1 bg-gradient-to-r from-purple-600 to-yellow-400 mx-auto mt-4 mb-6 rounded"></div>
-          <p className="text-gray-600 text-lg md:text-xl max-w-3xl mx-auto leading-relaxed">
-            Join our network of fashion innovators and entrepreneurs. Get verified, showcase your products, and reach customers across Nigeria.
+          <div className="inline-flex items-center gap-3 bg-white/80 backdrop-blur-sm rounded-2xl px-6 py-3 border border-gray-200 shadow-sm mb-8">
+            <HiBuildingStorefront className="w-6 h-6 text-blue-600" />
+            <span className="text-sm font-semibold text-blue-700 uppercase tracking-wide">
+              Partner Program
+            </span>
+          </div>
+          
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-6">
+            Join the{" "}
+            <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-blue-800 bg-clip-text text-transparent">
+              Kingz World
+            </span>
+            <br />
+            Partner Network
+          </h1>
+          
+          <p className="text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
+            Grow your fashion business with Nigeria's premier luxury marketplace. 
+            Get verified, showcase your brand, and reach discerning customers nationwide.
           </p>
         </motion.div>
 
-        <motion.form
-          onSubmit={handleSubmit}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.8 }}
-          className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 bg-gradient-to-br from-purple-50 via-white to-purple-100 p-8 rounded-2xl border border-purple-200 shadow-lg"
+        {/* Application Form */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.2 }}
+          className="bg-white/80 backdrop-blur-lg rounded-3xl shadow-2xl border border-gray-200/50 overflow-hidden"
+        >
+          <div className="bg-gradient-to-r from-gray-900 to-gray-800 px-8 py-6">
+            <h2 className="text-2xl font-bold text-white">Partnership Application</h2>
+            <p className="text-gray-300">Complete all steps to join our network</p>
+          </div>
+
+          {/* Progress Steps */}
+          <div className="bg-white border-b border-gray-200 p-6">
+            <div className="flex items-center justify-between max-w-2xl mx-auto">
+              {[1, 2, 3, 4].map((step) => (
+                <div key={step} className="flex items-center">
+                  <div className={`w-10 h-10 rounded-full flex items-center justify-center border-2 ${
+                    currentStep >= step 
+                      ? 'bg-blue-600 border-blue-600 text-white' 
+                      : 'border-gray-300 text-gray-500'
+                  } font-semibold`}>
+                    {step}
+                  </div>
+                  {step < 4 && (
+                    <div className={`w-16 h-1 mx-2 ${
+                      currentStep > step ? 'bg-blue-600' : 'bg-gray-300'
+                    }`} />
+                  )}
+                </div>
+              ))}
+            </div>
+            <div className="flex justify-between max-w-2xl mx-auto mt-2 text-sm text-gray-600">
+              <span>Business</span>
+              <span>Contact</span>
+              <span>Details</span>
+              <span>Review</span>
+            </div>
+          </div>
+
+          <form ref={formRef} onSubmit={handleSubmit} className="p-8">
+            {currentStep === 1 && renderStep1()}
+            {currentStep === 2 && renderStep2()}
+            {currentStep === 3 && renderStep3()}
+            {currentStep === 4 && renderStep4()}
+
+            {/* Navigation Buttons */}
+            <div className="flex justify-between mt-8">
+              <motion.button
+                type="button"
+                onClick={prevStep}
+                disabled={currentStep === 1}
+                whileHover={{ scale: currentStep === 1 ? 1 : 1.02 }}
+                whileTap={{ scale: currentStep === 1 ? 1 : 0.98 }}
+                className={`px-6 py-3 rounded-xl font-semibold transition-all duration-300 ${
+                  currentStep === 1 
+                    ? 'bg-gray-100 text-gray-400 cursor-not-allowed' 
+                    : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                }`}
+              >
+                Previous
+              </motion.button>
+
+              {currentStep < 4 ? (
+                <motion.button
+                  type="button"
+                  onClick={nextStep}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="bg-blue-600 text-white font-semibold px-6 py-3 rounded-xl hover:bg-blue-700 transition-all duration-300"
+                >
+                  Next Step
+                </motion.button>
+              ) : (
+                <motion.button
+                  type="submit"
+                  disabled={loading || !formData.acceptTerms}
+                  whileHover={{ scale: loading ? 1 : 1.02 }}
+                  whileTap={{ scale: loading ? 1 : 0.98 }}
+                  className={`bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold px-8 py-3 rounded-xl shadow-lg transition-all duration-300 ${
+                    loading || !formData.acceptTerms ? 'opacity-70 cursor-not-allowed' : 'hover:shadow-xl'
+                  }`}
+                >
+                  {loading ? (
+                    <div className="flex items-center gap-3">
+                      <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                      Submitting Application...
+                    </div>
+                  ) : (
+                    "Submit Application"
+                  )}
+                </motion.button>
+              )}
+            </div>
+
+            {error && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="mt-6 p-4 bg-red-50 border border-red-200 rounded-xl text-red-700 text-center"
+              >
+                {error}
+              </motion.div>
+            )}
+          </form>
+        </motion.div>
+
+        {/* Benefits Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.4 }}
+          className="grid md:grid-cols-3 gap-6 mt-12"
         >
           {[
-            { name: "businessName", label: "Business Name", type: "text", placeholder: "Enter your brand name" },
-            { name: "email", label: "Business Email", type: "email", placeholder: "youremail@business.com" },
-            { name: "phone", label: "Phone Number", type: "text", placeholder: "+234..." },
-            { name: "category", label: "Product Category", type: "text", placeholder: "e.g. Shoes, Bags, Accessories" },
-          ].map(({ name, label, type, placeholder }) => (
-            <div key={name}>
-              <label className="block text-purple-700 font-semibold mb-2 uppercase text-sm">{label}</label>
-              <input
-                type={type}
-                name={name}
-                value={formData[name] || ""}
-                onChange={handleChange}
-                required
-                className="w-full border border-purple-300 px-4 py-3 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-600 bg-white text-gray-800"
-                placeholder={placeholder}
-              />
-            </div>
-          ))}
-
-          <div className="md:col-span-2">
-            <label className="block text-purple-700 font-semibold mb-2 uppercase text-sm">Business Description</label>
-            <textarea
-              name="description"
-              value={formData.description || ""}
-              onChange={handleChange}
-              rows="5"
-              required
-              className="w-full border border-purple-300 px-4 py-3 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-600 bg-white text-gray-800"
-              placeholder="Tell us about your brand and what makes it stand out."
-            ></textarea>
-          </div>
-
-          <div className="md:col-span-2">
-            <label className="block text-purple-700 font-semibold mb-2 uppercase text-sm">Website or Social Media Link</label>
-            <input
-              type="text"
-              name="website"
-              value={formData.website || ""}
-              onChange={handleChange}
-              className="w-full border border-purple-300 px-4 py-3 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-600 bg-white text-gray-800"
-              placeholder="https://instagram.com/yourbrand"
-            />
-          </div>
-
-          <div className="md:col-span-2 flex justify-center mt-4">
-            <button
-              type="submit"
-              disabled={loading}
-              className={`bg-gradient-to-r from-purple-700 to-purple-900 text-white font-bold tracking-wide uppercase px-10 py-3 shadow-md rounded-lg transition-all duration-300 ${loading ? "opacity-70 cursor-not-allowed" : "hover:opacity-90"}`}
+            {
+              icon: HiUserCircle,
+              title: "Verified Badge",
+              description: "Gain customer trust with official verification"
+            },
+            {
+              icon: HiBuildingStorefront,
+              title: "Business Dashboard",
+              description: "Manage inventory, orders, and analytics"
+            },
+            {
+              icon: HiBanknotes,
+              title: "Increased Sales",
+              description: "Access premium customers across Nigeria"
+            }
+          ].map((benefit, index) => (
+            <motion.div
+              key={index}
+              whileHover={{ y: -5 }}
+              className="bg-white/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-200 text-center"
             >
-              {loading ? "Submitting..." : "Submit Application"}
-            </button>
-          </div>
-
-          {error && <div className="md:col-span-2 text-red-600 text-center mt-2">{error}</div>}
-        </motion.form>
+              <benefit.icon className="w-12 h-12 text-blue-600 mx-auto mb-4" />
+              <h3 className="font-semibold text-gray-900 mb-2">{benefit.title}</h3>
+              <p className="text-gray-600 text-sm">{benefit.description}</p>
+            </motion.div>
+          ))}
+        </motion.div>
       </div>
     </section>
   );

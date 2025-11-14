@@ -125,7 +125,7 @@ export function CartProvider({ children }) {
         console.log("✅ Cart fetched successfully:", response.data);
         setCart(response.data || []);
       } catch (error) {
-        console.error("❌ Error fetching cart:", error.response?.data || error.message);
+        console.log("❌ Error fetching cart:", error.response?.data || error.message);
         
         if (error.response?.status === 401) {
           toast.error("Please log in to view your cart");

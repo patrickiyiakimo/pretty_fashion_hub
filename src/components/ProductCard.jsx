@@ -5,27 +5,17 @@ import Link from "next/link";
 import { useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
-/**
- * Premium ProductCard - Professional E-commerce Design
- * Features:
- * - Smooth micro-interactions
- * - Professional color scheme
- * - Advanced product states
- * - Elegant animations
- * - Responsive design
- */
-
 export default function ProductCard({ product, onAddToCart }) {
   const [added, setAdded] = useState(false);
   const [hovered, setHovered] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
+  const [imageError, setImageError] = useState(false);
   const imageWrapperRef = useRef(null);
 
   const handleAddToCart = (e) => {
     e.preventDefault();
     e.stopPropagation();
-    const rect = imageWrapperRef.current?.getBoundingClientRect();
-    onAddToCart?.(product, rect);
+    onAddToCart?.(product);
     setAdded(true);
     setTimeout(() => setAdded(false), 2000);
   };
@@ -35,9 +25,27 @@ export default function ProductCard({ product, onAddToCart }) {
   const reviews = product.reviews ?? 24;
   const vendor = product.vendorName ?? "Premium Partner";
   const inStock = product.inStock !== false;
+  const isVerifiedPartner = product.isVerifiedPartner ?? true;
   const discount = product.compareAtPrice 
     ? Math.round(((product.compareAtPrice - product.price) / product.compareAtPrice) * 100)
     : null;
+
+  // Fix image URL - handle both absolute and relative paths
+  const getImageUrl = (imagePath) => {
+    if (!imagePath) return '/images/placeholder-product.jpg';
+    
+    // If it's already a full URL, return as is
+    if (imagePath.startsWith('http')) return imagePath;
+    
+    // If it's a relative path starting with /uploads, make it absolute
+    if (imagePath.startsWith('/uploads')) {
+      return `http://localhost:4000${imagePath}`;
+    }
+    
+    return imagePath;
+  };
+
+  const imageUrl = getImageUrl(product.image);
 
   const formatCurrency = (value) =>
     new Intl.NumberFormat("en-NG", {
@@ -63,6 +71,43 @@ export default function ProductCard({ product, onAddToCart }) {
     ));
   };
 
+  // Fallback image component
+  const renderImage = () => {
+    if (imageError) {
+      return (
+        <div className="absolute inset-0 bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center">
+          <div className="text-center text-gray-400">
+            <svg className="w-16 h-16 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            </svg>
+            <p className="text-sm font-medium">Product Image</p>
+          </div>
+        </div>
+      );
+    }
+
+    return (
+      <>
+        <Image
+          src={imageUrl}
+          alt={product.name}
+          fill
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          className={`object-cover transition-opacity duration-500 ${
+            imageLoaded ? 'opacity-100' : 'opacity-0'
+          }`}
+          onLoad={() => setImageLoaded(true)}
+          onError={() => setImageError(true)}
+          priority={false}
+          unoptimized={true} // Bypass Next.js image optimization
+        />
+        {!imageLoaded && !imageError && (
+          <div className="absolute inset-0 bg-gradient-to-r from-gray-200 via-gray-100 to-gray-200 animate-pulse" />
+        )}
+      </>
+    );
+  };
+
   return (
     <motion.article
       initial={{ opacity: 0, y: 20 }}
@@ -83,22 +128,7 @@ export default function ProductCard({ product, onAddToCart }) {
             ref={imageWrapperRef} 
             className="absolute inset-0 transform group-hover:scale-105 transition-transform duration-700"
           >
-            <Image
-              src={product.image}
-              alt={product.name}
-              fill
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-              className={`object-cover transition-opacity duration-500 ${
-                imageLoaded ? 'opacity-100' : 'opacity-0'
-              }`}
-              onLoad={() => setImageLoaded(true)}
-              priority={false}
-            />
-            
-            {/* Loading Skeleton */}
-            {!imageLoaded && (
-              <div className="absolute inset-0 bg-gradient-to-r from-gray-200 via-gray-100 to-gray-200 animate-pulse" />
-            )}
+            {renderImage()}
           </div>
 
           {/* Discount Badge */}
@@ -121,11 +151,34 @@ export default function ProductCard({ product, onAddToCart }) {
             </span>
           </div>
 
-          {/* Vendor Badge */}
-          <div className="absolute bottom-4 left-4 z-20">
-            <span className="bg-black/80 text-white px-3 py-1 text-xs font-medium rounded-full backdrop-blur-sm">
+          {/* Vendor Badge with Verification */}
+          <div className="absolute bottom-4 left-4 z-20 flex flex-col gap-2">
+            <span className="bg-black/80 text-white px-3 py-1 text-xs font-medium rounded-full backdrop-blur-sm flex items-center gap-1 max-w-fit">
               {vendor}
+              {isVerifiedPartner && (
+                <svg 
+                  className="w-3 h-3 text-blue-400 flex-shrink-0" 
+                  fill="currentColor" 
+                  viewBox="0 0 20 20"
+                  title="Verified Partner"
+                >
+                  <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                </svg>
+              )}
             </span>
+            
+            {isVerifiedPartner && (
+              <span className="bg-blue-500 text-white px-2 py-1 text-xs font-semibold rounded-full backdrop-blur-sm flex items-center gap-1 max-w-fit shadow-lg">
+                <svg 
+                  className="w-3 h-3 text-white" 
+                  fill="currentColor" 
+                  viewBox="0 0 20 20"
+                >
+                  <path fillRule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                </svg>
+                Verified Partner
+              </span>
+            )}
           </div>
 
           {/* Hover Overlay with Actions */}
@@ -138,7 +191,6 @@ export default function ProductCard({ product, onAddToCart }) {
                 className="absolute inset-0 bg-black/40 backdrop-blur-[1px] flex items-center justify-center"
               >
                 <div className="flex gap-3 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
-                  {/* Quick View */}
                   <motion.button
                     initial={{ scale: 0.8, opacity: 0 }}
                     animate={{ scale: 1, opacity: 1 }}
@@ -158,7 +210,6 @@ export default function ProductCard({ product, onAddToCart }) {
                     </svg>
                   </motion.button>
 
-                  {/* Wishlist */}
                   <motion.button
                     initial={{ scale: 0.8, opacity: 0 }}
                     animate={{ scale: 1, opacity: 1 }}
@@ -184,12 +235,10 @@ export default function ProductCard({ product, onAddToCart }) {
 
         {/* Product Details */}
         <div className="p-6">
-          {/* Product Name */}
           <h3 className="font-semibold text-gray-900 text-lg leading-tight mb-2 line-clamp-2 group-hover:text-blue-600 transition-colors">
             {product.name}
           </h3>
 
-          {/* Rating and Reviews */}
           <div className="flex items-center gap-2 mb-3">
             <div className="flex gap-0.5">
               {renderStars(rating)}
@@ -198,7 +247,6 @@ export default function ProductCard({ product, onAddToCart }) {
             <span className="text-sm text-gray-400">({reviews})</span>
           </div>
 
-          {/* Price Section */}
           <div className="flex items-center gap-3 mb-4">
             <span className="text-2xl font-bold text-gray-900">
               {formatCurrency(product.price)}
@@ -210,7 +258,6 @@ export default function ProductCard({ product, onAddToCart }) {
             )}
           </div>
 
-          {/* Add to Cart Button */}
           <motion.button
             onClick={handleAddToCart}
             disabled={!inStock || added}
@@ -247,14 +294,7 @@ export default function ProductCard({ product, onAddToCart }) {
             )}
           </motion.button>
 
-          {/* Additional Features */}
           <div className="mt-4 flex items-center justify-between text-xs text-gray-500">
-            {/* <div className="flex items-center gap-1">
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
-              </svg>
-              Free Shipping
-            </div> */}
             <div className="flex items-center gap-1">
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
@@ -265,7 +305,6 @@ export default function ProductCard({ product, onAddToCart }) {
         </div>
       </Link>
 
-      {/* Success Animation */}
       <AnimatePresence>
         {added && (
           <motion.div
