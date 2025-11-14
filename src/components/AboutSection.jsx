@@ -1,7 +1,6 @@
 "use client";
 
 import Image from "next/image";
-import { motion } from "framer-motion";
 import { HiSparkles, HiTrendingUp, HiHeart, HiStar } from "react-icons/hi";
 
 export default function AboutSection() {
@@ -34,20 +33,14 @@ export default function AboutSection() {
       <div className="absolute inset-0 bg-grid-slate-100 [mask-image:linear-gradient(0deg,white,rgba(255,255,255,0.6))]" />
       
       {/* Animated Background Shapes */}
-      <div className="absolute top-10 left-10 w-80 h-80 bg-purple-200/30 rounded-full blur-3xl animate-pulse-slow" />
-      <div className="absolute bottom-10 right-10 w-96 h-96 bg-amber-200/20 rounded-full blur-3xl animate-pulse-slow delay-1000" />
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-blue-200/10 rounded-full blur-3xl animate-pulse-slow delay-500" />
+      <div className="absolute top-10 left-10 w-80 h-80 bg-purple-200/30 rounded-full blur-3xl animate-pulse" />
+      <div className="absolute bottom-10 right-10 w-96 h-96 bg-amber-200/20 rounded-full blur-3xl animate-pulse delay-1000" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-blue-200/10 rounded-full blur-3xl animate-pulse delay-500" />
 
       <div className="relative max-w-7xl mx-auto">
         <div className="grid lg:grid-cols-2 gap-16 items-center">
           {/* Image Section */}
-          <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-            className="relative"
-          >
+          <div className="relative">
             {/* Main Image */}
             <div className="relative rounded-3xl overflow-hidden shadow-2xl">
               <div className="aspect-square relative">
@@ -74,16 +67,10 @@ export default function AboutSection() {
             {/* Decorative Elements */}
             <div className="absolute -bottom-6 -right-6 w-32 h-32 bg-gradient-to-r from-amber-400 to-orange-500 rounded-2xl rotate-12 -z-10" />
             <div className="absolute -top-6 -left-6 w-24 h-24 bg-gradient-to-r from-purple-400 to-pink-500 rounded-2xl -rotate-12 -z-10" />
-          </motion.div>
+          </div>
 
           {/* Content Section */}
-          <motion.div
-            initial={{ opacity: 0, x: 50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            viewport={{ once: true }}
-            className="space-y-8"
-          >
+          <div className="space-y-8">
             {/* Section Badge */}
             <div className="inline-flex items-center gap-2 bg-blue-50 border border-blue-200 rounded-full px-4 py-2">
               <HiSparkles className="w-4 h-4 text-blue-600" />
@@ -126,12 +113,8 @@ export default function AboutSection() {
             {/* Core Values */}
             <div className="grid sm:grid-cols-2 gap-4 pt-4">
               {values.map((value, index) => (
-                <motion.div
+                <div
                   key={value.title}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                  viewport={{ once: true }}
                   className="flex items-start gap-3 p-4 rounded-xl bg-white/50 backdrop-blur-sm border border-gray-100 hover:border-purple-200 transition-all duration-300"
                 >
                   <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-r from-purple-500 to-pink-500 rounded-xl flex items-center justify-center text-white shadow-lg">
@@ -141,7 +124,7 @@ export default function AboutSection() {
                     <h4 className="font-semibold text-gray-900 mb-1">{value.title}</h4>
                     <p className="text-sm text-gray-600 leading-relaxed">{value.description}</p>
                   </div>
-                </motion.div>
+                </div>
               ))}
             </div>
 
@@ -155,17 +138,11 @@ export default function AboutSection() {
                 Our Story
               </button>
             </div> */}
-          </motion.div>
+          </div>
         </div>
 
         {/* Impact Stats */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.4 }}
-          viewport={{ once: true }}
-          className="grid grid-cols-2 md:grid-cols-4 gap-8 mt-20 pt-12 border-t border-gray-200"
-        >
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mt-20 pt-12 border-t border-gray-200">
           {[
             { number: "5K+", label: "Community Members" },
             { number: "2K+", label: "Products Sold" },
@@ -177,7 +154,7 @@ export default function AboutSection() {
               <div className="text-sm font-medium text-gray-500 uppercase tracking-wide">{stat.label}</div>
             </div>
           ))}
-        </motion.div>
+        </div>
       </div>
     </section>
   );

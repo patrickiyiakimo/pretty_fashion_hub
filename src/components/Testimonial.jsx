@@ -1,7 +1,6 @@
 "use client";
 
 import Image from "next/image";
-import { motion } from "framer-motion";
 import { FaQuoteLeft, FaStar } from "react-icons/fa";
 import { HiSparkles } from "react-icons/hi";
 
@@ -102,18 +101,12 @@ export default function Testimonials() {
       <div className="absolute inset-0 bg-grid-slate-100 [mask-image:linear-gradient(0deg,white,rgba(255,255,255,0.6))]" />
       
       {/* Animated Background Shapes */}
-      <div className="absolute top-20 left-10 w-72 h-72 bg-purple-200/30 rounded-full blur-3xl animate-pulse-slow" />
-      <div className="absolute bottom-20 right-10 w-96 h-96 bg-amber-200/20 rounded-full blur-3xl animate-pulse-slow delay-1000" />
+      <div className="absolute top-20 left-10 w-72 h-72 bg-purple-200/30 rounded-full blur-3xl animate-pulse" />
+      <div className="absolute bottom-20 right-10 w-96 h-96 bg-amber-200/20 rounded-full blur-3xl animate-pulse delay-1000" />
 
       <div className="relative max-w-7xl mx-auto">
         {/* Section Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          viewport={{ once: true }}
-          className="text-center mb-20"
-        >
+        <div className="text-center mb-20">
           <div className="inline-flex items-center gap-2 bg-purple-50 border border-purple-200 rounded-full px-4 py-2 mb-6">
             <HiSparkles className="w-4 h-4 text-purple-600" />
             <span className="text-sm font-semibold text-purple-700 uppercase tracking-wide">
@@ -132,33 +125,23 @@ export default function Testimonials() {
             Discover why industry experts and fashion enthusiasts choose Kingz World for 
             premium quality, exceptional craftsmanship, and transformative style experiences.
           </p>
-        </motion.div>
+        </div>
 
         {/* Trust Stats */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          viewport={{ once: true }}
-          className="grid grid-cols-2 lg:grid-cols-4 gap-8 mb-16"
-        >
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
           {stats.map((stat, index) => (
             <div key={index} className="text-center">
               <div className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">{stat.number}</div>
               <div className="text-sm font-medium text-gray-500 uppercase tracking-wide">{stat.label}</div>
             </div>
           ))}
-        </motion.div>
+        </div>
 
         {/* Featured Testimonials */}
         <div className="grid lg:grid-cols-2 gap-8 mb-12">
           {featuredTestimonials.map((testimonial, index) => (
-            <motion.div
+            <div
               key={testimonial.id}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: index * 0.2 }}
-              viewport={{ once: true }}
               className="relative group"
             >
               <div className="bg-white rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-500 p-8 border border-gray-100 relative overflow-hidden">
@@ -209,19 +192,15 @@ export default function Testimonials() {
                   </div>
                 </div>
               </div>
-            </motion.div>
+            </div>
           ))}
         </div>
 
         {/* Regular Testimonials Grid */}
         <div className="grid md:grid-cols-3 gap-6">
           {regularTestimonials.map((testimonial, index) => (
-            <motion.div
+            <div
               key={testimonial.id}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              viewport={{ once: true }}
               className="group"
             >
               <div className="bg-white rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300 p-6 border border-gray-100 hover:border-purple-200 h-full">
@@ -252,18 +231,12 @@ export default function Testimonials() {
                   </div>
                 </div>
               </div>
-            </motion.div>
+            </div>
           ))}
         </div>
 
         {/* CTA Section */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          viewport={{ once: true }}
-          className="text-center mt-20"
-        >
+        <div className="text-center mt-20">
           <div className="bg-gradient-to-r from-purple-600 to-pink-600 rounded-3xl p-12 text-white relative overflow-hidden">
             {/* Background Pattern */}
             <div className="absolute inset-0 bg-grid-white/10" />
@@ -287,7 +260,7 @@ export default function Testimonials() {
               </div>
             </div>
           </div>
-        </motion.div>
+        </div>
       </div>
     </section>
   );

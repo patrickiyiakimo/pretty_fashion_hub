@@ -1,7 +1,6 @@
 "use client";
 import Link from "next/link";
 import Image from "next/image";
-import { motion } from "framer-motion";
 import { 
   FaFacebookF, 
   FaInstagram, 
@@ -79,53 +78,40 @@ export default function Footer() {
       </div>
 
       {/* Trust Bar */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
-        className="relative border-b border-gray-800 bg-gray-800/50 backdrop-blur-sm"
-      >
+      <div className="relative border-b border-gray-800 bg-gray-800/50 backdrop-blur-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
             {trustBadges.map((badge, index) => (
-              <motion.div
+              <div
                 key={index}
-                initial={{ opacity: 0, y: 10 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
                 className="flex items-center gap-3 text-gray-300"
               >
                 <div className="text-blue-400">
                   {badge.icon}
                 </div>
                 <span className="text-sm font-medium">{badge.text}</span>
-              </motion.div>
+              </div>
             ))}
           </div>
         </div>
-      </motion.div>
+      </div>
 
       {/* Main Footer Content */}
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
           {/* Brand Section */}
           <div className="space-y-6">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              className="flex items-center gap-3 mb-6"
-            >
+            <div className="flex items-center gap-3 mb-6">
               <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-600 to-purple-600 flex items-center justify-center">
-              <div className="relative w-12 h-12 rounded-xl overflow-hidden border-2 border-yellow-400 group-hover:border-blue-600 transition-all duration-500 shadow-lg">
-                                <Image
-                                  src="/images/84712fed-7915-4ea9-a169-ce0c5d8b3531.JPG"
-                                  alt="Kingz World - Premium Fashion"
-                                  fill
-                                  className="object-cover transform group-hover:scale-110 transition-transform duration-500"
-                                  priority
-                                />
-                              </div>
+                <div className="relative w-12 h-12 rounded-xl overflow-hidden border-2 border-yellow-400 group-hover:border-blue-600 transition-all duration-500 shadow-lg">
+                  <Image
+                    src="/images/84712fed-7915-4ea9-a169-ce0c5d8b3531.JPG"
+                    alt="Kingz World - Premium Fashion"
+                    fill
+                    className="object-cover transform group-hover:scale-110 transition-transform duration-500"
+                    priority
+                  />
+                </div>
               </div>
               <div>
                 <h3 className="text-2xl font-bold bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
@@ -133,25 +119,15 @@ export default function Footer() {
                 </h3>
                 <p className="text-sm text-gray-400">Premium Fashion & Lifestyle</p>
               </div>
-            </motion.div>
+            </div>
 
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.1 }}
-              className="text-gray-400 leading-relaxed max-w-md"
-            >
+            <p className="text-gray-400 leading-relaxed max-w-md">
               Where exceptional craftsmanship meets timeless elegance. We're dedicated to 
               transforming your style journey with premium quality and unparalleled service.
-            </motion.p>
+            </p>
 
             {/* Contact Info */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="space-y-3"
-            >
+            <div className="space-y-3">
               <div className="flex items-center gap-3 text-gray-400">
                 <HiMail className="w-5 h-5 text-blue-400" />
                 <span>support@kingzworld.com</span>
@@ -164,37 +140,27 @@ export default function Footer() {
                 <HiLocationMarker className="w-5 h-5 text-blue-400" />
                 <span>Lagos, Nigeria</span>
               </div>
-            </motion.div>
+            </div>
 
             {/* Social Links */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.3 }}
-              className="flex items-center gap-4 pt-4"
-            >
+            <div className="flex items-center gap-4 pt-4">
               {socialLinks.map((social, index) => (
-                <motion.a
+                <a
                   key={index}
                   href={social.href}
-                  whileHover={{ scale: 1.1, y: -2 }}
-                  className="w-10 h-10 bg-gray-800 rounded-xl flex items-center justify-center text-gray-400 hover:text-white hover:bg-gray-700 transition-all duration-300 border border-gray-700"
+                  className="w-10 h-10 bg-gray-800 rounded-xl flex items-center justify-center text-gray-400 hover:text-white hover:bg-gray-700 transition-all duration-300 border border-gray-700 hover:scale-110 hover:-translate-y-0.5"
                   aria-label={social.label}
                 >
                   {social.icon}
-                </motion.a>
+                </a>
               ))}
-            </motion.div>
+            </div>
           </div>
 
           {/* Links Grid */}
           <div className="grid grid-cols-2 md:grid-cols-3 gap-8">
             {/* Shop Links */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.1 }}
-            >
+            <div>
               <h4 className="text-lg font-semibold text-white mb-4">Shop</h4>
               <ul className="space-y-3">
                 {quickLinks.map((link, index) => (
@@ -208,14 +174,10 @@ export default function Footer() {
                   </li>
                 ))}
               </ul>
-            </motion.div>
+            </div>
 
             {/* Company Links */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-            >
+            <div>
               <h4 className="text-lg font-semibold text-white mb-4">Company</h4>
               <ul className="space-y-3">
                 {companyLinks.map((link, index) => (
@@ -229,14 +191,10 @@ export default function Footer() {
                   </li>
                 ))}
               </ul>
-            </motion.div>
+            </div>
 
             {/* Support Links */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.3 }}
-            >
+            <div>
               <h4 className="text-lg font-semibold text-white mb-4">Support</h4>
               <ul className="space-y-3">
                 {supportLinks.map((link, index) => (
@@ -250,17 +208,12 @@ export default function Footer() {
                   </li>
                 ))}
               </ul>
-            </motion.div>
+            </div>
           </div>
         </div>
 
         {/* Newsletter Section */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7 }}
-          className="bg-gradient-to-r from-gray-800 to-gray-800/50 rounded-2xl p-8 border border-gray-700/50 backdrop-blur-sm"
-        >
+        <div className="bg-gradient-to-r from-gray-800 to-gray-800/50 rounded-2xl p-8 border border-gray-700/50 backdrop-blur-sm">
           <div className="grid lg:grid-cols-2 gap-8 items-center">
             <div>
               <h4 className="text-2xl font-bold text-white mb-2">
@@ -279,17 +232,15 @@ export default function Footer() {
                   required
                 />
               </div>
-              <motion.button
+              <button
                 type="submit"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="px-8 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold hover:from-blue-700 hover:to-purple-700 transition-all duration-300 shadow-lg"
+                className="px-8 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold hover:from-blue-700 hover:to-purple-700 transition-all duration-300 shadow-lg hover:scale-105"
               >
                 Subscribe
-              </motion.button>
+              </button>
             </form>
           </div>
-        </motion.div>
+        </div>
       </div>
 
       {/* Bottom Bar */}
@@ -297,22 +248,12 @@ export default function Footer() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             {/* Copyright */}
-            <motion.p
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              transition={{ duration: 0.6 }}
-              className="text-gray-500 text-sm"
-            >
+            <p className="text-gray-500 text-sm">
               &copy; {currentYear} Kingz World. All rights reserved.
-            </motion.p>
+            </p>
 
             {/* Legal Links */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="flex flex-wrap gap-6"
-            >
+            <div className="flex flex-wrap gap-6">
               {legalLinks.map((link, index) => (
                 <Link
                   key={index}
@@ -322,25 +263,19 @@ export default function Footer() {
                   {link.name}
                 </Link>
               ))}
-            </motion.div>
+            </div>
 
             {/* Payment Methods */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              transition={{ duration: 0.6, delay: 0.3 }}
-              className="flex items-center gap-2 text-gray-500 text-sm"
-            >
+            <div className="flex items-center gap-2 text-gray-500 text-sm">
               <span>Accepted Payments:</span>
               <div className="flex gap-1">
-                {/* Add payment icons here */}
                 <span>Visa</span>
                 <span>•</span>
                 <span>Mastercard</span>
                 <span>•</span>
                 <span>PayPal</span>
               </div>
-            </motion.div>
+            </div>
           </div>
         </div>
       </div>
