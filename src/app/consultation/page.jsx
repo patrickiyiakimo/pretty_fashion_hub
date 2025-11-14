@@ -29,23 +29,72 @@ export default function ConsultationPage() {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [error, setError] = useState("");
 
   const handleChange = (e) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value
     });
+    // Clear error when user starts typing
+    if (error) setError("");
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
-    
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 2000));
-    
-    setIsSubmitting(false);
-    setIsSubmitted(true);
+    setError("");
+
+    try {
+      // Use your backend server URL (adjust port if different)
+      const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
+      
+      const response = await fetch(`${API_URL}/api/consultations`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          fullName: formData.fullName,
+          email: formData.email,
+          phone: formData.phone,
+          preferredDate: formData.preferredDate,
+          preferredTime: formData.preferredTime,
+          budgetRange: formData.budgetRange,
+          stylePreferences: formData.stylePreferences,
+          message: formData.message
+        }),
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        setIsSubmitted(true);
+        // Reset form
+        setFormData({
+          fullName: "",
+          email: "",
+          phone: "",
+          preferredDate: "",
+          preferredTime: "",
+          stylePreferences: "",
+          budgetRange: "",
+          occasion: "",
+          message: ""
+        });
+      } else {
+        // Handle validation errors
+        const errorMessage = result.errors 
+          ? result.errors.join(', ') 
+          : result.message || 'Failed to book consultation. Please try again.';
+        setError(errorMessage);
+      }
+    } catch (error) {
+      console.error('Booking error:', error);
+      setError('Network error. Please check your connection and try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const consultationTypes = [
@@ -264,6 +313,16 @@ export default function ConsultationPage() {
                     <p className="text-gray-600">Complete the form below and we'll contact you to confirm</p>
                   </div>
                 </div>
+
+                {/* Error Message */}
+                {error && (
+                  <div className="bg-red-50 border border-red-200 rounded-xl p-4 mb-6">
+                    <div className="flex items-center gap-2 text-red-700">
+                      <HiCheck className="w-5 h-5 text-red-500" />
+                      <span className="font-medium">{error}</span>
+                    </div>
+                  </div>
+                )}
 
                 <form onSubmit={handleSubmit} className="space-y-6">
                   <div className="grid md:grid-cols-2 gap-6">
