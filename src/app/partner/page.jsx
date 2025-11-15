@@ -46,6 +46,7 @@ export default function PartnerPage() {
     
     // Business Details
     description: "",
+    category: "",
     website: "",
     productCategories: [],
     annualRevenue: "",

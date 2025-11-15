@@ -71,9 +71,9 @@ export default function AdminDashboard() {
     },
     {
       icon: <HiTicket className="w-8 h-8" />,
-      title: "Orders & Transactions",
-      description: "Process orders, manage shipments, and handle transactions",
-      href: "/admin/orders",
+      title: "Logistics & Transactions",
+      description: "Process logistics, orders, manage shipments, and handle transactions",
+      href: "/admin/logistics",
       count: "89",
       color: "bg-red-500",
       textColor: "text-red-600",
