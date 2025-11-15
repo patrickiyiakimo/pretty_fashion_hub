@@ -8,8 +8,7 @@ import {
   HiTrash, 
   HiPencil, 
   HiX,
-  HiCheckCircle,
-  HiExclamationCircle
+  HiCheckCircle
 } from "react-icons/hi";
 import toast from "react-hot-toast";
 
@@ -119,107 +118,105 @@ export default function PartnerDashboard() {
     }
   };
 
-const handleSubmit = async (e) => {
-  e.preventDefault();
-  const token = localStorage.getItem("accessToken");
-  if (!token) {
-    toast.error("Authentication required");
-    return;
-  }
-
-  // Validation
-  if (!newProduct.name.trim() || !newProduct.price || !newProduct.description.trim()) {
-    toast.error("Please fill in all required fields");
-    return;
-  }
-
-  if (parseFloat(newProduct.price) <= 0) {
-    toast.error("Price must be greater than 0");
-    return;
-  }
-
-  if (!newProduct.imageFile && !editingProduct) {
-    toast.error("Please select a product image");
-    return;
-  }
-
-  const formData = new FormData();
-  formData.append("name", newProduct.name.trim());
-  formData.append("price", String(newProduct.price));
-  formData.append("description", newProduct.description.trim());
-  formData.append("category", newProduct.category || "Other");
-  formData.append("stock", String(newProduct.stock || 1));
-  
-  if (newProduct.imageFile) {
-    formData.append("imageFile", newProduct.imageFile);
-    console.log('📤 Uploading file:', newProduct.imageFile.name, newProduct.imageFile.type, newProduct.imageFile.size);
-  }
-
-  setLoading(true);
-  try {
-    const url = editingProduct
-      ? `${API_ENDPOINT}/api/partners/products/${editingProduct._id}`
-      : `${API_ENDPOINT}/api/partners/products`;
-    
-    const method = editingProduct ? "PUT" : "POST";
-
-    console.log('🔄 Sending request to:', url);
-
-    const res = await fetch(url, {
-      method,
-      headers: {
-        Authorization: `Bearer ${token}`,
-        // Don't set Content-Type for FormData - browser will set it with boundary
-      },
-      body: formData,
-    });
-
-    console.log('📥 Response status:', res.status);
-
-    // Check if response is JSON
-    const contentType = res.headers.get('content-type');
-    let data;
-    
-    if (contentType && contentType.includes('application/json')) {
-      data = await res.json();
-    } else {
-      const text = await res.text();
-      console.error('❌ Non-JSON response:', text.substring(0, 200));
-      throw new Error('Server returned an invalid response. Please try again.');
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const token = localStorage.getItem("accessToken");
+    if (!token) {
+      toast.error("Authentication required");
+      return;
     }
 
-    if (res.ok) {
-      console.log('✅ Product saved successfully:', data);
-      toast.success(editingProduct ? "Product updated successfully! 🎉" : "Product added successfully! 🎉");
+    // Validation
+    if (!newProduct.name.trim() || !newProduct.price || !newProduct.description.trim()) {
+      toast.error("Please fill in all required fields");
+      return;
+    }
+
+    if (parseFloat(newProduct.price) <= 0) {
+      toast.error("Price must be greater than 0");
+      return;
+    }
+
+    if (!newProduct.imageFile && !editingProduct) {
+      toast.error("Please select a product image");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("name", newProduct.name.trim());
+    formData.append("price", String(newProduct.price));
+    formData.append("description", newProduct.description.trim());
+    formData.append("category", newProduct.category || "Other");
+    formData.append("stock", String(newProduct.stock || 1));
+    
+    if (newProduct.imageFile) {
+      formData.append("imageFile", newProduct.imageFile);
+      console.log('📤 Uploading file:', newProduct.imageFile.name);
+    }
+
+    setLoading(true);
+    try {
+      const url = editingProduct
+        ? `${API_ENDPOINT}/api/partners/products/${editingProduct._id}`
+        : `${API_ENDPOINT}/api/partners/products`;
       
-      // Update local state
-      if (editingProduct) {
-        setProducts(prev => prev.map(p => p._id === data.product._id ? data.product : p));
+      const method = editingProduct ? "PUT" : "POST";
+
+      console.log('🔄 Sending request to:', url);
+
+      const res = await fetch(url, {
+        method,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        body: formData,
+      });
+
+      console.log('📥 Response status:', res.status);
+
+      const contentType = res.headers.get('content-type');
+      let data;
+      
+      if (contentType && contentType.includes('application/json')) {
+        data = await res.json();
       } else {
-        setProducts(prev => [data.product, ...prev]);
+        const text = await res.text();
+        console.error('❌ Non-JSON response:', text.substring(0, 200));
+        throw new Error('Server returned an invalid response. Please try again.');
       }
 
-      // Reset form
-      resetForm();
+      if (res.ok) {
+        console.log('✅ Product saved successfully:', data);
+        toast.success(editingProduct ? "Product updated successfully! 🎉" : "Product added successfully! 🎉");
+        
+        // Update local state
+        if (editingProduct) {
+          setProducts(prev => prev.map(p => p._id === data.product._id ? data.product : p));
+        } else {
+          setProducts(prev => [data.product, ...prev]);
+        }
+
+        // Reset form
+        resetForm();
+        
+        // Refresh products to get the latest data
+        fetchProducts(token);
+      } else {
+        console.log('❌ Server error:', data);
+        throw new Error(data.error || "Failed to save product");
+      }
+    } catch (error) {
+      console.error("❌ Error submitting product:", error);
       
-      // Refresh products to get the latest data
-      fetchProducts(token);
-    } else {
-      console.log('❌ Server error:', data);
-      throw new Error(data.error || "Failed to save product");
+      if (error.message.includes('JSON') || error.message.includes('DOCTYPE')) {
+        toast.error("Server error. Please check if the uploads directory exists and try again.");
+      } else {
+        toast.error(error.message || "Failed to save product");
+      }
+    } finally {
+      setLoading(false);
     }
-  } catch (error) {
-    console.error("❌ Error submitting product:", error);
-    
-    if (error.message.includes('JSON') || error.message.includes('DOCTYPE')) {
-      toast.error("Server error. Please check if the uploads directory exists and try again.");
-    } else {
-      toast.error(error.message || "Failed to save product");
-    }
-  } finally {
-    setLoading(false);
-  }
-};
+  };
 
   // 🗑️ Delete product
   const handleDelete = async (id) => {
@@ -286,56 +283,34 @@ const handleSubmit = async (e) => {
     setShowForm(false);
   };
 
-  // 🖼️ Build image URL with debugging
-const buildImageSrc = (product) => {
-  if (!product || !product.images || product.images.length === 0) {
-    console.log('❌ No images found for product:', product?.name);
-    return "/images/placeholder-product.jpg";
-  }
+  // 🖼️ Build image URL using PROXY route
+  const buildImageSrc = (product) => {
+    if (!product || !product.images || product.images.length === 0) {
+      console.log('❌ No images found for product:', product?.name);
+      return 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgZmlsbD0iI2YzZjRmNiIvPjx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBkb21pbmFudC1iYXNlbGluZT0iY2VudHJhbCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0iIzk5OSIgZm9udC1zaXplPSIxNCI+UHJvZHVjdCBJbWFnZTwvdGV4dD48L3N2Zz4=';
+    }
 
-  const imagePath = product.images[0];
-  console.log('🔍 Raw image path from database:', imagePath);
-  
-  if (imagePath.startsWith('http')) {
-    console.log('✅ Using full URL:', imagePath);
-    return imagePath;
-  }
-  
-  // Handle different path formats
-  let cleanPath = imagePath;
-  
-  // Remove any double slashes or incorrect prefixes
-  if (imagePath.includes('uploadss')) {
-    console.log('⚠️ Found double "s" in path, correcting...');
-    cleanPath = imagePath.replace('uploadss', 'uploads');
-  }
-  
-  if (imagePath.startsWith('/uploads/')) {
-    cleanPath = imagePath; // Keep as is
-  } else if (imagePath.startsWith('uploads/')) {
-    cleanPath = `/${imagePath}`; // Add leading slash
-  } else if (imagePath.startsWith('/')) {
-    // Already has leading slash, ensure it's correct
-    cleanPath = imagePath;
-  } else {
-    cleanPath = `/uploads/${imagePath}`; // Add /uploads/ prefix
-  }
-  
-  // Ensure no double slashes
-  cleanPath = cleanPath.replace(/\/+/g, '/');
-  
-  const fullUrl = `${API_ENDPOINT}${cleanPath}`;
-  console.log('🎯 Final image URL:', fullUrl);
-  return fullUrl;
-};
+    const imagePath = product.images[0];
+    console.log('🔍 Image path from database:', imagePath);
+    
+    // Extract filename from path
+    const filename = imagePath.split('/').pop();
+    console.log('📁 Using filename:', filename);
+    
+    // ✅ USE PROXY ROUTE instead of direct static file
+    const fullUrl = `${API_ENDPOINT}/api/proxy-image/${filename}`;
+    console.log('🎯 Final image URL (proxy):', fullUrl);
+    
+    return fullUrl;
+  };
 
-// 💰 Format currency - ADD THIS FUNCTION
-const formatCurrency = (amount) => {
-  return new Intl.NumberFormat('en-NG', {
-    style: 'currency',
-    currency: 'NGN',
-  }).format(amount);
-};
+  // 💰 Format currency
+  const formatCurrency = (amount) => {
+    return new Intl.NumberFormat('en-NG', {
+      style: 'currency',
+      currency: 'NGN',
+    }).format(amount);
+  };
 
   return (
     <section className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-blue-50 py-24 px-4 sm:px-6 lg:px-8">
@@ -546,8 +521,10 @@ const formatCurrency = (amount) => {
                             src={buildImageSrc(editingProduct)}
                             alt={editingProduct.name}
                             className="w-full h-full object-cover"
+                            crossOrigin="anonymous"
                             onError={(e) => {
-                              e.target.src = "/images/placeholder-product.jpg";
+                              console.log('❌ Image failed to load:', editingProduct.name);
+                              e.target.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgZmlsbD0iI2YzZjRmNiIvPjx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBkb21pbmFudC1iYXNlbGluZT0iY2VudHJhbCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0iIzk5OSIgZm9udC1zaXplPSIxNCI+UHJvZHVjdCBJbWFnZTwvdGV4dD48L3N2Zz4=';
                             }}
                           />
                         </div>
@@ -628,8 +605,13 @@ const formatCurrency = (amount) => {
                       src={buildImageSrc(product)}
                       alt={product.name}
                       className="w-full h-full object-cover"
+                      crossOrigin="anonymous"
                       onError={(e) => {
-                        e.target.src = "/images/placeholder-product.jpg";
+                        console.log('❌ Image failed to load:', product.name);
+                        e.target.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgZmlsbD0iI2YzZjRmNiIvPjx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBkb21pbmFudC1iYXNlbGluZT0iY2VudHJhbCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0iIzk5OSIgZm9udC1zaXplPSIxNCI+UHJvZHVjdCBJbWFnZTwvdGV4dD48L3N2Zz4=';
+                      }}
+                      onLoad={(e) => {
+                        console.log('✅ Image loaded successfully:', product.name);
                       }}
                     />
                     

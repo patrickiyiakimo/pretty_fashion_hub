@@ -4,27 +4,38 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useCart } from "@/context/CartContext";
 
-export default function ProductCard({ product, onAddToCart }) {
+export default function ProductCard({ product }) {
+  const { addToCart } = useCart();
   const [added, setAdded] = useState(false);
   const [hovered, setHovered] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
   const [imageError, setImageError] = useState(false);
   const imageWrapperRef = useRef(null);
 
-  const handleAddToCart = (e) => {
+   const API_ENDPOINT = process.env.NEXT_PUBLIC_API_ENDPOINT || "http://localhost:4000";
+
+  const handleAddToCart = async (e) => {
     e.preventDefault();
     e.stopPropagation();
-    onAddToCart?.(product);
-    setAdded(true);
-    setTimeout(() => setAdded(false), 2000);
+    
+    try {
+      // Call the addToCart function from context
+      await addToCart(product);
+      setAdded(true);
+      setTimeout(() => setAdded(false), 2000);
+    } catch (error) {
+      console.error("Failed to add to cart:", error);
+      // Error handling is already done in the CartContext
+    }
   };
 
   // Product data with fallbacks
   const rating = product.rating ?? 4.7;
   const reviews = product.reviews ?? 24;
-  const vendor = product.vendorName ?? "Premium Partner";
-  const inStock = product.inStock !== false;
+  const vendor = product.vendorName ?? product.partnerName ?? "Premium Partner";
+  const inStock = (product.stock !== undefined ? product.stock > 0 : product.inStock !== false);
   const isVerifiedPartner = product.isVerifiedPartner ?? true;
   const discount = product.compareAtPrice 
     ? Math.round(((product.compareAtPrice - product.price) / product.compareAtPrice) * 100)
@@ -39,13 +50,18 @@ export default function ProductCard({ product, onAddToCart }) {
     
     // If it's a relative path starting with /uploads, make it absolute
     if (imagePath.startsWith('/uploads')) {
-      return `http://localhost:4000${imagePath}`;
+      return `${API_ENDPOINT}${imagePath}`;
+    }
+    
+    // Handle array of images
+    if (Array.isArray(imagePath) && imagePath.length > 0) {
+      return getImageUrl(imagePath[0]);
     }
     
     return imagePath;
   };
 
-  const imageUrl = getImageUrl(product.image);
+  const imageUrl = getImageUrl(product.images?.[0] || product.image);
 
   const formatCurrency = (value) =>
     new Intl.NumberFormat("en-NG", {
@@ -119,7 +135,7 @@ export default function ProductCard({ product, onAddToCart }) {
       className="group relative bg-white rounded-2xl shadow-sm hover:shadow-2xl transition-all duration-500 border border-gray-100 overflow-hidden"
     >
       <Link
-        href={`/shop/${product.id}`}
+        href={`/shop/${product._id || product.id}`}
         className="block focus:outline-none focus-visible:ring-4 focus-visible:ring-blue-500/30"
       >
         {/* Image Container */}
