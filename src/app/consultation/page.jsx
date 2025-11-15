@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { 
   HiCalendar, 
@@ -11,7 +11,10 @@ import {
   HiShieldCheck,
   HiStar,
   HiCheck,
-  HiChatAlt2
+  HiChatAlt2,
+  HiSearch,
+  HiX,
+  HiRefresh
 } from "react-icons/hi";
 
 export default function ConsultationPage() {
@@ -30,13 +33,29 @@ export default function ConsultationPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [error, setError] = useState("");
+  const [consultationId, setConsultationId] = useState("");
+  const [trackingId, setTrackingId] = useState("");
+  const [trackingResult, setTrackingResult] = useState(null);
+  const [isTracking, setIsTracking] = useState(false);
+  const [showTrackingInterface, setShowTrackingInterface] = useState(false);
+
+  // Check localStorage on component mount
+  useEffect(() => {
+    const savedConsultationId = localStorage.getItem('kingzworld_consultation_id');
+    if (savedConsultationId) {
+      setConsultationId(savedConsultationId);
+      setShowTrackingInterface(true);
+      // Auto-track the consultation
+      setTrackingId(savedConsultationId);
+      handleAutoTrack(savedConsultationId);
+    }
+  }, []);
 
   const handleChange = (e) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value
     });
-    // Clear error when user starts typing
     if (error) setError("");
   };
 
@@ -46,7 +65,6 @@ export default function ConsultationPage() {
     setError("");
 
     try {
-      // Use your backend server URL (adjust port if different)
       const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
       
       const response = await fetch(`${API_URL}/api/consultations`, {
@@ -69,8 +87,18 @@ export default function ConsultationPage() {
       const result = await response.json();
 
       if (result.success) {
-        setIsSubmitted(true);
-        // Reset form
+        const newConsultationId = result.data.consultationId;
+        setConsultationId(newConsultationId);
+        
+        // Save to localStorage
+        localStorage.setItem('kingzworld_consultation_id', newConsultationId);
+        
+        setShowTrackingInterface(true);
+        setTrackingId(newConsultationId);
+        
+        // Auto-track the new consultation
+        handleAutoTrack(newConsultationId);
+        
         setFormData({
           fullName: "",
           email: "",
@@ -83,7 +111,6 @@ export default function ConsultationPage() {
           message: ""
         });
       } else {
-        // Handle validation errors
         const errorMessage = result.errors 
           ? result.errors.join(', ') 
           : result.message || 'Failed to book consultation. Please try again.';
@@ -95,6 +122,63 @@ export default function ConsultationPage() {
     } finally {
       setIsSubmitting(false);
     }
+  };
+
+  const handleAutoTrack = async (id) => {
+    setIsTracking(true);
+    setTrackingResult(null);
+
+    try {
+      const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
+      
+      const response = await fetch(`${API_URL}/api/consultations`);
+      const result = await response.json();
+
+      if (result.success) {
+        const consultation = result.data.find(cons => cons.consultationId === id);
+        
+        if (consultation) {
+          setTrackingResult({
+            found: true,
+            data: consultation
+          });
+        } else {
+          setTrackingResult({
+            found: false,
+            message: "No consultation found with this ID. Please check your Consultation ID and try again."
+          });
+        }
+      } else {
+        setTrackingResult({
+          found: false,
+          message: "Unable to fetch consultation data. Please try again later."
+        });
+      }
+    } catch (error) {
+      console.error('Tracking error:', error);
+      setTrackingResult({
+        found: false,
+        message: "Network error. Please check your connection and try again."
+      });
+    } finally {
+      setIsTracking(false);
+    }
+  };
+
+  const handleTrackConsultation = async (e) => {
+    e.preventDefault();
+    if (!trackingId.trim()) return;
+
+    await handleAutoTrack(trackingId.toUpperCase());
+  };
+
+  const handleNewConsultation = () => {
+    // Clear everything and show the form again
+    setShowTrackingInterface(false);
+    setTrackingResult(null);
+    setTrackingId("");
+    setConsultationId("");
+    localStorage.removeItem('kingzworld_consultation_id');
   };
 
   const consultationTypes = [
@@ -144,57 +228,230 @@ export default function ConsultationPage() {
     }
   ];
 
-  if (isSubmitted) {
+  const getStatusColor = (status) => {
+    switch (status) {
+      case 'pending': return 'bg-yellow-100 text-yellow-800 border-yellow-200';
+      case 'confirmed': return 'bg-green-100 text-green-800 border-green-200';
+      case 'completed': return 'bg-blue-100 text-blue-800 border-blue-200';
+      case 'cancelled': return 'bg-red-100 text-red-800 border-red-200';
+      default: return 'bg-gray-100 text-gray-800 border-gray-200';
+    }
+  };
+
+  const formatDate = (dateString) => {
+    return new Date(dateString).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
+  };
+
+  // Show tracking interface if there's an active consultation
+  if (showTrackingInterface) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-purple-50 py-20 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-4xl mx-auto text-center">
-          <div className="bg-white rounded-3xl shadow-xl p-12 border border-gray-100">
-            <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
-              <HiCheck className="w-10 h-10 text-green-600" />
-            </div>
-            
-            <h1 className="text-4xl font-bold text-gray-900 mb-4">
-              Consultation Request Received!
-            </h1>
-            
-            <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
-              Thank you for your interest in Kingz World styling services. Our team will contact you within 24 hours to confirm your appointment details.
-            </p>
-            
-            <div className="bg-blue-50 rounded-2xl p-6 mb-8 border border-blue-200">
-              <h3 className="text-lg font-semibold text-blue-900 mb-2">
-                What to Expect Next:
-              </h3>
-              <ul className="text-blue-800 space-y-2 text-left max-w-md mx-auto">
-                <li className="flex items-center gap-3">
-                  <HiCheck className="w-5 h-5 text-green-600 flex-shrink-0" />
-                  Confirmation call/email within 24 hours
-                </li>
-                <li className="flex items-center gap-3">
-                  <HiCheck className="w-5 h-5 text-green-600 flex-shrink-0" />
-                  Pre-consultation style questionnaire
-                </li>
-                <li className="flex items-center gap-3">
-                  <HiCheck className="w-5 h-5 text-green-600 flex-shrink-0" />
-                  Personalized session preparation
-                </li>
-              </ul>
-            </div>
-            
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link 
-                href="/shop"
-                className="inline-flex items-center justify-center px-8 py-4 bg-gray-900 text-white font-semibold rounded-2xl hover:bg-gray-800 transition-all duration-300 shadow-lg hover:shadow-xl"
+        <div className="max-w-4xl mx-auto">
+          <div className="bg-white rounded-3xl shadow-xl p-8 border border-gray-100">
+            {/* Header */}
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
+              <div>
+                <h1 className="text-3xl font-bold text-gray-900 mb-2">
+                  Consultation Status
+                </h1>
+                <p className="text-gray-600">
+                  Track your consultation request and stay updated on its progress
+                </p>
+              </div>
+              <button
+                onClick={handleNewConsultation}
+                className="flex items-center gap-2 bg-purple-600 text-white px-6 py-3 rounded-xl hover:bg-purple-700 transition-colors"
               >
-                Browse Collections
-              </Link>
-              
-              <button 
-                onClick={() => setIsSubmitted(false)}
-                className="inline-flex items-center justify-center px-8 py-4 border-2 border-gray-300 text-gray-700 font-semibold rounded-2xl hover:border-gray-400 hover:bg-gray-50 transition-all duration-300"
-              >
-                Book Another Session
+                <HiCalendar className="w-5 h-5" />
+                Book New Consultation
               </button>
+            </div>
+
+            {/* Consultation ID Display */}
+            <div className="bg-blue-50 rounded-2xl p-6 mb-8 border border-blue-200">
+              <div className="text-center">
+                <h3 className="text-lg font-semibold text-blue-900 mb-2">
+                  Your Consultation ID
+                </h3>
+                <div className="text-3xl font-mono font-bold text-blue-700 mb-3">
+                  {consultationId}
+                </div>
+                <p className="text-blue-700 mb-2">
+                  ✅ Your Consultation ID has been sent to your email
+                </p>
+                <p className="text-sm text-blue-600">
+                  Keep this ID safe! You'll need it to track your consultation status.
+                </p>
+              </div>
+            </div>
+
+            {/* Auto-tracking Section */}
+            <div className="bg-gray-50 rounded-2xl p-6 mb-6 border border-gray-200">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-xl font-semibold text-gray-900">
+                  Current Status
+                </h3>
+                <button
+                  onClick={() => handleAutoTrack(consultationId)}
+                  disabled={isTracking}
+                  className="flex items-center gap-2 bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-50 transition-colors disabled:opacity-50"
+                >
+                  <HiRefresh className="w-4 h-4" />
+                  {isTracking ? "Refreshing..." : "Refresh"}
+                </button>
+              </div>
+
+              {/* Tracking Results */}
+              {isTracking ? (
+                <div className="text-center py-8">
+                  <div className="w-8 h-8 border-2 border-purple-600 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+                  <p className="text-gray-600">Checking consultation status...</p>
+                </div>
+              ) : trackingResult ? (
+                <div>
+                  {trackingResult.found ? (
+                    <div className={`rounded-2xl p-6 border-2 ${getStatusColor(trackingResult.data.status)}`}>
+                      <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-4 gap-4">
+                        <div>
+                          <h4 className="text-2xl font-bold text-gray-900 mb-2">
+                            {trackingResult.data.fullName}
+                          </h4>
+                          <div className="flex items-center gap-4 text-sm text-gray-600">
+                            <span><strong>Date:</strong> {formatDate(trackingResult.data.preferredDate)}</span>
+                            <span><strong>Time:</strong> {trackingResult.data.preferredTime}</span>
+                          </div>
+                        </div>
+                        <span className={`px-4 py-2 rounded-full text-sm font-semibold ${getStatusColor(trackingResult.data.status)}`}>
+                          {trackingResult.data.status.toUpperCase()}
+                        </span>
+                      </div>
+
+                      {/* Status-specific messages */}
+                      {trackingResult.data.status === 'pending' && (
+                        <div className="bg-yellow-50 rounded-xl p-4 border border-yellow-200">
+                          <div className="flex items-center gap-3">
+                            <div className="w-8 h-8 bg-yellow-100 rounded-full flex items-center justify-center">
+                              <HiClock className="w-4 h-4 text-yellow-600" />
+                            </div>
+                            <div>
+                              <h5 className="font-semibold text-yellow-800">Under Review</h5>
+                              <p className="text-yellow-700 text-sm">
+                                Your consultation request is being reviewed by our team. We'll contact you within 24 hours.
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+
+                      {trackingResult.data.status === 'confirmed' && (
+                        <div className="bg-green-50 rounded-xl p-4 border border-green-200">
+                          <div className="flex items-center gap-3">
+                            <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
+                              <HiCheck className="w-4 h-4 text-green-600" />
+                            </div>
+                            <div>
+                              <h5 className="font-semibold text-green-800">Confirmed! 🎉</h5>
+                              <p className="text-green-700 text-sm">
+                                Your consultation has been confirmed! We're excited to help you transform your style.
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+
+                      {trackingResult.data.status === 'completed' && (
+                        <div className="bg-blue-50 rounded-xl p-4 border border-blue-200">
+                          <div className="flex items-center gap-3">
+                            <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+                              <HiStar className="w-4 h-4 text-blue-600" />
+                            </div>
+                            <div>
+                              <h5 className="font-semibold text-blue-800">Completed Successfully!</h5>
+                              <p className="text-blue-700 text-sm">
+                                Thank you for choosing Kingz World! We hope you enjoyed your consultation experience.
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+
+                      {trackingResult.data.status === 'cancelled' && (
+                        <div className="bg-red-50 rounded-xl p-4 border border-red-200">
+                          <div className="flex items-center gap-3">
+                            <div className="w-8 h-8 bg-red-100 rounded-full flex items-center justify-center">
+                              <HiX className="w-4 h-4 text-red-600" />
+                            </div>
+                            <div>
+                              <h5 className="font-semibold text-red-800">Consultation Cancelled</h5>
+                              <p className="text-red-700 text-sm">
+                                This consultation has been cancelled. Please book a new consultation if you'd like to reschedule.
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Show booking form again if consultation is completed or cancelled */}
+                      {(trackingResult.data.status === 'completed' || trackingResult.data.status === 'cancelled') && (
+                        <div className="mt-6 text-center">
+                          <button
+                            onClick={handleNewConsultation}
+                            className="bg-purple-600 text-white px-8 py-3 rounded-xl hover:bg-purple-700 transition-colors font-semibold"
+                          >
+                            Book New Consultation
+                          </button>
+                        </div>
+                      )}
+                    </div>
+                  ) : (
+                    <div className="bg-red-50 rounded-2xl p-6 border border-red-200 text-center">
+                      <HiX className="w-12 h-12 text-red-500 mx-auto mb-4" />
+                      <h4 className="text-lg font-semibold text-red-800 mb-2">Consultation Not Found</h4>
+                      <p className="text-red-700">{trackingResult.message}</p>
+                      <button
+                        onClick={handleNewConsultation}
+                        className="mt-4 bg-red-600 text-white px-6 py-2 rounded-lg hover:bg-red-700 transition-colors"
+                      >
+                        Book New Consultation
+                      </button>
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <div className="text-center py-8 text-gray-500">
+                  Click refresh to check your consultation status
+                </div>
+              )}
+            </div>
+
+            {/* Manual Tracking for other consultations */}
+            <div className="bg-white rounded-2xl p-6 border border-gray-200">
+              <h3 className="text-lg font-semibold text-gray-900 mb-4">Track Another Consultation</h3>
+              <form onSubmit={handleTrackConsultation} className="max-w-md">
+                <div className="flex gap-2">
+                  <div className="flex-1">
+                    <input
+                      type="text"
+                      value={trackingId}
+                      onChange={(e) => setTrackingId(e.target.value)}
+                      placeholder="Enter Consultation ID (e.g., CONS0001)"
+                      className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-colors"
+                    />
+                  </div>
+                  <button
+                    type="submit"
+                    disabled={isTracking || !trackingId.trim()}
+                    className="bg-gray-900 text-white px-6 py-3 rounded-xl hover:bg-gray-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                  >
+                    <HiSearch className="w-5 h-5" />
+                    {isTracking ? "Checking..." : "Track"}
+                  </button>
+                </div>
+              </form>
             </div>
           </div>
         </div>
@@ -202,6 +459,7 @@ export default function ConsultationPage() {
     );
   }
 
+  // Show the original booking form if no active consultation
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-purple-50">
       {/* Header Section */}
@@ -224,6 +482,7 @@ export default function ConsultationPage() {
         </div>
       </div>
 
+      {/* Rest of the original booking form remains exactly the same */}
       <div className="py-16 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           {/* Hero Section */}
@@ -325,6 +584,7 @@ export default function ConsultationPage() {
                 )}
 
                 <form onSubmit={handleSubmit} className="space-y-6">
+                  {/* ... rest of the form fields remain exactly the same ... */}
                   <div className="grid md:grid-cols-2 gap-6">
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
