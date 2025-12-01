@@ -433,9 +433,9 @@ export default function KingzStylezPage() {
                   
                   <div className="flex items-center justify-between">
                     <div>
-                      <div className="text-3xl font-bold text-gray-900">${quickViewProduct.price}</div>
+                      <div className="text-3xl font-bold text-gray-900">₦{quickViewProduct.price}</div>
                       {quickViewProduct.originalPrice && (
-                        <div className="text-sm text-gray-500 line-through">${quickViewProduct.originalPrice}</div>
+                        <div className="text-sm text-gray-500 line-through">₦{quickViewProduct.originalPrice}</div>
                       )}
                     </div>
                     <button className="bg-gray-900 hover:bg-gray-800 text-white px-8 py-3 rounded-xl font-medium transition-colors duration-300">
