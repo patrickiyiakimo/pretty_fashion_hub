@@ -238,7 +238,7 @@ export default function FeaturedCollections() {
                 Ready to Elevate Your Style?
               </h3>
               <p className="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
-                Join thousands of satisfied customers who trust Kingz World for their premium fashion needs.
+                Join thousands of satisfied customers who trust Kingz Stylez for their premium fashion needs.
               </p>
               
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -252,10 +252,10 @@ export default function FeaturedCollections() {
                 </Link>
                 
                 <Link
-                  href="/collections"
+                  href="/kingz-stylez"
                   className="inline-flex items-center justify-center gap-3 border-2 border-white text-white font-bold px-8 py-4 rounded-xl hover:bg-white/10 transition-all duration-300 backdrop-blur-sm"
                 >
-                  View Collections
+                  Kingz-Stylez
                 </Link>
               </div>
             </div>
