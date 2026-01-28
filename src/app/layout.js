@@ -4,7 +4,6 @@ import CTASection from "../components/CTA";
 import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
 import { CartProvider } from "../context/CartContext";
-// import LiveNotifications from "@/components/LiveNotifications";
 import { AuthProvider } from "@/context/AuthContext";
 
 const geistSans = Geist({
@@ -32,7 +31,6 @@ export default function RootLayout({ children }) {
           {children}
           <CTASection />
           <Footer />
-          {/* <LiveNotifications /> */}
         </CartProvider>
         </AuthProvider>
       </body>

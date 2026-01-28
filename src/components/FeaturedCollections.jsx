@@ -188,7 +188,8 @@ export default function FeaturedCollections() {
                       <span className="text-sm text-gray-500">{collection.items}</span>
                     </div>
                     <Link
-                      href={collection.href}
+                      // href={collection.href}
+                      href="/shop"
                       className="inline-flex items-center gap-2 text-sm font-semibold text-blue-600 hover:text-blue-700 transition-colors"
                     >
                       Explore Collection

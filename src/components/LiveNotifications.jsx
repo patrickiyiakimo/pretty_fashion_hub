@@ -45,7 +45,7 @@ export default function LiveNotifications() {
     const interval = setInterval(() => {
       if (notificationQueue.length === 0) {
         const shuffled = [...notifications].sort(() => 0.5 - Math.random());
-        setNotificationQueue(shuffled.slice(0, 5));
+        setNotificationQueue(shuffled.slice(0, 3));
       }
       
       const nextNotification = notificationQueue[0];
@@ -56,9 +56,9 @@ export default function LiveNotifications() {
         // Auto-remove after display duration
         setTimeout(() => {
           setActiveNotification(null);
-        }, 5000);
+        }, 4000);
       }
-    }, 6000);
+    }, 5000);
 
     return () => clearInterval(interval);
   }, [notificationQueue]);
@@ -79,86 +79,86 @@ export default function LiveNotifications() {
   };
 
   return (
-    <div className="fixed top-24 right-6 z-50">
+    <div className="fixed bottom-6 left-6 z-50">
       <AnimatePresence mode="popLayout">
         {activeNotification && (
           <motion.div
             key={activeNotification.id}
-            initial={{ opacity: 0, x: 100, scale: 0.9 }}
-            animate={{ opacity: 1, x: 0, scale: 1 }}
-            exit={{ opacity: 0, x: 100, scale: 0.9 }}
+            initial={{ opacity: 0, y: 20, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 20, scale: 0.95 }}
             transition={{ 
               type: "spring", 
-              stiffness: 500, 
-              damping: 30 
+              stiffness: 400, 
+              damping: 25 
             }}
-            className={`relative mb-4 w-80 rounded-xl shadow-2xl border-l-4 ${
+            className={`relative mb-2 w-72 rounded-lg shadow-lg border-l-2 ${
               getNotificationStyle(activeNotification.type).border
             } ${
               getNotificationStyle(activeNotification.type).bg
             } backdrop-blur-sm bg-white/95 border border-gray-200/50 overflow-hidden`}
           >
-            {/* Header with location and time */}
-            <div className="flex items-center justify-between px-4 pt-3 pb-2">
+            {/* Compact header */}
+            <div className="flex items-center justify-between px-3 pt-2.5 pb-1.5">
               <div className="flex items-center gap-2">
-                <div className={`p-1.5 rounded-lg ${
+                <div className={`p-1 rounded-md ${
                   getNotificationStyle(activeNotification.type).bg
                 }`}>
-                  <activeNotification.icon className={`w-4 h-4 ${
+                  <activeNotification.icon className={`w-3.5 h-3.5 ${
                     getNotificationStyle(activeNotification.type).icon
                   }`} />
                 </div>
-                <span className="text-xs font-semibold text-gray-700 uppercase tracking-wide">
+                <span className="text-xs font-semibold text-gray-700">
                   {activeNotification.location}
                 </span>
               </div>
               <div className="flex items-center gap-1 text-gray-500">
-                <HiClock className="w-3 h-3" />
+                <HiClock className="w-2.5 h-2.5" />
                 <span className="text-xs">{activeNotification.time}</span>
               </div>
             </div>
 
-            {/* Notification content */}
-            <div className="px-4 pb-3">
-              <p className="text-sm text-gray-800 leading-relaxed font-medium">
+            {/* Compact notification content */}
+            <div className="px-3 pb-2.5">
+              <p className="text-sm text-gray-800 leading-tight font-medium">
                 {activeNotification.text}
               </p>
             </div>
 
-            {/* Progress bar */}
+            {/* Thin progress bar */}
             <motion.div
               initial={{ scaleX: 1 }}
               animate={{ scaleX: 0 }}
-              transition={{ duration: 5, ease: "linear" }}
-              className={`h-1 ${
+              transition={{ duration: 4, ease: "linear" }}
+              className={`h-0.5 ${
                 getNotificationStyle(activeNotification.type).border.replace("border-l-", "bg-")
               } origin-left`}
             />
 
-            {/* Decorative corner */}
-            <div className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-bl from-white/20 to-transparent rounded-bl-3xl" />
+            {/* Smaller decorative corner */}
+            <div className="absolute top-0 right-0 w-12 h-12 bg-gradient-to-bl from-white/20 to-transparent rounded-bl-2xl" />
           </motion.div>
         )}
       </AnimatePresence>
 
-      {/* Notification indicator when no active notification */}
+      {/* Simplified indicator when no active notification */}
       <AnimatePresence>
         {!activeNotification && (
           <motion.div
             initial={{ opacity: 0, scale: 0 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0 }}
-            className="flex items-center gap-2 px-3 py-2 bg-white/90 backdrop-blur-sm rounded-lg shadow-lg border border-gray-200/50"
+            className="flex items-center gap-2 px-2.5 py-1.5 bg-white/90 backdrop-blur-sm rounded-lg shadow-md border border-gray-200/50"
           >
             <div className="relative">
-              <HiSparkles className="w-4 h-4 text-purple-600" />
+              <HiSparkles className="w-3.5 h-3.5 text-purple-600" />
               <motion.div
-                animate={{ scale: [1, 1.2, 1] }}
+                animate={{ scale: [1, 1.15, 1] }}
                 transition={{ duration: 2, repeat: Infinity }}
                 className="absolute inset-0 bg-purple-600/20 rounded-full"
               />
             </div>
-            <span className="text-xs font-medium text-gray-700">Live Activity</span>
+            <span className="text-xs font-medium text-gray-700">Live Updates</span>
           </motion.div>
         )}
       </AnimatePresence>
