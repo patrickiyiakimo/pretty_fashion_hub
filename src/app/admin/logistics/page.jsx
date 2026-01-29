@@ -14,7 +14,7 @@ import {
 } from "react-icons/hi";
 import toast from "react-hot-toast";
 
-const API_ENDPOINT = process.env.NEXT_PUBLIC_API_ENDPOINT || "";
+const API_ENDPOINT = process.env.NEXT_PUBLIC_API_ENDPOINT || "http://localhost:4000";
 
 const statusColors = {
   "Order Created": "bg-blue-100 text-blue-800",

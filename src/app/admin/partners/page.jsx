@@ -15,7 +15,7 @@ import {
 } from "react-icons/hi";
 import toast from "react-hot-toast";
 
-const API_ENDPOINT = process.env.NEXT_PUBLIC_API_ENDPOINT || "http://localhost:3000";
+const API_ENDPOINT = process.env.NEXT_PUBLIC_API_ENDPOINT || "http://localhost:4000";
 
 const statusConfig = {
   pending: { color: "bg-yellow-100 text-yellow-800", icon: HiClock, label: "Pending" },

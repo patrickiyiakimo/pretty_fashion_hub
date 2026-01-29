@@ -1,12 +1,17 @@
-// app/logistics/page.jsx
 'use client';
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import toast from 'react-hot-toast';
+
+const API_ENDPOINT = process.env.NEXT_PUBLIC_API_ENDPOINT || "http://localhost:4000";
 
 export default function LogisticsApplicationPage() {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [errors, setErrors] = useState({});
+  const [submitSuccess, setSubmitSuccess] = useState(false);
+  
   const [formData, setFormData] = useState({
     fullName: '',
     email: '',
@@ -49,6 +54,10 @@ export default function LogisticsApplicationPage() {
       ...prev,
       [name]: type === 'checkbox' ? checked : value
     }));
+    // Clear error when user starts typing
+    if (errors[name]) {
+      setErrors(prev => ({ ...prev, [name]: '' }));
+    }
   };
 
   const handleAvailabilityChange = (optionId) => {
@@ -62,27 +71,162 @@ export default function LogisticsApplicationPage() {
     });
   };
 
+  const validateForm = () => {
+    const newErrors = {};
+    
+    // Required fields validation
+    const requiredFields = ['fullName', 'email', 'phone', 'dateOfBirth', 'vehicleType', 
+                            'licenseNumber', 'idNumber', 'address', 'city', 'state', 'postalCode'];
+    
+    requiredFields.forEach(field => {
+      if (!formData[field]?.trim()) {
+        newErrors[field] = `${field.replace(/([A-Z])/g, ' $1')} is required`;
+      }
+    });
+
+    // Email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (formData.email && !emailRegex.test(formData.email)) {
+      newErrors.email = 'Please enter a valid email address';
+    }
+
+    // Phone validation (basic)
+    if (formData.phone && formData.phone.length < 10) {
+      newErrors.phone = 'Please enter a valid phone number';
+    }
+
+    // Date of birth validation (must be at least 18 years old)
+    if (formData.dateOfBirth) {
+      const dob = new Date(formData.dateOfBirth);
+      const today = new Date();
+      const minAgeDate = new Date(today.getFullYear() - 18, today.getMonth(), today.getDate());
+      
+      if (dob > minAgeDate) {
+        newErrors.dateOfBirth = 'You must be at least 18 years old';
+      }
+    }
+
+    // Terms acceptance
+    if (!formData.termsAccepted) {
+      newErrors.termsAccepted = 'You must accept the terms and conditions';
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    if (!validateForm()) {
+      // Scroll to first error
+      const firstErrorField = Object.keys(errors)[0];
+      const element = document.querySelector(`[name="${firstErrorField}"]`);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        element.focus();
+      }
+      return;
+    }
+
     setIsSubmitting(true);
+    setErrors({});
 
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1500));
+      const response = await fetch(`${API_ENDPOINT}/api/logistics/applications`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData)
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        // Handle validation errors from server
+        if (data.errors && Array.isArray(data.errors)) {
+          const serverErrors = {};
+          data.errors.forEach(error => {
+            // Extract field name from error message
+            const fieldMatch = error.match(/`(.+)`/);
+            if (fieldMatch) {
+              serverErrors[fieldMatch[1]] = error;
+            }
+          });
+          setErrors(serverErrors);
+          throw new Error(data.message || 'Validation failed');
+        }
+        throw new Error(data.message || 'Failed to submit application');
+      }
+
+      // Success
+      setSubmitSuccess(true);
       
-      // In real app, you would submit to your backend
-      console.log('Logistics application submitted:', formData);
+      // Store application ID for status checking
+      localStorage.setItem('lastApplicationId', data.data.applicationId);
+      localStorage.setItem('applicantEmail', formData.email);
       
-      // Show success and redirect
-      alert('Application submitted successfully! We will contact you within 2 business days.');
-      router.push('/');
+      // Show success message
+      toast.success('Application submitted successfully! We will contact you within 2 business days.');
+      
+      // Redirect to home or status page
+      router.push('/application-status');
+      
     } catch (error) {
       console.error('Application error:', error);
-      alert('Failed to submit application. Please try again.');
+      
+      // Show user-friendly error message
+      let errorMessage = error.message || 'Failed to submit application. Please try again.';
+      
+      if (error.message.includes('already submitted')) {
+        errorMessage = error.message;
+      }
+      
+      toast.error(errorMessage);
     } finally {
       setIsSubmitting(false);
     }
   };
+
+  // Success view after submission
+  if (submitSuccess) {
+    return (
+      <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white pt-20">
+        <div className="max-w-2xl mx-auto px-4 py-12 text-center">
+          <div className="bg-white rounded-2xl shadow-xl p-8">
+            <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+              <svg className="w-10 h-10 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+              </svg>
+            </div>
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">Application Submitted!</h2>
+            <p className="text-gray-600 mb-6">
+              Your logistics partner application has been received successfully. 
+              Our team will review your application and contact you within 2 business days.
+            </p>
+            <div className="space-y-4">
+              <button
+                onClick={() => router.push('/')}
+                className="w-full bg-blue-600 text-white font-bold py-3 px-6 rounded-xl hover:bg-blue-700 transition-colors"
+              >
+                Return to Home
+              </button>
+              <button
+                onClick={() => {
+                  // You could implement a status check page
+                  router.push('/application-status');
+                }}
+                className="w-full border-2 border-gray-300 text-gray-700 font-medium py-3 px-6 rounded-xl hover:bg-gray-50 transition-colors"
+              >
+                Check Application Status
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white pt-20">
@@ -142,9 +286,12 @@ export default function LogisticsApplicationPage() {
                     required
                     value={formData.fullName}
                     onChange={handleChange}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                    className={`w-full px-4 py-3 border ${errors.fullName ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors`}
                     placeholder="John Doe"
                   />
+                  {errors.fullName && (
+                    <p className="mt-1 text-sm text-red-600">{errors.fullName}</p>
+                  )}
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -156,9 +303,12 @@ export default function LogisticsApplicationPage() {
                     required
                     value={formData.email}
                     onChange={handleChange}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                    className={`w-full px-4 py-3 border ${errors.email ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors`}
                     placeholder="john@example.com"
                   />
+                  {errors.email && (
+                    <p className="mt-1 text-sm text-red-600">{errors.email}</p>
+                  )}
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -170,9 +320,12 @@ export default function LogisticsApplicationPage() {
                     required
                     value={formData.phone}
                     onChange={handleChange}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                    className={`w-full px-4 py-3 border ${errors.phone ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors`}
                     placeholder="+1 (555) 123-4567"
                   />
+                  {errors.phone && (
+                    <p className="mt-1 text-sm text-red-600">{errors.phone}</p>
+                  )}
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -184,8 +337,11 @@ export default function LogisticsApplicationPage() {
                     required
                     value={formData.dateOfBirth}
                     onChange={handleChange}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                    className={`w-full px-4 py-3 border ${errors.dateOfBirth ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors`}
                   />
+                  {errors.dateOfBirth && (
+                    <p className="mt-1 text-sm text-red-600">{errors.dateOfBirth}</p>
+                  )}
                 </div>
               </div>
             </div>
@@ -203,13 +359,16 @@ export default function LogisticsApplicationPage() {
                     required
                     value={formData.vehicleType}
                     onChange={handleChange}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                    className={`w-full px-4 py-3 border ${errors.vehicleType ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors`}
                   >
                     <option value="">Select vehicle type</option>
                     {vehicleTypes.map(type => (
                       <option key={type} value={type}>{type}</option>
                     ))}
                   </select>
+                  {errors.vehicleType && (
+                    <p className="mt-1 text-sm text-red-600">{errors.vehicleType}</p>
+                  )}
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -234,9 +393,12 @@ export default function LogisticsApplicationPage() {
                     required
                     value={formData.licenseNumber}
                     onChange={handleChange}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                    className={`w-full px-4 py-3 border ${errors.licenseNumber ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors`}
                     placeholder="DL123456789"
                   />
+                  {errors.licenseNumber && (
+                    <p className="mt-1 text-sm text-red-600">{errors.licenseNumber}</p>
+                  )}
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -248,9 +410,12 @@ export default function LogisticsApplicationPage() {
                     required
                     value={formData.idNumber}
                     onChange={handleChange}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                    className={`w-full px-4 py-3 border ${errors.idNumber ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors`}
                     placeholder="National ID or Passport"
                   />
+                  {errors.idNumber && (
+                    <p className="mt-1 text-sm text-red-600">{errors.idNumber}</p>
+                  )}
                 </div>
               </div>
             </div>
@@ -270,9 +435,12 @@ export default function LogisticsApplicationPage() {
                       required
                       value={formData.address}
                       onChange={handleChange}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                      className={`w-full px-4 py-3 border ${errors.address ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors`}
                       placeholder="123 Main Street"
                     />
+                    {errors.address && (
+                      <p className="mt-1 text-sm text-red-600">{errors.address}</p>
+                    )}
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -284,9 +452,12 @@ export default function LogisticsApplicationPage() {
                       required
                       value={formData.city}
                       onChange={handleChange}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                      className={`w-full px-4 py-3 border ${errors.city ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors`}
                       placeholder="New York"
                     />
+                    {errors.city && (
+                      <p className="mt-1 text-sm text-red-600">{errors.city}</p>
+                    )}
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -298,9 +469,12 @@ export default function LogisticsApplicationPage() {
                       required
                       value={formData.state}
                       onChange={handleChange}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                      className={`w-full px-4 py-3 border ${errors.state ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors`}
                       placeholder="NY"
                     />
+                    {errors.state && (
+                      <p className="mt-1 text-sm text-red-600">{errors.state}</p>
+                    )}
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -312,9 +486,12 @@ export default function LogisticsApplicationPage() {
                       required
                       value={formData.postalCode}
                       onChange={handleChange}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                      className={`w-full px-4 py-3 border ${errors.postalCode ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors`}
                       placeholder="10001"
                     />
+                    {errors.postalCode && (
+                      <p className="mt-1 text-sm text-red-600">{errors.postalCode}</p>
+                    )}
                   </div>
                 </div>
                 <div>
@@ -360,14 +537,14 @@ export default function LogisticsApplicationPage() {
 
             {/* Terms & Submit */}
             <div>
-              <div className="flex items-start mb-8">
+              <div className="flex items-start mb-6">
                 <input
                   type="checkbox"
                   name="termsAccepted"
                   required
                   checked={formData.termsAccepted}
                   onChange={handleChange}
-                  className="w-5 h-5 mt-1 text-blue-600 rounded focus:ring-blue-500"
+                  className={`w-5 h-5 mt-1 text-blue-600 rounded focus:ring-blue-500 ${errors.termsAccepted ? 'border-red-500' : ''}`}
                   id="terms"
                 />
                 <label htmlFor="terms" className="ml-3 text-sm text-gray-700">
@@ -383,6 +560,15 @@ export default function LogisticsApplicationPage() {
                   that Kingz-World will conduct background checks as part of the application process.
                 </label>
               </div>
+              {errors.termsAccepted && (
+                <p className="mb-6 text-sm text-red-600">{errors.termsAccepted}</p>
+              )}
+
+              {Object.keys(errors).length > 0 && (
+                <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
+                  <p className="text-red-700 font-medium">Please fix the errors above before submitting.</p>
+                </div>
+              )}
 
               <div className="flex flex-col sm:flex-row gap-4">
                 <button
