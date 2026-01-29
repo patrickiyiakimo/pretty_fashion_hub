@@ -53,16 +53,16 @@ export default function LoginPage() {
             refreshToken: refreshToken ? "stored" : "not provided",
           });
 
-          toast.success("Welcome back! Redirecting...");
+          toast.success("Welcome back");
           
           setTimeout(() => {
             router.push("/shop");
           }, 1000);
         } else {
-          toast.error("Missing token or user data from server");
+          toast.error("Login failed. Please try again.");
         }
       } else {
-        toast.error(data.message || data.error || "Invalid credentials, please try again.");
+        toast.error(data.message || data.error || "Invalid username or password. please try again.");
       }
     } catch (error) {
       console.error("❌ Login error:", error);
