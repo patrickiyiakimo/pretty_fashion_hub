@@ -11,6 +11,7 @@ import {
   HiTicket,
   HiChat
 } from "react-icons/hi";
+import { FaCarSide } from "react-icons/fa";
 
 export default function AdminDashboard() {
   const adminCards = [
@@ -101,6 +102,17 @@ export default function AdminDashboard() {
       textColor: "text-gray-600",
       bgColor: "bg-gray-50",
       borderColor: "border-gray-200"
+    },
+    {
+      icon: <FaCarSide className="w-8 h-8" />,
+      title: "Logistics Delivery Applications",
+      description: "Manage delivery applications schedules, tracking, and logistics operations",
+      href: "/admin/logistics-delivery-applications",
+      count: "5",
+      color: "bg-yellow-500",
+      textColor: "text-yellow-600",
+      bgColor: "bg-yellow-50",
+      borderColor: "border-yellow-200"
     }
   ];
 
