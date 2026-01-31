@@ -42,55 +42,6 @@ export default function AdminUsers() {
     fetchUsers();
   }, [searchTerm, filterStatus]);
 
-//   const fetchUsers = async (page = 1) => {
-//     try {
-//       setLoading(true);
-//       setError("");
-
-//       const token = localStorage.getItem('adminToken'); // You'll need to handle admin authentication
-      
-//       const queryParams = new URLSearchParams({
-//         page: page.toString(),
-//         limit: '10',
-//         ...(searchTerm && { search: searchTerm }),
-//         ...(filterStatus !== 'all' && { status: filterStatus })
-//       });
-
-//       const response = await fetch(`${API_URL}/api/admin/users?${queryParams}`, {
-//         headers: {
-//           'Authorization': `Bearer ${token}`,
-//           'Content-Type': 'application/json'
-//         }
-//       });
-
-//       if (!response.ok) {
-//         toast.error(`Failed to fetch users: ${response.status}`);
-//       }
-
-//       const data = await response.json();
-      
-//       setUsers(data.users);
-//       setPagination(data.pagination);
-//     } catch (error) {
-//       console.error('Fetch users error:', error);
-//       setError('Failed to load users. Please try again.');
-      
-//       // Fallback to empty array if API fails
-//       setUsers([]);
-//       setPagination({
-//         currentPage: 1,
-//         totalPages: 1,
-//         totalUsers: 0,
-//         hasNext: false,
-//         hasPrev: false
-//       });
-//     } finally {
-//       setLoading(false);
-//     }
-//   };
-
-
-
 const fetchUsers = async (page = 1) => {
   try {
     setLoading(true);
