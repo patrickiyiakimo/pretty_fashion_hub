@@ -113,7 +113,7 @@ export default function LoginPage() {
               </svg>
             </motion.div>
             <h1 className="text-2xl font-bold text-white mb-2">Welcome Back</h1>
-            <p className="text-gray-300 text-sm">Sign in to your Kingz World account</p>
+            <p className="text-gray-300 text-sm">Sign in to your Vendly account</p>
           </div>
 
           {/* Form Section */}
@@ -217,7 +217,7 @@ export default function LoginPage() {
                 <div className="w-full border-t border-gray-300"></div>
               </div>
               <div className="relative flex justify-center text-sm">
-                <span className="px-2 bg-white text-gray-500">New to Kingz World?</span>
+                <span className="px-2 bg-white text-gray-500">New to Vendly?</span>
               </div>
             </div>
 

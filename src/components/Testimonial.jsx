@@ -11,7 +11,7 @@ const testimonials = [
     role: "Fashion Director",
     company: "Vogue Nigeria",
     photo: "/images/profile-image-1.jpg",
-    message: "Kingz World has completely redefined luxury fashion in Nigeria. Every piece tells a story of sophistication and attention to detail that's truly remarkable. The quality exceeds international standards while celebrating our rich cultural heritage.",
+    message: "Vendly has completely redefined luxury fashion in Nigeria. Every piece tells a story of sophistication and attention to detail that's truly remarkable. The quality exceeds international standards while celebrating our rich cultural heritage.",
     rating: 5,
     verified: true,
     featured: true
@@ -22,7 +22,7 @@ const testimonials = [
     role: "Lifestyle Influencer",
     company: "Style & Class",
     photo: "/images/profile-image-2.webp",
-    message: "As a content creator, I'm constantly searching for brands that offer both style and substance. Kingz World delivers exceptional quality that photographs beautifully and wears even better. Their customer service is as premium as their products.",
+    message: "As a content creator, I'm constantly searching for brands that offer both style and substance. Vendly delivers exceptional quality that photographs beautifully and wears even better. Their customer service is as premium as their products.",
     rating: 5,
     verified: true,
     featured: false
@@ -33,7 +33,7 @@ const testimonials = [
     role: "Tech Entrepreneur",
     company: "Innovate Africa",
     photo: "/images/profile-image-3.webp",
-    message: "The perfect fusion of contemporary design and traditional craftsmanship. I wear Kingz World to important meetings and consistently receive compliments. It's more than fashion—it's a statement of excellence and cultural pride.",
+    message: "The perfect fusion of contemporary design and traditional craftsmanship. I wear Vendly to important meetings and consistently receive compliments. It's more than fashion—it's a statement of excellence and cultural pride.",
     rating: 5,
     verified: true,
     featured: true
@@ -44,7 +44,7 @@ const testimonials = [
     role: "Creative Director",
     company: "Global Brands Ltd",
     photo: "/images/profile-4.jpg",
-    message: "Working with Kingz World has been exceptional. Their commitment to quality and innovative designs sets them apart in the fashion industry. Each collection tells a unique story that resonates with modern consumers.",
+    message: "Working with Vendly has been exceptional. Their commitment to quality and innovative designs sets them apart in the fashion industry. Each collection tells a unique story that resonates with modern consumers.",
     rating: 5,
     verified: true,
     featured: false
@@ -55,7 +55,7 @@ const testimonials = [
     role: "Business Executive",
     company: "Fortune 500 Company",
     photo: "/images/profile-5.jpg",
-    message: "The attention to detail in every Kingz World piece is extraordinary. From fabric selection to finishing, they demonstrate what true luxury means. My wardrobe has been transformed since discovering this brand.",
+    message: "The attention to detail in every Vendly piece is extraordinary. From fabric selection to finishing, they demonstrate what true luxury means. My wardrobe has been transformed since discovering this brand.",
     rating: 5,
     verified: true,
     featured: false
@@ -66,7 +66,7 @@ const testimonials = [
     role: "Fashion Photographer",
     company: "Lens Culture",
     photo: "/images/profile-6.jpg",
-    message: "Photographing Kingz World collections is always a pleasure. The garments have incredible texture, movement, and presence that translate beautifully through the lens. A brand that understands visual storytelling.",
+    message: "Photographing Vendly collections is always a pleasure. The garments have incredible texture, movement, and presence that translate beautifully through the lens. A brand that understands visual storytelling.",
     rating: 5,
     verified: true,
     featured: true
@@ -122,7 +122,7 @@ export default function Testimonials() {
           </h2>
           
           <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-            Discover why industry experts and fashion enthusiasts choose Kingz World for 
+            Discover why industry experts and fashion enthusiasts choose Vendly for 
             premium quality, exceptional craftsmanship, and transformative style experiences.
           </p>
         </div>
@@ -246,7 +246,7 @@ export default function Testimonials() {
                 Ready to Experience Excellence?
               </h3>
               <p className="text-xl text-purple-100 mb-8 max-w-2xl mx-auto">
-                Join thousands of satisfied customers who trust Kingz World for premium fashion that transforms.
+                Join thousands of satisfied customers who trust Vendly for premium fashion that transforms.
               </p>
               
               <div className="flex flex-col sm:flex-row gap-4 justify-center">

@@ -152,7 +152,7 @@ export default function Navbar() {
                 <div className="relative w-12 h-12 rounded-xl overflow-hidden border-2 border-yellow-400 group-hover:border-blue-600 transition-all duration-500 shadow-lg">
                   <Image
                     src="/images/84712fed-7915-4ea9-a169-ce0c5d8b3531.JPG"
-                    alt="Kingz World - Premium Fashion"
+                    alt="Vendly - Premium Fashion"
                     fill
                     className="object-cover transform group-hover:scale-110 transition-transform duration-500"
                     priority
@@ -162,11 +162,11 @@ export default function Navbar() {
                   <span className={`text-2xl font-bold transition-colors duration-300 ${
                     isScrolled ? "text-gray-900" : "text-white"
                   }`}>
-                    Kingz World
+                    Vendly
                   </span>
-                  <span className="text-xs text-yellow-400 font-medium tracking-wider">
+                  {/* <span className="text-xs text-yellow-400 font-medium tracking-wider">
                     PREMIUM FASHION
-                  </span>
+                  </span> */}
                 </div>
               </Link>
             </motion.div>
@@ -409,14 +409,14 @@ export default function Navbar() {
                       <div className="relative w-10 h-10 rounded-xl overflow-hidden border-2 border-yellow-400">
                         <Image
                           src="/images/84712fed-7915-4ea9-a169-ce0c5d8b3531.JPG"
-                          alt="Kingz World"
+                          alt="Vendly"
                           fill
                           className="object-cover"
                         />
                       </div>
                       <div className="flex flex-col">
-                        <span className="font-bold text-gray-900">Kingz World</span>
-                        <span className="text-xs text-yellow-400 font-medium">PREMIUM FASHION</span>
+                        <span className="font-bold text-gray-900">Vendly</span>
+                        {/* <span className="text-xs text-yellow-400 font-medium">PREMIUM FASHION</span> */}
                       </div>
                     </div>
                     <button

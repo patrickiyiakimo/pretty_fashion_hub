@@ -641,7 +641,7 @@ export default function AdminDashboard() {
               Admin Dashboard
             </h1>
             <p className="text-gray-600 text-base md:text-lg">
-              Welcome back, {user.fullname || user.email}! Manage your Kingz World platform.
+              Welcome back, {user.fullname || user.email}! Manage your Vendly platform.
             </p>
           </div>
           <div className="flex items-center gap-4 mt-4 lg:mt-0">
@@ -912,7 +912,7 @@ export default function AdminDashboard() {
         {/* Footer */}
         <div className="mt-8 text-center text-sm text-gray-500">
           <p>
-            Kingz World Admin Panel • Version 2.1.0 • 
+            Vendly Admin Panel • Version 2.1.0 • 
             Last updated: {new Date().toLocaleDateString()} • 
             <span className="ml-2 text-green-600 font-medium">
               {systemStatus.every(s => s.status === 'operational') ? 'All systems operational' : 'Some systems degraded'}

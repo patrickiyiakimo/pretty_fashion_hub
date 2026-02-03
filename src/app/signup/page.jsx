@@ -55,7 +55,7 @@ export default function SignUp() {
             refreshToken: refreshToken ? "stored" : "not provided",
           });
 
-          toast.success("Welcome to Kingz World! Your account has been created.");
+          toast.success("Welcome to Vendly! Your account has been created.");
 
           setTimeout(() => {
             router.push("/shop");
@@ -120,7 +120,7 @@ export default function SignUp() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
               </svg>
             </motion.div>
-            <h1 className="text-2xl font-bold text-white mb-2">Join Kingz World</h1>
+            <h1 className="text-2xl font-bold text-white mb-2">Join Vendly</h1>
             <p className="text-gray-300 text-sm">Create your account and start your fashion journey</p>
           </div>
 

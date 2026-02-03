@@ -717,7 +717,7 @@ export default function PartnerPage() {
             <strong>I agree to the Terms and Conditions</strong>
             <p className="mt-1">
               I confirm that all information provided is accurate and complete. 
-              I understand that Kingz World will review my application and may 
+              I understand that Vendly will review my application and may 
               contact me for additional information. I agree to comply with all 
               platform policies and requirements.
             </p>
@@ -771,7 +771,7 @@ export default function PartnerPage() {
                 <HiCheckCircle className="w-12 h-12 text-emerald-600" />
               </motion.div>
               <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
-                Welcome to Kingz World!
+                Welcome to Vendly!
               </h1>
               <p className="text-emerald-100 text-xl">
                 Your partnership application has been approved
@@ -784,7 +784,7 @@ export default function PartnerPage() {
                   Congratulations, {partnerData?.businessName}! 🎉
                 </h2>
                 <p className="text-gray-600 text-lg leading-relaxed">
-                  You are now an official partner of Kingz World. Start growing your business 
+                  You are now an official partner of Vendly. Start growing your business 
                   with our premium platform and reach thousands of fashion enthusiasts.
                 </p>
               </div>
@@ -953,7 +953,7 @@ export default function PartnerPage() {
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-6">
             Join the{" "}
             <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-blue-800 bg-clip-text text-transparent">
-              Kingz World
+              Vendly
             </span>
             <br />
             Partner Network
