@@ -28,15 +28,15 @@ export default function PreOrderPage() {
       { id: 'var-2', name: 'Silver', color: '#C0C0C0', available: true },
       { id: 'var-3', name: 'Space Gray', color: '#717378', available: false }
     ],
-    releaseDate: '2024-03-15',
-    estimatedShipping: '2024-03-20',
-    features: [
-      'Active Noise Cancellation',
-      '30-hour battery life',
-      'Quick charge (15 min = 5 hours)',
-      'Premium build materials',
-      'Voice assistant compatible'
-    ]
+    releaseDate: '2026-03-15',
+    estimatedShipping: '2026-03-20',
+    // features: [
+    //   'Active Noise Cancellation',
+    //   '30-hour battery life',
+    //   'Quick charge (15 min = 5 hours)',
+    //   'Premium build materials',
+    //   'Voice assistant compatible'
+    // ]
   };
 
   const handlePreOrder = async (formData) => {
@@ -115,7 +115,7 @@ export default function PreOrderPage() {
         <PreOrderBenefits />
 
         {/* Product Features */}
-        <div className="mt-16 bg-white rounded-lg shadow-sm p-8">
+        {/* <div className="mt-16 bg-white rounded-lg shadow-sm p-8">
           <h2 className="text-2xl font-bold text-gray-900 mb-6">Product Features</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {product.features.map((feature, index) => (
@@ -129,7 +129,7 @@ export default function PreOrderPage() {
               </div>
             ))}
           </div>
-        </div>
+        </div> */}
 
         {/* FAQ Section */}
         <div className="mt-16 bg-white rounded-lg shadow-sm p-8">
