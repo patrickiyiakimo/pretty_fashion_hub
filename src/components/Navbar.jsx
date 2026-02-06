@@ -121,7 +121,7 @@ export default function Navbar() {
         { name: "Sale", href: "/shop?sort=discount" },
       ]
     },
-    { name: "Collections", href: "/collections" },
+    // { name: "Collections", href: "/collections" },
     { name: "Brands", href: "/brands" },
     { name: "Partner", href: "/partner" },
     { name: "Pre-Order", href: "/pre-order" },

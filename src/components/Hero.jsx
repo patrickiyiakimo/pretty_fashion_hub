@@ -234,50 +234,6 @@ export default function Hero() {
           />
         ))}
       </div>
-
-      {/* Scroll Indicator */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.5 }}
-        className="absolute bottom-8 right-8 z-20 hidden lg:block"
-      >
-        <div className="flex items-center gap-2 text-white/70 text-sm">
-          <span className="rotate-90 whitespace-nowrap">Scroll to explore</span>
-          <motion.div
-            animate={{ y: [0, 8, 0] }}
-            transition={{ duration: 2, repeat: Infinity }}
-            className="w-px h-8 bg-white/50"
-          />
-        </div>
-      </motion.div>
-
-      {/* Social Proof Bar */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 1 }}
-        className="absolute bottom-0 left-0 right-0 bg-black/20 backdrop-blur-md border-t border-white/10 py-4"
-      >
-        <div className="container mx-auto px-6">
-          <div className="flex items-center justify-between text-sm text-white/80">
-            <div className="flex items-center gap-8">
-              <div className="flex items-center gap-2">
-                <span className="text-2xl font-bold text-white">10K+</span>
-                <span>Happy Customers</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="text-2xl font-bold text-white">500+</span>
-                <span>Premium Brands</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="text-2xl font-bold text-white">24/7</span>
-                <span>Customer Support</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </motion.div>
     </section>
   );
 }

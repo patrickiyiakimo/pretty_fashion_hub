@@ -89,28 +89,28 @@ export default function AdminDashboard() {
       borderColor: "border-green-200",
       endpoint: "/api/auth/admin/users"
     },
-    {
-      icon: <HiShoppingBag className="w-8 h-8" />,
-      title: "Product Management",
-      description: "Add, edit, and manage products in your catalog",
-      href: "/admin/products",
-      count: "156",
-      color: "bg-orange-500",
-      textColor: "text-orange-600",
-      bgColor: "bg-orange-50",
-      borderColor: "border-orange-200"
-    },
-    {
-      icon: <HiChartBar className="w-8 h-8" />,
-      title: "Analytics & Reports",
-      description: "View sales analytics, customer insights, and business reports",
-      href: "/admin/analytics",
-      count: "12",
-      color: "bg-indigo-500",
-      textColor: "text-indigo-600",
-      bgColor: "bg-indigo-50",
-      borderColor: "border-indigo-200"
-    },
+    // {
+    //   icon: <HiShoppingBag className="w-8 h-8" />,
+    //   title: "Product Management",
+    //   description: "Add, edit, and manage products in your catalog",
+    //   href: "/admin/products",
+    //   count: "156",
+    //   color: "bg-orange-500",
+    //   textColor: "text-orange-600",
+    //   bgColor: "bg-orange-50",
+    //   borderColor: "border-orange-200"
+    // },
+    // {
+    //   icon: <HiChartBar className="w-8 h-8" />,
+    //   title: "Analytics & Reports",
+    //   description: "View sales analytics, customer insights, and business reports",
+    //   href: "/admin/analytics",
+    //   count: "12",
+    //   color: "bg-indigo-500",
+    //   textColor: "text-indigo-600",
+    //   bgColor: "bg-indigo-50",
+    //   borderColor: "border-indigo-200"
+    // },
     {
       icon: <HiTicket className="w-8 h-8" />,
       title: "Logistics & Transactions",
@@ -123,28 +123,28 @@ export default function AdminDashboard() {
       borderColor: "border-red-200",
       endpoint: "/api/logistics"
     },
-    {
-      icon: <HiChat className="w-8 h-8" />,
-      title: "Customer Support",
-      description: "Manage customer inquiries, feedback, and support tickets",
-      href: "/admin/support",
-      count: "34",
-      color: "bg-pink-500",
-      textColor: "text-pink-600",
-      bgColor: "bg-pink-50",
-      borderColor: "border-pink-200"
-    },
-    {
-      icon: <HiCog className="w-8 h-8" />,
-      title: "System Settings",
-      description: "Configure website settings, payment methods, and preferences",
-      href: "/admin/settings",
-      count: "8",
-      color: "bg-gray-500",
-      textColor: "text-gray-600",
-      bgColor: "bg-gray-50",
-      borderColor: "border-gray-200"
-    },
+    // {
+    //   icon: <HiChat className="w-8 h-8" />,
+    //   title: "Customer Support",
+    //   description: "Manage customer inquiries, feedback, and support tickets",
+    //   href: "/admin/support",
+    //   count: "34",
+    //   color: "bg-pink-500",
+    //   textColor: "text-pink-600",
+    //   bgColor: "bg-pink-50",
+    //   borderColor: "border-pink-200"
+    // },
+    // {
+    //   icon: <HiCog className="w-8 h-8" />,
+    //   title: "System Settings",
+    //   description: "Configure website settings, payment methods, and preferences",
+    //   href: "/admin/settings",
+    //   count: "8",
+    //   color: "bg-gray-500",
+    //   textColor: "text-gray-600",
+    //   bgColor: "bg-gray-50",
+    //   borderColor: "border-gray-200"
+    // },
     {
       icon: <FaCarSide className="w-8 h-8" />,
       title: "Logistics Delivery Applications",
@@ -653,7 +653,7 @@ export default function AdminDashboard() {
               Refresh
             </button>
             <div className="text-right">
-              <p className="text-sm text-gray-500">Admin User</p>
+              <p className="text-sm text-gray-500">Role</p>
               <p className="text-gray-700 font-medium">
                 {user.role || user.userType || 'Administrator'}
               </p>
@@ -907,17 +907,6 @@ export default function AdminDashboard() {
               </div>
             </div>
           </div>
-        </div>
-
-        {/* Footer */}
-        <div className="mt-8 text-center text-sm text-gray-500">
-          <p>
-            Vendly Admin Panel • Version 2.1.0 • 
-            Last updated: {new Date().toLocaleDateString()} • 
-            <span className="ml-2 text-green-600 font-medium">
-              {systemStatus.every(s => s.status === 'operational') ? 'All systems operational' : 'Some systems degraded'}
-            </span>
-          </p>
         </div>
       </div>
     </div>
