@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import ProductCard from "@/components/ProductCard";
+import ProductCard from "@/app/(website)/components/ProductCard";
 
 const API_ENDPOINT = process.env.NEXT_PUBLIC_API_ENDPOINT || "http://localhost:4000";
 

@@ -592,7 +592,7 @@ export default function AdminDashboard() {
   // Show loading while checking auth
   if (loading.auth) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white pt-20 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white pt-10 flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
           <p className="mt-4 text-gray-600">Checking authentication...</p>
@@ -632,7 +632,7 @@ export default function AdminDashboard() {
   }
 
   return (
-    <div className="min-h-screen pt-20 bg-gradient-to-br from-gray-50 to-gray-100 p-4 md:p-6">
+    <div className="min-h-screen pt-5 bg-gradient-to-br from-gray-50 to-gray-100 p-4 md:p-6">
       <div className="max-w-7xl mx-auto">
         {/* Header with User Info */}
         <div className="flex flex-col pt-28 lg:flex-row justify-between items-start lg:items-center mb-8">
@@ -665,6 +665,12 @@ export default function AdminDashboard() {
             >
               {user.fullname?.charAt(0) || user.email?.charAt(0) || 'A'}
             </div>
+             <Link
+                          href="/admin"
+                          className="bg-gray-900 text-white px-4 py-2 rounded-lg hover:bg-gray-800 transition-colors"
+                        >
+                          Back to Admin
+                        </Link>
           </div>
         </div>
 

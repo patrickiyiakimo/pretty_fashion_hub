@@ -14,6 +14,7 @@ import {
   HiChartBar
 } from "react-icons/hi";
 import toast from "react-hot-toast";
+import Link from "next/link";
 
 const API_ENDPOINT = process.env.NEXT_PUBLIC_API_ENDPOINT || "http://localhost:4000";
 
@@ -276,6 +277,12 @@ export default function PartnersManagement() {
               <HiRefresh className={`w-5 h-5 ${loading ? 'animate-spin' : ''}`} />
               Refresh
             </button>
+             <Link
+                  href="/admin"
+                  className="bg-gray-900 text-white px-4 py-2 rounded-lg hover:bg-gray-800 transition-colors"
+                >
+                  Back to Admin
+                </Link>
           </div>
         </div>
 

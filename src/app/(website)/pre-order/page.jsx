@@ -2,10 +2,10 @@
 'use client';
 
 import { useState } from 'react';
-import Footer from '../../components/Footer';
-import PreOrderProduct from '../../components/PreOrderProduct';
-import PreOrderBenefits from '../../components/PreOrderBenefits';
-import PreOrderForm from '../../components/PreOrderForm';
+import Footer from '../components/Footer';
+import PreOrderProduct from '../components/PreOrderProduct';
+import PreOrderBenefits from '../components/PreOrderBenefits';
+import PreOrderForm from '../components/PreOrderForm';
 
 export default function PreOrderPage() {
   const [selectedVariant, setSelectedVariant] = useState(null);

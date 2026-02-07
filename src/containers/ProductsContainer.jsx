@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import { allProducts } from "@/common/ProductsContainer";
-import ProductCard from "@/components/ProductCard";
+import ProductCard from "@/app/(website)/components/ProductCard";
 
 export default function ProductsContainerUI() {
   const [category, setCategory] = useState("All");

@@ -1,8 +1,5 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./styles/globals.css";
-import CTASection from "../components/CTA";
-import Footer from "../components/Footer";
-import Navbar from "../components/Navbar";
 import { CartProvider } from "../context/CartContext";
 import { AuthProvider } from "@/context/AuthContext";
 
@@ -17,8 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "Kingz_World",
-  description: "Luxury fashion boutique in Gwarimpa, Abuja",
+  title: "Vendly",
+  description: "Vendly is your premier online marketplace...",
 };
 
 export default function RootLayout({ children }) {
@@ -26,12 +23,9 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
         <AuthProvider>
-        <CartProvider>
-          <Navbar />
-          {children}
-          <CTASection />
-          <Footer />
-        </CartProvider>
+          <CartProvider>
+            {children}
+          </CartProvider>
         </AuthProvider>
       </body>
     </html>

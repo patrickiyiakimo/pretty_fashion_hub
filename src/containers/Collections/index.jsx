@@ -1,4 +1,4 @@
-import FeaturedCollections from "@/components/FeaturedCollections";
+import FeaturedCollections from "@/app/(website)/components/FeaturedCollections";
 
 const collectionsData = [
   {

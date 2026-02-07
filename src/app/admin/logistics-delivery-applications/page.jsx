@@ -24,6 +24,7 @@ import {
 
 import { MdEmail, MdPhone, MdLocationOn, MdPerson, MdAdminPanelSettings } from 'react-icons/md';
 import toast from 'react-hot-toast';
+import Link from 'next/link';
 
 const API_ENDPOINT = process.env.NEXT_PUBLIC_API_ENDPOINT || "http://localhost:4000";
 
@@ -455,12 +456,12 @@ export default function LogisticsDeliveryApplicationsPage() {
   };
 
   // Debug button for testing
-  const handleDebug = () => {
-    debugAuth();
-    console.log('Current applications:', applications);
-    console.log('Current user:', user);
-    console.log('Is admin:', isAdmin);
-  };
+  // const handleDebug = () => {
+  //   debugAuth();
+  //   console.log('Current applications:', applications);
+  //   console.log('Current user:', user);
+  //   console.log('Is admin:', isAdmin);
+  // };
 
   // Request admin access
   const requestAdminAccess = () => {
@@ -525,18 +526,18 @@ export default function LogisticsDeliveryApplicationsPage() {
               <div className="flex items-center gap-3">
                 <div className="flex items-center gap-2 text-gray-600">
                   <FaUserShield className="text-blue-600" />
-                  <span>Welcome, {user.name || 'Admin'}</span>
+                  <span>Welcome, {user.email || 'Admin'}</span>
                 </div>
                 <div className="text-sm text-gray-500">
                   Role: {user.role || 'Administrator'}
                 </div>
-                <button
+                {/* <button
                   onClick={handleDebug}
                   className="text-xs text-gray-400 hover:text-gray-600"
                   title="Debug"
                 >
                   🐛
-                </button>
+                </button> */}
               </div>
             </div>
             
@@ -549,13 +550,12 @@ export default function LogisticsDeliveryApplicationsPage() {
                 <FaSync className={loading ? 'animate-spin' : ''} />
                 Refresh
               </button>
-              <button
-                onClick={handleLogout}
-                className="px-4 py-2 bg-red-50 text-red-700 rounded-xl hover:bg-red-100 transition-colors flex items-center gap-2"
-              >
-                <FaSignOutAlt />
-                Logout
-              </button>
+               <Link
+              href="/admin"
+              className="bg-gray-900 text-white px-4 py-2 rounded-lg hover:bg-gray-800 transition-colors"
+            >
+              Back to Admin
+            </Link>
             </div>
           </div>
         </div>

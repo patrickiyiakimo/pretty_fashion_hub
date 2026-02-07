@@ -296,7 +296,7 @@ export default function Navbar() {
                         {/* User Info - SHOWING ONLY NAME */}
                         <div className="px-4 py-4 bg-gradient-to-r from-gray-50 to-blue-50 border-b border-gray-100">
                           <p className="font-semibold text-gray-900 text-lg">{user.firstName} {user.lastName}</p>
-                          <p className="text-sm text-blue-600 font-medium mt-1">Welcome back!</p>
+                          <p className="text-sm text-blue-600 font-medium mt-1">Welcome back! {user.firstName}</p>
                         </div>
 
                         {/* Menu Items */}
