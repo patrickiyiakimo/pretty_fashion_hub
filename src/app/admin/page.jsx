@@ -595,7 +595,7 @@ export default function AdminDashboard() {
       <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white pt-10 flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
-          <p className="mt-4 text-gray-600">Checking authentication...</p>
+          {/* <p className="mt-4 text-gray-600">Checking authentication...</p> */}
         </div>
       </div>
     );
@@ -666,10 +666,10 @@ export default function AdminDashboard() {
               {user.fullname?.charAt(0) || user.email?.charAt(0) || 'A'}
             </div>
              <Link
-                          href="/admin"
+                          href="/"
                           className="bg-gray-900 text-white px-4 py-2 rounded-lg hover:bg-gray-800 transition-colors"
                         >
-                          Back to Admin
+                          Back to Home
                         </Link>
           </div>
         </div>
