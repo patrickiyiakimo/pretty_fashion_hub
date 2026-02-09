@@ -411,24 +411,57 @@ export default function ProductCard({ product }) {
     : null;
 
   // Fix image URL - handle both absolute and relative paths
-  const getImageUrl = (imagePath) => {
-    if (!imagePath) return '/images/placeholder-product.jpg';
+  // const getImageUrl = (imagePath) => {
+  //   if (!imagePath) return '/images/placeholder-product.jpg';
     
-    // If it's already a full URL, return as is
-    if (imagePath.startsWith('http')) return imagePath;
+  //   // If it's already a full URL, return as is
+  //   if (imagePath.startsWith('http')) return imagePath;
     
-    // If it's a relative path starting with /uploads, make it absolute
-    if (imagePath.startsWith('/uploads')) {
+  //   // If it's a relative path starting with /uploads, make it absolute
+  //   if (imagePath.startsWith('/uploads')) {
+  //     return `${API_ENDPOINT}${imagePath}`;
+  //   }
+    
+  //   // Handle array of images
+  //   if (Array.isArray(imagePath) && imagePath.length > 0) {
+  //     return getImageUrl(imagePath[0]);
+  //   }
+    
+  //   return imagePath;
+  // };
+
+
+
+  // In ProductCard.jsx
+// In ProductCard.jsx - FINAL VERSION
+const getImageUrl = (imagePath) => {
+  const API_ENDPOINT = process.env.NEXT_PUBLIC_API_ENDPOINT || "http://localhost:4000";
+  
+  if (!imagePath) {
+    return `${API_ENDPOINT}/api/placeholder-image`;
+  }
+  
+  // If it's already a full proxy URL, return as is
+  if (imagePath.includes('/api/proxy-image/')) {
+    // If it starts with /, add the API endpoint
+    if (imagePath.startsWith('/')) {
       return `${API_ENDPOINT}${imagePath}`;
     }
-    
-    // Handle array of images
-    if (Array.isArray(imagePath) && imagePath.length > 0) {
-      return getImageUrl(imagePath[0]);
+    // If it's already a full URL, return as is
+    if (imagePath.startsWith('http')) {
+      return imagePath;
     }
-    
-    return imagePath;
-  };
+  }
+  
+  // If it's an old /uploads/ URL, convert to proxy
+  if (imagePath.includes('/uploads/')) {
+    const filename = imagePath.replace('/uploads/', '');
+    return `${API_ENDPOINT}/api/proxy-image/${filename}`;
+  }
+  
+  // If it's just a filename, use proxy
+  return `${API_ENDPOINT}/api/proxy-image/${imagePath}`;
+};
 
   const imageUrl = getImageUrl(product.images?.[0] || product.image);
 
