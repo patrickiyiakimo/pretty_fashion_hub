@@ -151,7 +151,7 @@ export default function ShopPage() {
         <Toaster position="top-right" />
         <div className="text-center">
           <div className="w-16 h-16 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-gray-600">Checking authentication...</p>
+          {/* <p className="text-gray-600">Checking authentication...</p> */}
         </div>
       </section>
     );
@@ -185,7 +185,7 @@ export default function ShopPage() {
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center mb-12">
             <h1 className="text-4xl font-bold text-gray-900 mb-4">Loading Products...</h1>
-            <p className="text-gray-600">Welcome back, {user.name || user.email}!</p>
+            <p className="text-gray-600">Welcome back, {user.fullname || user.email}!</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {Array.from({ length: 8 }).map((_, i) => (

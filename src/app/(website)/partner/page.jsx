@@ -121,7 +121,7 @@ export default function PartnerPage() {
     const savedUser = localStorage.getItem("user");
 
     if (!token || !savedUser) {
-      toast.error("Authentication required. Redirecting to login...");
+      toast.error("You need to Log in");
       setTimeout(() => window.location.href = "/login", 2000);
       return;
     }
@@ -736,7 +736,7 @@ export default function PartnerPage() {
           className="text-center"
         >
           <div className="w-16 h-16 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-gray-600 text-lg font-medium">Checking your application status...</p>
+          {/* <p className="text-gray-600 text-lg font-medium">Checking your application status...</p> */}
         </motion.div>
       </section>
     );
