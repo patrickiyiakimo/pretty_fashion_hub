@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, useRef } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { 
   HiBuildingStorefront, 
   HiCheckCircle, 
@@ -16,26 +16,23 @@ import {
   HiIdentification,
   HiBriefcase,
   HiDocumentText,
-  HiBanknotes
+  HiBanknotes,
+  HiLockClosed
 } from "react-icons/hi2";
 import toast, { Toaster } from "react-hot-toast";
 import Confetti from "react-confetti";
+import Link from "next/link";
 
 const API_ENDPOINT = process.env.NEXT_PUBLIC_API_ENDPOINT || "http://localhost:4000";
 
 export default function PartnerPage() {
   const [formData, setFormData] = useState({
-    // Business Information
     businessName: "",
     businessType: "",
     taxId: "",
     yearsInBusiness: "",
-    
-    // Contact Information
     email: "",
     phone: "",
-    
-    // Address Information
     address: {
       street: "",
       city: "",
@@ -43,16 +40,12 @@ export default function PartnerPage() {
       country: "Nigeria",
       postalCode: ""
     },
-    
-    // Business Details
     description: "",
     category: "",
     website: "",
     productCategories: [],
     annualRevenue: "",
     numberOfEmployees: "",
-    
-    // Legal & Compliance
     businessRegistrationNumber: "",
     hasPhysicalStore: false,
     acceptTerms: false
@@ -61,39 +54,25 @@ export default function PartnerPage() {
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [status, setStatus] = useState("");
-  const [user, setUser] = useState(null);
   const [checking, setChecking] = useState(true);
   const [error, setError] = useState("");
   const [dimensions, setDimensions] = useState({ width: 300, height: 300 });
   const [partnerData, setPartnerData] = useState(null);
   const [currentStep, setCurrentStep] = useState(1);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [authError, setAuthError] = useState(false);
 
   const formRef = useRef();
 
   const productCategories = [
-    "Men's Fashion",
-    "Women's Fashion",
-    "Children's Clothing",
-    "Footwear",
-    "Accessories",
-    "Jewelry & Watches",
-    "Bags & Luggage",
-    "Beauty & Cosmetics",
-    "Sportswear",
-    "Traditional Attire",
-    "Luxury Items",
-    "Other"
+    "Men's Fashion", "Women's Fashion", "Children's Clothing", "Footwear",
+    "Accessories", "Jewelry & Watches", "Bags & Luggage", "Beauty & Cosmetics",
+    "Sportswear", "Traditional Attire", "Luxury Items", "Other"
   ];
 
   const businessTypes = [
-    "Retail Store",
-    "Online Store",
-    "Manufacturer",
-    "Wholesaler",
-    "Fashion Designer",
-    "Boutique",
-    "Distributor",
-    "Other"
+    "Retail Store", "Online Store", "Manufacturer", "Wholesaler",
+    "Fashion Designer", "Boutique", "Distributor", "Other"
   ];
 
   const nigerianStates = [
@@ -104,7 +83,7 @@ export default function PartnerPage() {
   ];
 
   useEffect(() => {
-    checkAuthAndStatus();
+    checkAuthentication();
   }, []);
 
   useEffect(() => {
@@ -116,53 +95,100 @@ export default function PartnerPage() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  const checkAuthAndStatus = async () => {
-    const token = localStorage.getItem("accessToken");
-    const savedUser = localStorage.getItem("user");
-
-    if (!token || !savedUser) {
-      toast.error("You need to Log in");
-      setTimeout(() => window.location.href = "/login", 2000);
-      return;
-    }
-
-    try {
-      const parsedUser = JSON.parse(savedUser);
-      setUser(parsedUser);
-      setFormData(prev => ({ 
-        ...prev, 
-        email: parsedUser.email || prev.email 
-      }));
-
-      await checkPartnerStatus(parsedUser);
-    } catch (error) {
-      console.error("Auth check error:", error);
-      toast.error("Authentication failed");
-      setTimeout(() => window.location.href = "/login", 2000);
-    }
-  };
-
-  const checkPartnerStatus = async (currentUser) => {
+  const checkAuthentication = async () => {
     setChecking(true);
-    setError("");
     
     try {
-      const token = localStorage.getItem("accessToken");
-      
+      // First try to get user data from localStorage (for email prefill)
+      const savedUser = localStorage.getItem("user");
+      if (savedUser) {
+        const userData = JSON.parse(savedUser);
+        setFormData(prev => ({ 
+          ...prev, 
+          email: userData.email || prev.email 
+        }));
+      }
+
+      // Try to access the partner endpoint to verify authentication
       const response = await fetch(`${API_ENDPOINT}/api/partners/me`, {
         method: "GET",
+        credentials: "include",
         headers: {
-          "Authorization": `Bearer ${token}`,
           "Content-Type": "application/json"
         }
       });
 
-      // Handle 404 - endpoint doesn't exist, which means no application
+      // Handle different response statuses
+      if (response.status === 401) {
+        // Not authenticated - show login prompt but don't redirect immediately
+        console.log("User not authenticated");
+        setAuthError(true);
+        setIsAuthenticated(false);
+        setChecking(false);
+        return;
+      }
+
       if (response.status === 404) {
-        console.log("No partner application found (404)");
+        // Authenticated but no application - this is fine
+        console.log("No partner application found");
+        setIsAuthenticated(true);
         setSubmitted(false);
         setStatus("");
         setChecking(false);
+        return;
+      }
+
+      // Check if response is JSON
+      const contentType = response.headers.get('content-type');
+      if (!contentType || !contentType.includes('application/json')) {
+        throw new Error("Invalid response format");
+      }
+
+      const data = await response.json();
+
+      if (data.hasApplication && data.partner) {
+        setPartnerData(data.partner);
+        setStatus(data.partner.status);
+        setSubmitted(true);
+        setIsAuthenticated(true);
+        
+        // Pre-fill form with partner data
+        setFormData(prev => ({
+          ...prev,
+          businessName: data.partner.businessName || prev.businessName,
+          email: data.partner.email || prev.email,
+          phone: data.partner.phone || prev.phone,
+        }));
+      } else {
+        setIsAuthenticated(true);
+        setSubmitted(false);
+        setStatus("");
+      }
+      
+    } catch (error) {
+      console.error("Authentication check error:", error);
+      setAuthError(true);
+      setIsAuthenticated(false);
+    } finally {
+      setChecking(false);
+    }
+  };
+
+  const checkPartnerStatus = async () => {
+    setError("");
+    
+    try {
+      const response = await fetch(`${API_ENDPOINT}/api/partners/me`, {
+        method: "GET",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json"
+        }
+      });
+
+      if (response.status === 404) {
+        setSubmitted(false);
+        setStatus("");
         return;
       }
 
@@ -170,14 +196,9 @@ export default function PartnerPage() {
         throw new Error("Authentication expired");
       }
 
-      // Check if response is JSON
       const contentType = response.headers.get('content-type');
       if (!contentType || !contentType.includes('application/json')) {
-        const text = await response.text();
-        if (text.startsWith('<!DOCTYPE') || text.startsWith('<')) {
-          throw new Error("Server returned HTML page. Check API endpoint.");
-        }
-        throw new Error(`Invalid response format: ${contentType}`);
+        throw new Error("Invalid response format");
       }
 
       const data = await response.json();
@@ -194,19 +215,8 @@ export default function PartnerPage() {
       console.error("Status check error:", err);
       if (err.message === "Authentication expired") {
         toast.error("Session expired. Please login again.");
-        localStorage.clear();
         setTimeout(() => window.location.href = "/login", 2000);
-      } else if (err.message.includes("HTML") || err.message.includes("Invalid response")) {
-        // Don't show error for 404, it's expected
-        if (!err.message.includes("404")) {
-          toast.error("Server configuration error. Please try again later.");
-        }
       }
-      // For 404 and other errors, assume no application exists
-      setSubmitted(false);
-      setStatus("");
-    } finally {
-      setChecking(false);
     }
   };
 
@@ -250,14 +260,6 @@ export default function PartnerPage() {
     setLoading(true);
     setError("");
 
-    const token = localStorage.getItem("accessToken");
-    if (!token) {
-      toast.error("Authentication required");
-      setTimeout(() => window.location.href = "/login", 2000);
-      return;
-    }
-
-    // Validate required fields
     if (!formData.acceptTerms) {
       toast.error("Please accept the terms and conditions");
       setLoading(false);
@@ -267,21 +269,16 @@ export default function PartnerPage() {
     try {
       const response = await fetch(`${API_ENDPOINT}/api/partners/apply`, {
         method: "POST",
+        credentials: "include",
         headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`
+          "Content-Type": "application/json"
         },
         body: JSON.stringify(formData)
       });
 
-      // Check if response is JSON
       const contentType = response.headers.get('content-type');
       if (!contentType || !contentType.includes('application/json')) {
-        const text = await response.text();
-        if (text.startsWith('<!DOCTYPE') || text.startsWith('<')) {
-          throw new Error("Server error. Please try again later.");
-        }
-        throw new Error(`Invalid response: ${response.status}`);
+        throw new Error("Server error. Please try again later.");
       }
 
       const data = await response.json();
@@ -296,18 +293,23 @@ export default function PartnerPage() {
       }
     } catch (err) {
       console.error("Submission error:", err);
-      toast.error(err.message);
-      setError(err.message);
+      
+      if (err.message.includes("401")) {
+        toast.error("Session expired. Please login again.");
+        setTimeout(() => window.location.href = "/login", 2000);
+      } else {
+        toast.error(err.message);
+        setError(err.message);
+      }
     } finally {
       setLoading(false);
     }
   };
 
   const handleRefreshStatus = async () => {
-    if (!user) return;
     setChecking(true);
     try {
-      await checkPartnerStatus(user);
+      await checkPartnerStatus();
       toast.success("Status updated");
     } catch (err) {
       toast.error("Failed to refresh status");
@@ -736,10 +738,14 @@ export default function PartnerPage() {
           className="text-center"
         >
           <div className="w-16 h-16 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          {/* <p className="text-gray-600 text-lg font-medium">Checking your application status...</p> */}
+          <p className="text-gray-600">Checking authentication...</p>
         </motion.div>
       </section>
     );
+  }
+
+  if (!isAuthenticated) {
+    return null; // Will redirect in useEffect
   }
 
   if (submitted && status === "approved") {
@@ -812,8 +818,11 @@ export default function PartnerPage() {
                   Go to Dashboard
                 </motion.a>
                 <motion.button
-                  onClick={() => {
-                    localStorage.clear();
+                  onClick={async () => {
+                    await fetch(`${API_ENDPOINT}/api/auth/logout`, {
+                      method: "POST",
+                      credentials: "include"
+                    });
                     window.location.href = "/login";
                   }}
                   whileHover={{ scale: 1.05 }}

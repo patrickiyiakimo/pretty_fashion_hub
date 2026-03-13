@@ -612,7 +612,7 @@ export default function ProductCard({ product }) {
           }`}
           onLoad={() => setImageLoaded(true)}
           onError={(e) => {
-            console.error('❌ Failed to load image:', imageUrl);
+            console.log('❌ Failed to load image:', imageUrl);
             setImageError(true);
           }}
           priority={false}

@@ -27,6 +27,7 @@ export default function PartnerDashboard() {
   const [loading, setLoading] = useState(false);
   const [fetching, setFetching] = useState(false);
   const [showForm, setShowForm] = useState(false);
+  const [authChecked, setAuthChecked] = useState(false);
 
   const API_ENDPOINT = process.env.NEXT_PUBLIC_API_ENDPOINT || "http://localhost:4000";
 
@@ -43,15 +44,9 @@ export default function PartnerDashboard() {
     "Other"
   ];
 
-  // 🔐 Load and validate token on mount
+  // 🔐 Check authentication via cookies on mount
   useEffect(() => {
-    const token = localStorage.getItem("accessToken");
-    if (!token) {
-      toast.error("Authentication required. Redirecting...");
-      setTimeout(() => window.location.href = "/login", 2000);
-      return;
-    }
-    fetchProducts(token);
+    checkAuthentication();
     
     // Cleanup preview on unmount
     return () => {
@@ -59,14 +54,54 @@ export default function PartnerDashboard() {
     };
   }, []);
 
-  // 🛍️ Fetch partner products
-  const fetchProducts = async (token) => {
+  // Check if user is authenticated via cookies
+  const checkAuthentication = async () => {
+    try {
+      // Try to access a protected endpoint to verify cookies
+      const response = await fetch(`${API_ENDPOINT}/api/auth/me`, {
+        method: "GET",
+        credentials: "include", // This sends cookies with the request
+        headers: {
+          "Content-Type": "application/json"
+        }
+      });
+
+      if (response.status === 401) {
+        // Not authenticated
+        toast.error("Authentication required. Redirecting...");
+        setTimeout(() => window.location.href = "/login", 2000);
+        return;
+      }
+
+      if (response.ok) {
+        const data = await response.json();
+        if (data.user) {
+          // User is authenticated, fetch products
+          console.log("✅ User authenticated:", data.user.email);
+          fetchProducts();
+        } else {
+          toast.error("Authentication failed");
+          setTimeout(() => window.location.href = "/login", 2000);
+        }
+      }
+    } catch (error) {
+      console.error("Authentication check error:", error);
+      toast.error("Failed to verify authentication");
+      setTimeout(() => window.location.href = "/login", 2000);
+    } finally {
+      setAuthChecked(true);
+    }
+  };
+
+  // 🛍️ Fetch partner products using cookies
+  const fetchProducts = async () => {
     try {
       setFetching(true);
       const res = await fetch(`${API_ENDPOINT}/api/partners/products`, {
+        credentials: "include", // This sends cookies with the request
         headers: {
-          Authorization: `Bearer ${token}`,
-        },
+          "Content-Type": "application/json"
+        }
       });
 
       if (res.status === 401) {
@@ -84,7 +119,6 @@ export default function PartnerDashboard() {
       console.error("Error fetching products:", error);
       if (error.message === "Authentication expired") {
         toast.error("Session expired. Please login again.");
-        localStorage.clear();
         setTimeout(() => window.location.href = "/login", 2000);
       } else {
         toast.error(error.message || "Failed to load products");
@@ -120,12 +154,7 @@ export default function PartnerDashboard() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const token = localStorage.getItem("accessToken");
-    if (!token) {
-      toast.error("Authentication required");
-      return;
-    }
-
+    
     // Validation
     if (!newProduct.name.trim() || !newProduct.price || !newProduct.description.trim()) {
       toast.error("Please fill in all required fields");
@@ -166,13 +195,16 @@ export default function PartnerDashboard() {
 
       const res = await fetch(url, {
         method,
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        credentials: "include", // This sends cookies with the request
         body: formData,
+        // Don't set Content-Type header - browser will set it with boundary for FormData
       });
 
       console.log('📥 Response status:', res.status);
+
+      if (res.status === 401) {
+        throw new Error("Authentication expired");
+      }
 
       const contentType = res.headers.get('content-type');
       let data;
@@ -200,7 +232,7 @@ export default function PartnerDashboard() {
         resetForm();
         
         // Refresh products to get the latest data
-        fetchProducts(token);
+        fetchProducts();
       } else {
         console.log('❌ Server error:', data);
         throw new Error(data.error || "Failed to save product");
@@ -208,7 +240,10 @@ export default function PartnerDashboard() {
     } catch (error) {
       console.error("❌ Error submitting product:", error);
       
-      if (error.message.includes('JSON') || error.message.includes('DOCTYPE')) {
+      if (error.message === "Authentication expired") {
+        toast.error("Session expired. Please login again.");
+        setTimeout(() => window.location.href = "/login", 2000);
+      } else if (error.message.includes('JSON') || error.message.includes('DOCTYPE')) {
         toast.error("Server error. Please check if the uploads directory exists and try again.");
       } else {
         toast.error(error.message || "Failed to save product");
@@ -220,20 +255,21 @@ export default function PartnerDashboard() {
 
   // 🗑️ Delete product
   const handleDelete = async (id) => {
-    const token = localStorage.getItem("accessToken");
-    if (!token) return;
-
     if (!confirm("Are you sure you want to delete this product? This action cannot be undone.")) return;
 
     try {
       const res = await fetch(`${API_ENDPOINT}/api/partners/products/${id}`, {
         method: "DELETE",
-        headers: { 
-          Authorization: `Bearer ${token}`,
+        credentials: "include", // This sends cookies with the request
+        headers: {
           'Content-Type': 'application/json'
         },
       });
       
+      if (res.status === 401) {
+        throw new Error("Authentication expired");
+      }
+
       const data = await res.json();
 
       if (res.ok) {
@@ -244,7 +280,13 @@ export default function PartnerDashboard() {
       }
     } catch (error) {
       console.error("Error deleting product:", error);
-      toast.error(error.message || "Failed to delete product");
+      
+      if (error.message === "Authentication expired") {
+        toast.error("Session expired. Please login again.");
+        setTimeout(() => window.location.href = "/login", 2000);
+      } else {
+        toast.error(error.message || "Failed to delete product");
+      }
     }
   };
 
@@ -311,6 +353,22 @@ export default function PartnerDashboard() {
       currency: 'NGN',
     }).format(amount);
   };
+
+  // Show loading while checking auth
+  if (!authChecked) {
+    return (
+      <div className="min-h-screen bg-gray-50 py-8">
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="flex justify-center items-center h-64">
+            <div className="text-center">
+              <div className="w-12 h-12 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+              <p className="text-gray-600">Checking authentication...</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <section className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-blue-50 py-24 px-4 sm:px-6 lg:px-8">

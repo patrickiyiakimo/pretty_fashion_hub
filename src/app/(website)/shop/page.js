@@ -25,51 +25,81 @@ export default function ShopPage() {
   });
   const [authChecked, setAuthChecked] = useState(false);
   const [user, setUser] = useState(null);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const router = useRouter();
 
-  // Check authentication first
+  // Check authentication by verifying cookies with the server
   useEffect(() => {
     checkAuthentication();
   }, []);
 
   // Fetch products only after authentication check
   useEffect(() => {
-    if (authChecked && user) {
+    if (authChecked && isAuthenticated) {
       fetchProducts();
     }
-  }, [filters, pagination.currentPage, authChecked, user]);
+  }, [filters, pagination.currentPage, authChecked, isAuthenticated]);
 
-  const checkAuthentication = () => {
-    const token = localStorage.getItem("accessToken");
-    const savedUser = localStorage.getItem("user");
-
-    if (!token || !savedUser) {
-      toast.error("Please login to access the shop");
-      setTimeout(() => router.push("/login"), 1500);
-      return;
-    }
-
+  const checkAuthentication = async () => {
     try {
-      const parsedUser = JSON.parse(savedUser);
-      setUser(parsedUser);
-      setAuthChecked(true);
+      // First, check if we can get user info from a protected endpoint
+      // This will automatically send cookies with the request
+      const response = await fetch(`${API_ENDPOINT}/api/auth/me`, {
+        method: "GET",
+        credentials: "include", // Important: This sends cookies
+        headers: {
+          "Content-Type": "application/json"
+        }
+      });
+
+      if (response.status === 401) {
+        // Not authenticated
+        console.log("User not authenticated");
+        setIsAuthenticated(false);
+        setAuthChecked(true);
+        
+        // Show login prompt but don't redirect immediately
+        toast.error("Please login to access the shop");
+        setTimeout(() => router.push("/login"), 2000);
+        return;
+      }
+
+      if (response.ok) {
+        const data = await response.json();
+        
+        if (data.user) {
+          // User is authenticated
+          setIsAuthenticated(true);
+          setUser(data.user);
+          
+          // Optionally store minimal user data in localStorage for UI convenience
+          localStorage.setItem("user", JSON.stringify({
+            id: data.user.id,
+            fullname: data.user.fullname,
+            email: data.user.email
+          }));
+          
+          console.log("✅ User authenticated:", data.user.email);
+        } else {
+          // No user data in response
+          setIsAuthenticated(false);
+          toast.error("Authentication failed");
+          setTimeout(() => router.push("/login"), 2000);
+        }
+      }
     } catch (error) {
-      console.error("Authentication error:", error);
-      toast.error("Authentication failed");
-      localStorage.removeItem("accessToken");
-      localStorage.removeItem("user");
-      setTimeout(() => router.push("/login"), 1500);
+      console.error("Authentication check error:", error);
+      setIsAuthenticated(false);
+      toast.error("Failed to verify authentication");
+      setTimeout(() => router.push("/login"), 2000);
+    } finally {
+      setAuthChecked(true);
     }
   };
 
   const fetchProducts = async () => {
     try {
       setLoading(true);
-      
-      const token = localStorage.getItem("accessToken");
-      if (!token) {
-        throw new Error("Authentication required");
-      }
 
       const params = new URLSearchParams();
       if (filters.category) params.append('category', filters.category);
@@ -80,17 +110,19 @@ export default function ShopPage() {
       params.append('page', pagination.currentPage);
       params.append('limit', '12');
 
+      // Using fetch with credentials: 'include' to send HTTP-only cookies automatically
       const response = await fetch(`${API_ENDPOINT}/api/shop/products?${params}`, {
+        credentials: 'include', // This sends cookies (including HTTP-only) with the request
         headers: {
-          'Authorization': `Bearer ${token}`
+          'Content-Type': 'application/json',
         }
       });
 
       if (response.status === 401) {
-        // Token expired
+        // Token expired or not authenticated
         toast.error("Session expired. Please login again.");
-        localStorage.removeItem("accessToken");
         localStorage.removeItem("user");
+        setIsAuthenticated(false);
         setTimeout(() => router.push("/login"), 1500);
         return;
       }
@@ -103,14 +135,22 @@ export default function ShopPage() {
 
       if (response.ok) {
         setProducts(data.products || []);
-        setPagination(data.pagination || {});
+        setPagination(data.pagination || { 
+          currentPage: 1, 
+          totalPages: 1, 
+          totalProducts: 0 
+        });
       } else {
         console.error("Failed to fetch products:", data.error);
         toast.error(data.error || "Failed to load products");
       }
     } catch (error) {
       console.error("Error fetching products:", error);
-      toast.error(error.message);
+      
+      // Don't show error for cancelled requests
+      if (error.name === 'AbortError') return;
+      
+      toast.error(error.message || "Failed to load products");
     } finally {
       setLoading(false);
     }
@@ -151,14 +191,14 @@ export default function ShopPage() {
         <Toaster position="top-right" />
         <div className="text-center">
           <div className="w-16 h-16 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          {/* <p className="text-gray-600">Checking authentication...</p> */}
+          <p className="text-gray-600">Checking authentication...</p>
         </div>
       </section>
     );
   }
 
   // Show message if not logged in (though router should redirect)
-  if (!user) {
+  if (!isAuthenticated) {
     return (
       <section className="min-h-screen bg-gray-50 py-20 flex items-center justify-center">
         <Toaster position="top-right" />
@@ -185,7 +225,9 @@ export default function ShopPage() {
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center mb-12">
             <h1 className="text-4xl font-bold text-gray-900 mb-4">Loading Products...</h1>
-            <p className="text-gray-600">Welcome back, {user.fullname || user.email}!</p>
+            <p className="text-gray-600">
+              Welcome back, <span className="font-semibold text-blue-600">{user?.fullname || user?.email?.split('@')[0] || 'User'}</span>!
+            </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {Array.from({ length: 8 }).map((_, i) => (
@@ -212,7 +254,9 @@ export default function ShopPage() {
             Shop All Products
           </h1>
           <p className="text-gray-600 text-lg max-w-2xl mx-auto mb-2">
-            Welcome back, <span className="font-semibold text-blue-600">{user.name || user.email}</span>!
+            Welcome back, <span className="font-semibold text-blue-600">
+              {user?.fullname || user?.email?.split('@')[0] || 'User'}
+            </span>!
           </p>
           <p className="text-gray-600">
             Discover amazing products from our curated collection and partner stores
@@ -258,7 +302,7 @@ export default function ShopPage() {
               >
                 <option value="createdAt">Newest First</option>
                 <option value="price">Price: Low to High</option>
-                <option value="price-desc">Price: High to Low</option>
+                <option value="-price">Price: High to Low</option>
                 <option value="name">Name: A to Z</option>
               </select>
             </div>
@@ -287,7 +331,6 @@ export default function ShopPage() {
                     product={{
                       ...product,
                       image: buildImageSrc(product.images?.[0]),
-                      // Add any other transformations needed
                     }}
                   />
                 </motion.div>

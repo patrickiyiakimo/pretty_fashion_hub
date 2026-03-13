@@ -1,148 +1,97 @@
 "use client";
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState, useCallback } from "react";
 import axios from "axios";
 import toast, { Toaster } from "react-hot-toast";
 
 const CartContext = createContext();
 const API_BASE = process.env.NEXT_PUBLIC_API_ENDPOINT || "http://localhost:4000";
 
+// Create axios instance with credentials included
+const api = axios.create({
+  baseURL: `${API_BASE}/api/cart`,
+  headers: { "Content-Type": "application/json" },
+  withCredentials: true, // This is crucial - sends HTTP-only cookies with every request
+});
+
 export function CartProvider({ children }) {
   const [cart, setCart] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [initialized, setInitialized] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  const getAccessToken = () => {
-    if (typeof window !== "undefined") {
-      return localStorage.getItem("accessToken");
-    }
-    return null;
-  };
-
-  const getRefreshToken = () => {
-    if (typeof window !== "undefined") {
-      return localStorage.getItem("refreshToken");
-    }
-    return null;
-  };
-
-  // Create axios instance
-  const api = axios.create({
-    baseURL: `${API_BASE}/api/cart`,
-    headers: { "Content-Type": "application/json" },
-  });
-
-  // Request interceptor
-  api.interceptors.request.use((config) => {
-    const token = getAccessToken();
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
-      console.log("🔐 Adding token to request");
-    } else {
-      console.warn("⚠️ No access token available");
-    }
-    return config;
-  }, (error) => {
-    return Promise.reject(error);
-  });
-
-  // Response interceptor with improved token refresh
-  api.interceptors.response.use(
-    (response) => {
-      console.log("✅ API Response:", response.status, response.config.url);
-      return response;
-    },
-    async (error) => {
-      const originalRequest = error.config;
+  // Check authentication status by attempting to fetch cart
+  const checkAuthStatus = useCallback(async () => {
+    try {
+      // Try to fetch cart - this will automatically send cookies
+      const response = await api.get("/me", {
+        timeout: 5000
+      });
       
-      if (error.response?.status === 401 && !originalRequest._retry) {
-        originalRequest._retry = true;
-        
-        try {
-          console.log("🔄 Attempting token refresh...");
-          const refreshToken = getRefreshToken();
-          
-          if (!refreshToken) {
-            throw new Error("No refresh token available");
-          }
-
-          const response = await axios.post(
-            `${API_BASE}/api/auth/refresh`,
-            { refreshToken },
-            {
-              headers: { "Content-Type": "application/json" },
-            }
-          );
-
-          const { accessToken, user } = response.data;
-          
-          if (accessToken) {
-            // Store new tokens
-            localStorage.setItem("accessToken", accessToken);
-            if (user) {
-              localStorage.setItem("user", JSON.stringify(user));
-            }
-            
-            // Update authorization header
-            api.defaults.headers.Authorization = `Bearer ${accessToken}`;
-            originalRequest.headers.Authorization = `Bearer ${accessToken}`;
-            
-            console.log("✅ Token refreshed successfully");
-            
-            // Retry original request
-            return api(originalRequest);
-          }
-        } catch (refreshError) {
-          console.error("❌ Token refresh failed:", refreshError);
-          
-          // Clear all stored data
-          localStorage.removeItem("accessToken");
-          localStorage.removeItem("refreshToken");
-          localStorage.removeItem("user");
-          
-          toast.error("Session expired. Please log in again.");
-          setTimeout(() => {
-            window.location.href = "/login";
-          }, 1500);
-        }
-      }
+      // If we get here, we're authenticated
+      setIsAuthenticated(true);
       
-      return Promise.reject(error);
-    }
-  );
-
-  // Fetch cart
-  useEffect(() => {
-    const fetchCart = async () => {
-      const token = getAccessToken();
-      if (!token) {
-        console.log("⚠️ No access token available for fetching cart.");
-        return;
-      }
-
-      try {
-        setLoading(true);
-        console.log("🔄 Fetching cart...");
-        const response = await api.get("/me");
-        console.log("✅ Cart fetched successfully:", response.data);
+      if (response.data) {
         setCart(response.data || []);
-      } catch (error) {
-        console.log("❌ Error fetching cart:", error.response?.data || error.message);
-        
-        if (error.response?.status === 401) {
-          toast.error("Please log in to view your cart");
-        } else {
-          toast.error("Failed to load cart");
-        }
-      } finally {
-        setLoading(false);
       }
-    };
-
-    fetchCart();
+      
+      return true;
+    } catch (error) {
+      // 401 means not authenticated - this is expected
+      if (error.response?.status === 401) {
+        console.log("User not authenticated");
+        setIsAuthenticated(false);
+        setCart([]);
+      } else {
+        // Other errors (network, server issues)
+        console.error("Auth check error:", error.message);
+      }
+      return false;
+    } finally {
+      setInitialized(true);
+    }
   }, []);
 
+  // Initialize on mount
+  useEffect(() => {
+    checkAuthStatus();
+  }, [checkAuthStatus]);
+
+  // Fetch cart (only if authenticated)
+  const fetchCart = useCallback(async () => {
+    if (!isAuthenticated) {
+      console.log("User not authenticated, skipping cart fetch");
+      return;
+    }
+
+    try {
+      setLoading(true);
+      console.log("🔄 Fetching cart...");
+      const response = await api.get("/me");
+      console.log("✅ Cart fetched successfully:", response.data);
+      setCart(response.data || []);
+    } catch (error) {
+      console.log("❌ Error fetching cart:", error.response?.data || error.message);
+      
+      if (error.response?.status === 401) {
+        setIsAuthenticated(false);
+        toast.error("Please log in to view your cart");
+      } else {
+        toast.error("Failed to load cart");
+      }
+    } finally {
+      setLoading(false);
+    }
+  }, [isAuthenticated]);
+
+  // Refresh cart when authentication status changes
+  useEffect(() => {
+    if (isAuthenticated) {
+      fetchCart();
+    }
+  }, [isAuthenticated, fetchCart]);
+
   const addToCart = async (product) => {
-    const token = getAccessToken();
-    if (!token) {
+    if (!isAuthenticated) {
       toast.error("Please log in to add items to cart");
       setTimeout(() => {
         window.location.href = "/login";
@@ -174,17 +123,17 @@ export function CartProvider({ children }) {
 
       // Update cart state
       setCart((prev) => {
-        const existingItem = prev.find(
+        const existingItemIndex = prev.findIndex(
           (item) => item.productId === (product._id || product.id)
         );
         
-        if (existingItem) {
-          return prev.map((item) =>
-            item.productId === (product._id || product.id)
-              ? { ...response.data }
-              : item
-          );
+        if (existingItemIndex >= 0) {
+          // Update existing item
+          const updatedCart = [...prev];
+          updatedCart[existingItemIndex] = response.data;
+          return updatedCart;
         } else {
+          // Add new item
           return [...prev, response.data];
         }
       });
@@ -200,45 +149,76 @@ export function CartProvider({ children }) {
       const errorMessage = error.response?.data?.error || 
                           error.response?.data?.message || 
                           "Failed to add item to cart";
-      toast.error(errorMessage);
       
       if (error.response?.status === 401) {
+        setIsAuthenticated(false);
+        toast.error("Session expired. Please log in again.");
         setTimeout(() => {
           window.location.href = "/login";
         }, 2000);
+      } else {
+        toast.error(errorMessage);
       }
     }
   };
 
   const removeFromCart = async (id) => {
+    if (!isAuthenticated) {
+      toast.error("Please log in to manage cart");
+      return;
+    }
+
     try {
       await api.delete("/remove", { data: { id } });
       setCart((prev) => prev.filter((item) => item._id !== id));
       toast.success("Item removed from cart");
     } catch (error) {
       console.error("Error removing from cart:", error);
-      toast.error(error.response?.data?.error || "Failed to remove item");
+      
+      if (error.response?.status === 401) {
+        setIsAuthenticated(false);
+        toast.error("Session expired. Please log in again.");
+        setTimeout(() => {
+          window.location.href = "/login";
+        }, 1500);
+      } else {
+        toast.error(error.response?.data?.error || "Failed to remove item");
+      }
     }
   };
 
   const updateQuantity = async (id, quantity) => {
+    if (!isAuthenticated) {
+      toast.error("Please log in to update cart");
+      return;
+    }
+
     try {
+      if (quantity === 0) {
+        await removeFromCart(id);
+        return;
+      }
+
       const response = await api.put("/update", { id, quantity });
       
-      if (quantity === 0) {
-        setCart((prev) => prev.filter((item) => item._id !== id));
-        toast.success("Item removed from cart");
-      } else {
-        setCart((prev) => 
-          prev.map((item) => 
-            item._id === id ? response.data : item
-          )
-        );
-        toast.success("Quantity updated");
-      }
+      setCart((prev) => 
+        prev.map((item) => 
+          item._id === id ? response.data : item
+        )
+      );
+      toast.success("Quantity updated");
     } catch (error) {
       console.error("Error updating quantity:", error);
-      toast.error(error.response?.data?.error || "Failed to update quantity");
+      
+      if (error.response?.status === 401) {
+        setIsAuthenticated(false);
+        toast.error("Session expired. Please log in again.");
+        setTimeout(() => {
+          window.location.href = "/login";
+        }, 1500);
+      } else {
+        toast.error(error.response?.data?.error || "Failed to update quantity");
+      }
     }
   };
 
@@ -246,25 +226,54 @@ export function CartProvider({ children }) {
     setCart([]);
   };
 
-  const getCartTotal = () => {
+  const getCartTotal = useCallback(() => {
     return cart.reduce((total, item) => total + (item.price * item.quantity), 0);
-  };
+  }, [cart]);
 
-  const getCartItemsCount = () => {
+  const getCartItemsCount = useCallback(() => {
     return cart.reduce((total, item) => total + item.quantity, 0);
-  };
+  }, [cart]);
+
+  // Response interceptor for handling 401 errors globally
+  useEffect(() => {
+    const interceptor = api.interceptors.response.use(
+      (response) => {
+        console.log("✅ API Response:", response.status, response.config.url);
+        return response;
+      },
+      async (error) => {
+        if (error.response?.status === 401) {
+          // Don't show error for the initial auth check
+          if (error.config.url !== "/me") {
+            console.log("🔒 Authentication error detected");
+            setIsAuthenticated(false);
+            setCart([]);
+          }
+        }
+        return Promise.reject(error);
+      }
+    );
+
+    // Cleanup interceptor on unmount
+    return () => {
+      api.interceptors.response.eject(interceptor);
+    };
+  }, []);
 
   return (
     <CartContext.Provider
       value={{ 
         cart, 
-        loading, 
+        loading,
+        initialized,
+        isAuthenticated,
         addToCart, 
         removeFromCart, 
         updateQuantity,
         clearCart,
         getCartTotal,
-        getCartItemsCount
+        getCartItemsCount,
+        refreshCart: fetchCart
       }}
     >
       {children}
