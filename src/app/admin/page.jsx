@@ -89,28 +89,6 @@ export default function AdminDashboard() {
       borderColor: "border-green-200",
       endpoint: "/api/auth/admin/users"
     },
-    // {
-    //   icon: <HiShoppingBag className="w-8 h-8" />,
-    //   title: "Product Management",
-    //   description: "Add, edit, and manage products in your catalog",
-    //   href: "/admin/products",
-    //   count: "156",
-    //   color: "bg-orange-500",
-    //   textColor: "text-orange-600",
-    //   bgColor: "bg-orange-50",
-    //   borderColor: "border-orange-200"
-    // },
-    // {
-    //   icon: <HiChartBar className="w-8 h-8" />,
-    //   title: "Analytics & Reports",
-    //   description: "View sales analytics, customer insights, and business reports",
-    //   href: "/admin/analytics",
-    //   count: "12",
-    //   color: "bg-indigo-500",
-    //   textColor: "text-indigo-600",
-    //   bgColor: "bg-indigo-50",
-    //   borderColor: "border-indigo-200"
-    // },
     {
       icon: <HiTicket className="w-8 h-8" />,
       title: "Logistics & Transactions",
@@ -123,28 +101,6 @@ export default function AdminDashboard() {
       borderColor: "border-red-200",
       endpoint: "/api/logistics"
     },
-    // {
-    //   icon: <HiChat className="w-8 h-8" />,
-    //   title: "Customer Support",
-    //   description: "Manage customer inquiries, feedback, and support tickets",
-    //   href: "/admin/support",
-    //   count: "34",
-    //   color: "bg-pink-500",
-    //   textColor: "text-pink-600",
-    //   bgColor: "bg-pink-50",
-    //   borderColor: "border-pink-200"
-    // },
-    // {
-    //   icon: <HiCog className="w-8 h-8" />,
-    //   title: "System Settings",
-    //   description: "Configure website settings, payment methods, and preferences",
-    //   href: "/admin/settings",
-    //   count: "8",
-    //   color: "bg-gray-500",
-    //   textColor: "text-gray-600",
-    //   bgColor: "bg-gray-50",
-    //   borderColor: "border-gray-200"
-    // },
     {
       icon: <FaCarSide className="w-8 h-8" />,
       title: "Logistics Delivery Applications",
@@ -158,25 +114,18 @@ export default function AdminDashboard() {
     }
   ];
 
-  // Check authentication and get user data
+  // Check authentication and get user data using cookies
   const checkAuth = useCallback(async () => {
     try {
       setLoading(prev => ({ ...prev, auth: true }));
-      console.log('🔐 Starting auth check for admin dashboard...');
-      const token = localStorage.getItem("accessToken") || localStorage.getItem("token") || localStorage.getItem("adminToken");
+      console.log('🔐 Starting auth check for admin dashboard using cookies...');
       
-      if (!token) {
-        console.log('❌ No token found');
-        toast.error('Please login to access admin panel');
-        router.push('/login');
-        return null;
-      }
-
-      console.log('✅ Token found, checking with backend...');
-      
+      // Call /api/auth/me with credentials: 'include' to send HTTP-only cookies
       const response = await fetch(`${API_ENDPOINT}/api/auth/me`, {
+        method: "GET",
+        credentials: "include", // This sends HTTP-only cookies with the request
         headers: {
-          'Authorization': `Bearer ${token}`
+          "Content-Type": "application/json"
         }
       });
 
@@ -184,11 +133,8 @@ export default function AdminDashboard() {
 
       if (!response.ok) {
         if (response.status === 401) {
-          console.log('❌ 401 Unauthorized - removing token');
-          localStorage.removeItem('accessToken');
-          localStorage.removeItem('token');
-          localStorage.removeItem('adminToken');
-          toast.error('Session expired. Please login again.');
+          console.log('❌ 401 Unauthorized - no valid session');
+          toast.error('Please login to access admin panel');
           router.push('/login');
         } else {
           const errorData = await response.json().catch(() => ({}));
@@ -231,9 +177,6 @@ export default function AdminDashboard() {
       return data.user;
     } catch (error) {
       console.error('🔴 Auth check error:', error);
-      localStorage.removeItem('accessToken');
-      localStorage.removeItem('token');
-      localStorage.removeItem('adminToken');
       toast.error('Authentication failed. Please login again.');
       router.push('/login');
       return null;
@@ -266,19 +209,31 @@ export default function AdminDashboard() {
     
     setLoading(prev => ({ ...prev, activity: true }));
     try {
-      const token = localStorage.getItem("accessToken") || localStorage.getItem("token") || localStorage.getItem("adminToken");
-      
-      // Fetch data from multiple endpoints
+      // Fetch data from multiple endpoints - using credentials: 'include' to send cookies
       const [partnersRes, consultationsRes, usersRes, logisticsRes] = await Promise.allSettled([
         fetch(`${API_ENDPOINT}/api/partners?limit=5&status=pending`, {
-          headers: token ? { Authorization: `Bearer ${token}` } : {}
+          credentials: "include", // This sends cookies with the request
+          headers: {
+            "Content-Type": "application/json"
+          }
         }),
-        fetch(`${API_ENDPOINT}/api/consultations?limit=5&status=pending`),
+        fetch(`${API_ENDPOINT}/api/consultations?limit=5&status=pending`, {
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json"
+          }
+        }),
         fetch(`${API_ENDPOINT}/api/auth/admin/users?limit=5`, {
-          headers: token ? { Authorization: `Bearer ${token}` } : {}
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json"
+          }
         }),
         fetch(`${API_ENDPOINT}/api/logistics?limit=5`, {
-          headers: token ? { Authorization: `Bearer ${token}` } : {}
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json"
+          }
         })
       ]);
 
@@ -386,15 +341,24 @@ export default function AdminDashboard() {
     
     setLoading(prev => ({ ...prev, stats: true }));
     try {
-      const token = localStorage.getItem("accessToken") || localStorage.getItem("token") || localStorage.getItem("adminToken");
-      
       const [partnersRes, consultationsRes, usersRes] = await Promise.allSettled([
         fetch(`${API_ENDPOINT}/api/partners?status=pending`, {
-          headers: token ? { Authorization: `Bearer ${token}` } : {}
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json"
+          }
         }),
-        fetch(`${API_ENDPOINT}/api/consultations?status=pending`),
+        fetch(`${API_ENDPOINT}/api/consultations?status=pending`, {
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json"
+          }
+        }),
         fetch(`${API_ENDPOINT}/api/auth/admin/users?limit=1`, {
-          headers: token ? { Authorization: `Bearer ${token}` } : {}
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json"
+          }
         })
       ]);
 
@@ -456,7 +420,6 @@ export default function AdminDashboard() {
       { url: `${API_ENDPOINT}/api/health`, service: "Website" },
       { url: `${API_ENDPOINT}/api/partners?limit=1`, service: "Database" },
       { url: `${API_ENDPOINT}/api/consultations?limit=1`, service: "Payment Gateway" },
-      // Email service check (you might have a different endpoint for this)
       { url: `${API_ENDPOINT}/api/health/email`, service: "Email Service" },
       { url: `${API_ENDPOINT}/api/logistics?limit=1`, service: "CDN" }
     ];
@@ -465,7 +428,10 @@ export default function AdminDashboard() {
 
     for (let i = 0; i < endpoints.length; i++) {
       try {
-        const response = await fetch(endpoints[i].url, { method: 'HEAD' });
+        const response = await fetch(endpoints[i].url, { 
+          method: 'HEAD',
+          credentials: "include"
+        });
         newStatus[i] = {
           ...newStatus[i],
           status: response.ok ? "operational" : "degraded",
@@ -540,12 +506,22 @@ export default function AdminDashboard() {
   }
 
   // Handle logout
-  const handleLogout = () => {
-    localStorage.removeItem('accessToken');
-    localStorage.removeItem('token');
-    localStorage.removeItem('adminToken');
-    toast.success('Logged out successfully');
-    router.push('/login');
+  const handleLogout = async () => {
+    try {
+      // Call logout endpoint to clear HTTP-only cookies
+      await fetch(`${API_ENDPOINT}/api/auth/logout`, {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json"
+        }
+      });
+    } catch (error) {
+      console.error("Logout error:", error);
+    } finally {
+      toast.success('Logged out successfully');
+      router.push('/login');
+    }
   };
 
   // Request admin access
@@ -595,7 +571,6 @@ export default function AdminDashboard() {
       <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white pt-10 flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
-          {/* <p className="mt-4 text-gray-600">Checking authentication...</p> */}
         </div>
       </div>
     );
@@ -635,7 +610,7 @@ export default function AdminDashboard() {
     <div className="min-h-screen pt-5 bg-gradient-to-br from-gray-50 to-gray-100 p-4 md:p-6">
       <div className="max-w-7xl mx-auto">
         {/* Header with User Info */}
-        <div className="flex flex-col pt-28 lg:flex-row justify-between items-start lg:items-center mb-8">
+        <div className="flex flex-col pt-14 lg:flex-row justify-between items-start lg:items-center mb-8">
           <div>
             <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">
               Admin Dashboard

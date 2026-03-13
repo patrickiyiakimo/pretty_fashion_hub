@@ -28,6 +28,7 @@ export default function AdminUsers() {
   const [filterStatus, setFilterStatus] = useState("all");
   const [selectedUser, setSelectedUser] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [authChecked, setAuthChecked] = useState(false);
   const [pagination, setPagination] = useState({
     currentPage: 1,
     totalPages: 1,
@@ -38,76 +39,148 @@ export default function AdminUsers() {
 
   const API_URL = process.env.NEXT_PUBLIC_API_ENDPOINT || 'http://localhost:4000';
 
+  // Check authentication on mount
   useEffect(() => {
-    fetchUsers();
-  }, [searchTerm, filterStatus]);
+    checkAuth();
+  }, []);
 
-const fetchUsers = async (page = 1) => {
-  try {
-    setLoading(true);
-    setError("");
+  const checkAuth = async () => {
+    try {
+      const response = await fetch(`${API_URL}/api/auth/me`, {
+        method: "GET",
+        credentials: "include", // This sends HTTP-only cookies
+        headers: {
+          "Content-Type": "application/json"
+        }
+      });
 
-    const token = localStorage.getItem('adminToken');
-    
-    const queryParams = new URLSearchParams({
-      page: page.toString(),
-      limit: '10',
-      ...(searchTerm && { search: searchTerm }),
-      ...(filterStatus !== 'all' && { status: filterStatus })
-    });
-
-    const response = await fetch(`${API_URL}/api/auth/admin/users?${queryParams}`, {
-      headers: {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json'
+      if (!response.ok) {
+        if (response.status === 401) {
+          toast.error("Session expired. Please login again.");
+          setTimeout(() => {
+            window.location.href = "/login";
+          }, 1500);
+        }
+        return;
       }
-    });
 
-    // Check if response is HTML (404 page)
-    const contentType = response.headers.get('content-type');
-    if (!contentType || !contentType.includes('application/json')) {
-      toast.error('Server returned HTML instead of JSON. Route may not exist.');
+      const data = await response.json();
+      
+      // Check if user is admin
+      const isAdmin = data.user?.role === 'admin' || 
+                      data.user?.isAdmin === true || 
+                      data.user?.userType === 'admin';
+      
+      if (!isAdmin) {
+        toast.error("Access denied. Admin privileges required.");
+        setTimeout(() => {
+          window.location.href = "/";
+        }, 1500);
+        return;
+      }
+
+      setAuthChecked(true);
+      // Fetch users after successful auth check
+      fetchUsers(1);
+      
+    } catch (error) {
+      console.error("Auth check error:", error);
+      toast.error("Authentication failed");
+      setTimeout(() => {
+        window.location.href = "/login";
+      }, 1500);
     }
+  };
 
-    if (!response.ok) {
-      toast.error(`Failed to fetch users: ${response.status}`);
+  const fetchUsers = async (page = 1) => {
+    try {
+      setLoading(true);
+      setError("");
+
+      const queryParams = new URLSearchParams({
+        page: page.toString(),
+        limit: '10',
+        ...(searchTerm && { search: searchTerm }),
+        ...(filterStatus !== 'all' && { status: filterStatus })
+      });
+
+      const response = await fetch(`${API_URL}/api/auth/admin/users?${queryParams}`, {
+        credentials: "include", // This sends HTTP-only cookies
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+
+      // Check if response is HTML (404 page)
+      const contentType = response.headers.get('content-type');
+      if (!contentType || !contentType.includes('application/json')) {
+        const text = await response.text();
+        if (text.includes('<!DOCTYPE') || text.includes('<html')) {
+          throw new Error('Server returned HTML. The API endpoint may not exist.');
+        }
+        toast.error('Server returned HTML instead of JSON. Route may not exist.');
+      }
+
+      if (response.status === 401) {
+        toast.error("Session expired. Please login again.");
+        setTimeout(() => {
+          window.location.href = "/login";
+        }, 1500);
+        return;
+      }
+
+      if (!response.ok) {
+        throw new Error(`Failed to fetch users: ${response.status}`);
+      }
+
+      const data = await response.json();
+      
+      setUsers(data.users || []);
+      setPagination(data.pagination || {
+        currentPage: 1,
+        totalPages: 1,
+        totalUsers: 0,
+        hasNext: false,
+        hasPrev: false
+      });
+    } catch (error) {
+      console.error('Fetch users error:', error);
+      setError(`Failed to load users: ${error.message}`);
+      setUsers([]);
+      setPagination({
+        currentPage: 1,
+        totalPages: 1,
+        totalUsers: 0,
+        hasNext: false,
+        hasPrev: false
+      });
+    } finally {
+      setLoading(false);
     }
-
-    const data = await response.json();
-    
-    setUsers(data.users);
-    setPagination(data.pagination);
-  } catch (error) {
-    console.error('Fetch users error:', error);
-    setError(`Failed to load users: ${error.message}`);
-    setUsers([]);
-    setPagination({
-      currentPage: 1,
-      totalPages: 1,
-      totalUsers: 0,
-      hasNext: false,
-      hasPrev: false
-    });
-  } finally {
-    setLoading(false);
-  }
-};
+  };
 
   const updateUserStatus = async (userId, status) => {
     try {
-      const token = localStorage.getItem('adminToken');
-      
-      const response = await fetch(`${API_URL}/api/admin/users/${userId}/status`, {
+      const response = await fetch(`${API_URL}/api/auth/admin/users/${userId}/status`, {
         method: 'PUT',
+        credentials: "include", // This sends HTTP-only cookies
         headers: {
-          'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({ status })
       });
 
+      if (response.status === 401) {
+        toast.error("Session expired. Please login again.");
+        setTimeout(() => {
+          window.location.href = "/login";
+        }, 1500);
+        return;
+      }
+
       if (!response.ok) {
-        throw new Error(`Failed to update user status: ${response.status}`);
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.message || `Failed to update user status: ${response.status}`);
       }
 
       const data = await response.json();
@@ -123,27 +196,33 @@ const fetchUsers = async (page = 1) => {
         setSelectedUser(prev => ({ ...prev, status }));
       }
 
-      // Show success message
-      alert('User status updated successfully');
+      toast.success('User status updated successfully');
     } catch (error) {
       console.error('Update user error:', error);
-      alert('Failed to update user status');
+      toast.error(error.message || 'Failed to update user status');
     }
   };
 
   const openUserModal = async (user) => {
     try {
-      const token = localStorage.getItem('adminToken');
-      const response = await fetch(`${API_URL}/api/admin/users/${user._id}`, {
+      const response = await fetch(`${API_URL}/api/auth/admin/users/${user._id}`, {
+        credentials: "include", // This sends HTTP-only cookies
         headers: {
-          'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
         }
       });
 
+      if (response.status === 401) {
+        toast.error("Session expired. Please login again.");
+        setTimeout(() => {
+          window.location.href = "/login";
+        }, 1500);
+        return;
+      }
+
       if (response.ok) {
         const data = await response.json();
-        setSelectedUser(data.user);
+        setSelectedUser(data.user || data);
       } else {
         // If detailed fetch fails, use the basic user data
         setSelectedUser(user);
@@ -163,12 +242,14 @@ const fetchUsers = async (page = 1) => {
 
   // Handle search with debounce
   useEffect(() => {
+    if (!authChecked) return;
+    
     const timeoutId = setTimeout(() => {
       fetchUsers(1);
     }, 500);
 
     return () => clearTimeout(timeoutId);
-  }, [searchTerm, filterStatus]);
+  }, [searchTerm, filterStatus, authChecked]);
 
   // Filter users locally for immediate UI updates (optional)
   const filteredUsers = users.filter(user => {
@@ -195,6 +276,7 @@ const fetchUsers = async (page = 1) => {
   const getRoleColor = (role) => {
     switch (role) {
       case 'admin': return 'bg-purple-100 text-purple-800';
+      case 'partner': return 'bg-orange-100 text-orange-800';
       case 'vendor': return 'bg-orange-100 text-orange-800';
       default: return 'bg-blue-100 text-blue-800';
     }
@@ -218,7 +300,19 @@ const fetchUsers = async (page = 1) => {
     }).format(amount || 0);
   };
 
-  // Loading skeleton
+  // Show loading while checking auth
+  if (!authChecked) {
+    return (
+      <div className="min-h-screen bg-gray-50 p-6 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
+          <p className="mt-4 text-gray-600">Checking authentication...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Loading skeleton for users
   if (loading && users.length === 0) {
     return (
       <div className="min-h-screen bg-gray-50 p-6">
@@ -244,9 +338,8 @@ const fetchUsers = async (page = 1) => {
       </div>
     );
   }
-
   return (
-    <div className="min-h-screen pt-24 bg-gray-50 p-6">
+    <div className="min-h-screen pt-14 bg-gray-50 p-6">
         <Toaster position="top-right" />
       <div className="max-w-7xl mx-auto">
         {/* Header */}

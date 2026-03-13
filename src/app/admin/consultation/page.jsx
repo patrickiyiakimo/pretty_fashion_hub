@@ -1,7 +1,8 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { 
   HiCalendar, 
   HiClock, 
@@ -12,36 +13,121 @@ import {
   HiX,
   HiRefresh,
   HiEye,
-  HiTrash
+  HiTrash,
+  HiExclamationCircle
 } from "react-icons/hi";
+import toast from "react-hot-toast";
 
 export default function AdminConsultations() {
+  const router = useRouter();
   const [consultations, setConsultations] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [selectedConsultation, setSelectedConsultation] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [authChecked, setAuthChecked] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
 
+  const API_URL = process.env.NEXT_PUBLIC_API_ENDPOINT || 'http://localhost:4000';
+
+  // Check authentication on mount
   useEffect(() => {
-    fetchConsultations();
+    checkAuth();
   }, []);
+
+  const checkAuth = useCallback(async () => {
+    try {
+      const response = await fetch(`${API_URL}/api/auth/me`, {
+        method: "GET",
+        credentials: "include", // This sends HTTP-only cookies
+        headers: {
+          "Content-Type": "application/json"
+        }
+      });
+
+      if (!response.ok) {
+        if (response.status === 401) {
+          console.log("User not authenticated");
+          setIsAuthenticated(false);
+          setAuthChecked(true);
+          toast.error("Please login to access admin panel");
+          setTimeout(() => {
+            router.push('/login');
+          }, 1500);
+        }
+        return;
+      }
+
+      const data = await response.json();
+      
+      if (data.user) {
+        // Check if user is admin
+        const userIsAdmin = data.user?.role === 'admin' || 
+                           data.user?.isAdmin === true || 
+                           data.user?.userType === 'admin';
+        
+        if (!userIsAdmin) {
+          toast.error("Access denied. Admin privileges required.");
+          setTimeout(() => {
+            router.push('/');
+          }, 1500);
+          return;
+        }
+
+        setIsAuthenticated(true);
+        setIsAdmin(true);
+        setAuthChecked(true);
+        // Fetch consultations after successful auth
+        fetchConsultations();
+      }
+      
+    } catch (error) {
+      console.error("Auth check error:", error);
+      setIsAuthenticated(false);
+      setAuthChecked(true);
+      toast.error("Authentication failed");
+      setTimeout(() => {
+        router.push('/login');
+      }, 1500);
+    }
+  }, [router, API_URL]);
 
   const fetchConsultations = async () => {
     try {
       setLoading(true);
-      const API_URL = process.env.NEXT_PUBLIC_API_ENDPOINT || 'http://localhost:4000';
       
-      const response = await fetch(`${API_URL}/api/consultations`);
+      const response = await fetch(`${API_URL}/api/consultations`, {
+        credentials: "include", // This sends HTTP-only cookies
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+
+      if (response.status === 401) {
+        toast.error("Session expired. Please login again.");
+        setTimeout(() => {
+          router.push('/login');
+        }, 1500);
+        return;
+      }
+
+      if (!response.ok) {
+        throw new Error(`Failed to fetch consultations: ${response.status}`);
+      }
+
       const result = await response.json();
 
       if (result.success) {
-        setConsultations(result.data);
+        setConsultations(result.data || []);
       } else {
         setError('Failed to fetch consultations');
+        toast.error(result.message || 'Failed to fetch consultations');
       }
     } catch (error) {
       console.error('Fetch error:', error);
       setError('Network error. Please check your connection.');
+      toast.error(error.message || 'Network error. Please check your connection.');
     } finally {
       setLoading(false);
     }
@@ -49,15 +135,26 @@ export default function AdminConsultations() {
 
   const updateConsultationStatus = async (id, status) => {
     try {
-      const API_URL = process.env.NEXT_PUBLIC_API_ENDPOINT || 'http://localhost:4000';
-      
       const response = await fetch(`${API_URL}/api/consultations/${id}`, {
         method: 'PUT',
+        credentials: "include", // This sends HTTP-only cookies
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ status }),
       });
+
+      if (response.status === 401) {
+        toast.error("Session expired. Please login again.");
+        setTimeout(() => {
+          router.push('/login');
+        }, 1500);
+        return;
+      }
+
+      if (!response.ok) {
+        throw new Error(`Failed to update: ${response.status}`);
+      }
 
       const result = await response.json();
 
@@ -70,26 +167,47 @@ export default function AdminConsultations() {
               : consultation
           )
         );
+        
+        // Update selected consultation if it's the one being updated
+        if (selectedConsultation?._id === id) {
+          setSelectedConsultation(prev => ({ ...prev, status }));
+        }
+        
+        toast.success(`Consultation ${status} successfully`);
       } else {
-        alert('Failed to update status');
+        toast.error(result.message || 'Failed to update status');
       }
     } catch (error) {
       console.error('Update error:', error);
-      alert('Network error. Please try again.');
+      toast.error(error.message || 'Network error. Please try again.');
     }
   };
 
   const deleteConsultation = async (id) => {
-    if (!confirm('Are you sure you want to delete this consultation?')) {
+    if (!confirm('Are you sure you want to delete this consultation? This action cannot be undone.')) {
       return;
     }
 
     try {
-      const API_URL = process.env.NEXT_PUBLIC_API_ENDPOINT || 'http://localhost:4000';
-      
       const response = await fetch(`${API_URL}/api/consultations/${id}`, {
         method: 'DELETE',
+        credentials: "include", // This sends HTTP-only cookies
+        headers: {
+          'Content-Type': 'application/json'
+        }
       });
+
+      if (response.status === 401) {
+        toast.error("Session expired. Please login again.");
+        setTimeout(() => {
+          router.push('/login');
+        }, 1500);
+        return;
+      }
+
+      if (!response.ok) {
+        throw new Error(`Failed to delete: ${response.status}`);
+      }
 
       const result = await response.json();
 
@@ -100,12 +218,13 @@ export default function AdminConsultations() {
           setIsModalOpen(false);
           setSelectedConsultation(null);
         }
+        toast.success('Consultation deleted successfully');
       } else {
-        alert('Failed to delete consultation');
+        toast.error(result.message || 'Failed to delete consultation');
       }
     } catch (error) {
       console.error('Delete error:', error);
-      alert('Network error. Please try again.');
+      toast.error(error.message || 'Network error. Please try again.');
     }
   };
 
@@ -139,7 +258,7 @@ export default function AdminConsultations() {
 
   if (loading) {
     return (
-      <div className="min-h-screen pt-20 bg-gray-50 p-6">
+      <div className="min-h-screen pt-14 bg-gray-50 p-6">
         <div className="max-w-7xl mx-auto">
           <div className="flex items-center justify-between mb-8">
             <h1 className="text-3xl pt-20 font-bold text-gray-900">Consultation Bookings</h1>
@@ -164,7 +283,7 @@ export default function AdminConsultations() {
   }
 
   return (
-    <div className="min-h-screen pt-24 bg-gray-50 p-6">
+    <div className="min-h-screen pt-14 bg-gray-50 p-6">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">

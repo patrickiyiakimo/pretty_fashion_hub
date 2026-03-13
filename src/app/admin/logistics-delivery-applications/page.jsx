@@ -59,48 +59,23 @@ export default function LogisticsDeliveryApplicationsPage() {
     rejected: 0
   });
 
-  // Debug function to check localStorage
+  // Debug function to check auth status
   const debugAuth = () => {
     console.log('🔍 Debug Auth Check:');
-    console.log('localStorage accessToken:', localStorage.getItem('accessToken') ? 'Exists' : 'Missing');
-    console.log('localStorage token:', localStorage.getItem('token') ? 'Exists' : 'Missing');
     console.log('User state:', user);
     console.log('Is Admin:', isAdmin);
-    
-    // Check backend response
-    const token = localStorage.getItem('accessToken') || localStorage.getItem('token');
-    if (token) {
-      fetch(`${API_ENDPOINT}/api/auth/me`, {
-        headers: { 'Authorization': `Bearer ${token}` }
-      })
-      .then(res => res.json())
-      .then(data => {
-        console.log('Backend user data:', data);
-        console.log('User isAdmin property:', data.user?.isAdmin);
-        console.log('User role:', data.user?.role);
-      })
-      .catch(err => console.error('Debug fetch error:', err));
-    }
   };
 
-  // Check authentication and get user data
+  // Check authentication and get user data using HTTP-only cookies
   const checkAuth = useCallback(async () => {
     try {
-      console.log('🔐 Starting auth check...');
-      const token = localStorage.getItem('accessToken') || localStorage.getItem('token');
-      
-      if (!token) {
-        console.log('❌ No token found');
-        toast.error('Please login to access admin panel');
-        router.push('/login');
-        return null;
-      }
-
-      console.log('✅ Token found, checking with backend...');
+      console.log('🔐 Starting auth check with HTTP-only cookies...');
       
       const response = await fetch(`${API_ENDPOINT}/api/auth/me`, {
+        method: "GET",
+        credentials: "include", // This sends HTTP-only cookies
         headers: {
-          'Authorization': `Bearer ${token}`
+          "Content-Type": "application/json"
         }
       });
 
@@ -108,10 +83,8 @@ export default function LogisticsDeliveryApplicationsPage() {
 
       if (!response.ok) {
         if (response.status === 401) {
-          console.log('❌ 401 Unauthorized - removing token');
-          localStorage.removeItem('accessToken');
-          localStorage.removeItem('token');
-          toast.error('Session expired. Please login again.');
+          console.log('❌ 401 Unauthorized - no valid session');
+          toast.error('Please login to access admin panel');
           router.push('/login');
         } else {
           const errorData = await response.json().catch(() => ({}));
@@ -153,37 +126,27 @@ export default function LogisticsDeliveryApplicationsPage() {
       return data.user;
     } catch (error) {
       console.error('🔴 Auth check error:', error);
-      localStorage.removeItem('accessToken');
-      localStorage.removeItem('token');
       toast.error('Authentication failed. Please login again.');
       router.push('/login');
       return null;
     }
   }, [router]);
 
-  // Fetch applications
+  // Fetch applications using HTTP-only cookies
   const fetchApplications = useCallback(async (force = false) => {
     if (!isAdmin) return;
     
     setLoading(true);
     try {
-      const token = localStorage.getItem('accessToken') || localStorage.getItem('token');
-      
-      if (!token) {
-        console.log('❌ No token for fetch');
-        await checkAuth();
-        return;
-      }
-
-      console.log('📦 Fetching applications with token:', token.substring(0, 20) + '...');
+      console.log('📦 Fetching applications with HTTP-only cookies...');
       
       // IMPORTANT: Correct endpoint is /api/logistics/admin/applications (plural)
       const url = `${API_ENDPOINT}/api/logistics/admin/applications${force ? '?refresh=' + Date.now() : ''}`;
       console.log('📡 Fetching from:', url);
 
       const response = await fetch(url, {
+        credentials: "include", // This sends HTTP-only cookies
         headers: {
-          'Authorization': `Bearer ${token}`,
           'Cache-Control': 'no-cache'
         }
       });
@@ -191,9 +154,7 @@ export default function LogisticsDeliveryApplicationsPage() {
       console.log('📦 Fetch response status:', response.status);
 
       if (response.status === 401) {
-        console.log('❌ 401 in fetch - removing token');
-        localStorage.removeItem('accessToken');
-        localStorage.removeItem('token');
+        console.log('❌ 401 in fetch - session expired');
         toast.error('Session expired. Please login again.');
         router.push('/login');
         return;
@@ -223,7 +184,7 @@ export default function LogisticsDeliveryApplicationsPage() {
     } finally {
       setLoading(false);
     }
-  }, [router, checkAuth, isAdmin]);
+  }, [router, isAdmin]);
 
   useEffect(() => {
     const initialize = async () => {
@@ -328,32 +289,22 @@ export default function LogisticsDeliveryApplicationsPage() {
     setIsUpdateModalOpen(true);
   };
 
-  // Update application status
+  // Update application status using HTTP-only cookies
   const updateStatus = async () => {
     if (!selectedApplication || !statusUpdate) return;
 
     setUpdatingId(selectedApplication._id);
     try {
-      const token = localStorage.getItem('accessToken') || localStorage.getItem('token');
-      
-      if (!token) {
-        toast.error('Please login to perform this action');
-        router.push('/login');
-        return;
-      }
-
       const response = await fetch(`${API_ENDPOINT}/api/logistics/admin/applications/${selectedApplication._id}/status`, {
         method: 'PUT',
+        credentials: "include", // This sends HTTP-only cookies
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
+          'Content-Type': 'application/json'
         },
         body: JSON.stringify({ status: statusUpdate })
       });
 
       if (response.status === 401) {
-        localStorage.removeItem('accessToken');
-        localStorage.removeItem('token');
         toast.error('Session expired. Please login again.');
         router.push('/login');
         return;
@@ -447,21 +398,23 @@ export default function LogisticsDeliveryApplicationsPage() {
     toast.success('Data exported successfully');
   };
 
-  // Logout
-  const handleLogout = () => {
-    localStorage.removeItem('accessToken');
-    localStorage.removeItem('token');
-    toast.success('Logged out successfully');
-    router.push('/login');
+  // Logout using HTTP-only cookies
+  const handleLogout = async () => {
+    try {
+      await fetch(`${API_ENDPOINT}/api/auth/logout`, {
+        method: "POST",
+        credentials: "include", // This sends HTTP-only cookies
+        headers: {
+          "Content-Type": "application/json"
+        }
+      });
+    } catch (error) {
+      console.error("Logout error:", error);
+    } finally {
+      toast.success('Logged out successfully');
+      router.push('/login');
+    }
   };
-
-  // Debug button for testing
-  // const handleDebug = () => {
-  //   debugAuth();
-  //   console.log('Current applications:', applications);
-  //   console.log('Current user:', user);
-  //   console.log('Is admin:', isAdmin);
-  // };
 
   // Request admin access
   const requestAdminAccess = () => {
@@ -484,6 +437,7 @@ export default function LogisticsDeliveryApplicationsPage() {
       </div>
     );
   }
+
 
   if (!user) {
     return (
@@ -514,10 +468,10 @@ export default function LogisticsDeliveryApplicationsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 pt-20 px-4 pb-12">
+    <div className="min-h-screen bg-gray-50 pt-14 px-4 pb-12">
       <div className="max-w-7xl mx-auto">
         {/* Admin Header */}
-        <div className="mb-8 bg-white rounded-2xl shadow-lg p-6">
+        <div className="mb-8 p-6">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div>
               <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">

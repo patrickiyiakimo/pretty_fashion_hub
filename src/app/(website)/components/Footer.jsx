@@ -103,9 +103,9 @@ export default function Footer() {
           <div className="space-y-6">
             <div className="flex items-center gap-3 mb-6">
               <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-600 to-purple-600 flex items-center justify-center">
-                <div className="relative w-12 h-12 rounded-xl overflow-hidden border-2 border-yellow-400 group-hover:border-blue-600 transition-all duration-500 shadow-lg">
+                <div className="relative w-12 h-12 rounded-xl overflow-hidden transition-all duration-500 shadow-lg">
                   <Image
-                    src="/images/84712fed-7915-4ea9-a169-ce0c5d8b3531.JPG"
+                    src="/images/0ddb8c41-20a9-446e-a056-9b6290b33d6b.JPG"
                     alt="Vendly - Premium Fashion"
                     fill
                     className="object-cover transform group-hover:scale-110 transition-transform duration-500"

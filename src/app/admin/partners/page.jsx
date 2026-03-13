@@ -29,6 +29,7 @@ export default function PartnersManagement() {
   const [partners, setPartners] = useState([]);
   const [stats, setStats] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [authChecked, setAuthChecked] = useState(false);
   const [selectedPartner, setSelectedPartner] = useState(null);
   const [showDetails, setShowDetails] = useState(false);
   const [showStatusModal, setShowStatusModal] = useState(false);
@@ -39,20 +40,70 @@ export default function PartnersManagement() {
     limit: 10
   });
 
+  // Check authentication on mount
   useEffect(() => {
-    loadPartners();
-    loadStats();
-  }, [filters.status, filters.page]);
+    checkAuth();
+  }, []);
+
+  const checkAuth = async () => {
+    try {
+      const response = await fetch(`${API_ENDPOINT}/api/auth/me`, {
+        method: "GET",
+        credentials: "include", // This sends HTTP-only cookies
+        headers: {
+          "Content-Type": "application/json"
+        }
+      });
+
+      if (!response.ok) {
+        if (response.status === 401) {
+          toast.error("Please log in to access partner management");
+          setTimeout(() => {
+            window.location.href = "/login";
+          }, 1500);
+        }
+        return;
+      }
+
+      const data = await response.json();
+      
+      // Check if user is admin
+      const isAdmin = data.user?.role === 'admin' || 
+                      data.user?.isAdmin === true || 
+                      data.user?.userType === 'admin';
+      
+      if (!isAdmin) {
+        toast.error("Access denied. Admin privileges required.");
+        setTimeout(() => {
+          window.location.href = "/";
+        }, 1500);
+        return;
+      }
+
+      setAuthChecked(true);
+      // Load data after successful auth check
+      loadPartners();
+      loadStats();
+      
+    } catch (error) {
+      console.error("Auth check error:", error);
+      toast.error("Authentication failed");
+      setTimeout(() => {
+        window.location.href = "/login";
+      }, 1500);
+    }
+  };
+
+  useEffect(() => {
+    if (authChecked) {
+      loadPartners();
+      loadStats();
+    }
+  }, [filters.status, filters.page, authChecked]);
 
   async function loadPartners() {
     setLoading(true);
     try {
-      const token = localStorage.getItem("accessToken");
-      if (!token) {
-        toast.error("Please log in to access partner management");
-        return;
-      }
-
       // Add cache-busting parameter
       const timestamp = new Date().getTime();
       const queryParams = new URLSearchParams({
@@ -64,8 +115,8 @@ export default function PartnersManagement() {
       });
 
       const res = await fetch(`${API_ENDPOINT}/api/partners?${queryParams}`, {
-        headers: { 
-          Authorization: `Bearer ${token}`,
+        credentials: "include", // This sends HTTP-only cookies
+        headers: {
           'Content-Type': 'application/json',
           'Cache-Control': 'no-cache',
           'Pragma': 'no-cache'
@@ -79,6 +130,14 @@ export default function PartnersManagement() {
         // You can choose to keep existing data or refetch
         // For now, we'll refetch with forced refresh
         await loadPartnersForced();
+        return;
+      }
+
+      if (res.status === 401) {
+        toast.error("Session expired. Please login again.");
+        setTimeout(() => {
+          window.location.href = "/login";
+        }, 1500);
         return;
       }
 
@@ -114,9 +173,6 @@ export default function PartnersManagement() {
   // Force refresh without cache
   async function loadPartnersForced() {
     try {
-      const token = localStorage.getItem("accessToken");
-      if (!token) return;
-
       const timestamp = new Date().getTime();
       const queryParams = new URLSearchParams({
         status: filters.status === "all" ? "" : filters.status,
@@ -127,8 +183,8 @@ export default function PartnersManagement() {
       });
 
       const res = await fetch(`${API_ENDPOINT}/api/partners?${queryParams}`, {
-        headers: { 
-          Authorization: `Bearer ${token}`,
+        credentials: "include", // This sends HTTP-only cookies
+        headers: {
           'Content-Type': 'application/json',
           'Cache-Control': 'no-cache, no-store, must-revalidate',
           'Pragma': 'no-cache',
@@ -136,6 +192,14 @@ export default function PartnersManagement() {
         },
         cache: 'no-store'
       });
+
+      if (res.status === 401) {
+        toast.error("Session expired. Please login again.");
+        setTimeout(() => {
+          window.location.href = "/login";
+        }, 1500);
+        return;
+      }
 
       if (res.ok) {
         const data = await res.json();
@@ -152,15 +216,10 @@ export default function PartnersManagement() {
 
   async function loadStats() {
     try {
-      const token = localStorage.getItem("accessToken");
-      if (!token) {
-        return;
-      }
-
       const timestamp = new Date().getTime();
       const res = await fetch(`${API_ENDPOINT}/api/partners/stats?_t=${timestamp}`, {
-        headers: { 
-          Authorization: `Bearer ${token}`,
+        credentials: "include", // This sends HTTP-only cookies
+        headers: {
           'Content-Type': 'application/json',
           'Cache-Control': 'no-cache'
         },
@@ -169,6 +228,12 @@ export default function PartnersManagement() {
 
       if (res.status === 304) {
         return; // Use existing stats
+      }
+
+      if (res.status === 401) {
+        // Session expired, but we don't want to redirect here
+        // The next request will handle it
+        return;
       }
 
       if (!res.ok) {
@@ -208,20 +273,22 @@ export default function PartnersManagement() {
 
   async function updatePartnerStatus(partnerId, status, reason = "") {
     try {
-      const token = localStorage.getItem("accessToken");
-      if (!token) {
-        toast.error("Please log in to perform this action");
-        return;
-      }
-
       const res = await fetch(`${API_ENDPOINT}/api/partners/${partnerId}/status`, {
         method: "PATCH",
-        headers: { 
-          Authorization: `Bearer ${token}`,
+        credentials: "include", // This sends HTTP-only cookies
+        headers: {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({ status, reason }),
       });
+
+      if (res.status === 401) {
+        toast.error("Session expired. Please login again.");
+        setTimeout(() => {
+          window.location.href = "/login";
+        }, 1500);
+        return;
+      }
 
       if (!res.ok) {
         const errorData = await res.json();
@@ -255,7 +322,7 @@ export default function PartnersManagement() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-44 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gray-50 py-16 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6 mb-8">

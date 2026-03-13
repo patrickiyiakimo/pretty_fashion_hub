@@ -1,3 +1,114 @@
+// "use client";
+// import { useState, useEffect } from "react";
+// import Link from "next/link";
+// import { HiMenu, HiX, HiOutlineShoppingCart, HiSearch, HiUser, HiChevronDown, HiLogout, HiCog } from "react-icons/hi";
+// import { useCart } from "@/context/CartContext";
+// import Image from "next/image";
+// import { motion, AnimatePresence } from "framer-motion";
+
+// export default function Navbar() {
+//   const [isOpen, setIsOpen] = useState(false);
+//   const [isScrolled, setIsScrolled] = useState(false);
+//   const [isSearchOpen, setIsSearchOpen] = useState(false);
+//   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+//   const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false);
+//   const [searchQuery, setSearchQuery] = useState("");
+//   const [user, setUser] = useState(null);
+//   const { cart } = useCart();
+
+//   // Check if user is logged in
+//   useEffect(() => {
+//     const checkAuth = () => {
+//       const token = localStorage.getItem("accessToken");
+//       const userData = localStorage.getItem("user");
+      
+//       if (token && userData) {
+//         try {
+//           setUser(JSON.parse(userData));
+//         } catch (error) {
+//           console.error("Error parsing user data:", error);
+//           localStorage.removeItem("user");
+//           localStorage.removeItem("accessToken");
+//         }
+//       } else {
+//         setUser(null);
+//       }
+//     };
+
+//     checkAuth();
+    
+//     // Listen for auth changes
+//     window.addEventListener("storage", checkAuth);
+//     return () => window.removeEventListener("storage", checkAuth);
+//   }, []);
+
+//   // Handle scroll effect
+//   useEffect(() => {
+//     const handleScroll = () => {
+//       setIsScrolled(window.scrollY > 50);
+//     };
+//     window.addEventListener("scroll", handleScroll);
+//     return () => window.removeEventListener("scroll", handleScroll);
+//   }, []);
+
+//   // Close dropdowns when clicking outside
+//   useEffect(() => {
+//     const handleClickOutside = (event) => {
+//       if (!event.target.closest('.user-dropdown')) {
+//         setIsUserDropdownOpen(false);
+//       }
+//       if (!event.target.closest('.shop-dropdown')) {
+//         setIsDropdownOpen(false);
+//       }
+//     };
+
+//     document.addEventListener('mousedown', handleClickOutside);
+//     return () => document.removeEventListener('mousedown', handleClickOutside);
+//   }, []);
+
+//   // Prevent body scroll when mobile menu is open
+//   useEffect(() => {
+//     if (isOpen) {
+//       document.body.style.overflow = 'hidden';
+//     } else {
+//       document.body.style.overflow = 'unset';
+//     }
+    
+//     return () => {
+//       document.body.style.overflow = 'unset';
+//     };
+//   }, [isOpen]);
+
+//   // Safely calculate cart count
+//   const cartCount = Array.isArray(cart)
+//     ? cart.reduce((sum, item) => sum + (item.quantity || 0), 0)
+//     : 0;
+
+//   // Handle search
+//   const handleSearch = (e) => {
+//     e.preventDefault();
+//     if (searchQuery.trim()) {
+//       window.location.href = `/shop?search=${encodeURIComponent(searchQuery.trim())}`;
+//       setIsSearchOpen(false);
+//       setSearchQuery("");
+//     }
+//   };
+
+//   // Handle logout
+//   const handleLogout = () => {
+//     localStorage.removeItem("accessToken");
+//     localStorage.removeItem("user");
+//     setUser(null);
+//     setIsUserDropdownOpen(false);
+//     setIsOpen(false);
+//     window.dispatchEvent(new Event("storage"));
+//     // Optionally redirect to home
+//     window.location.href = "/";
+//   };
+
+
+
+
 "use client";
 import { useState, useEffect } from "react";
 import Link from "next/link";
@@ -5,6 +116,8 @@ import { HiMenu, HiX, HiOutlineShoppingCart, HiSearch, HiUser, HiChevronDown, Hi
 import { useCart } from "@/context/CartContext";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
+
+const API_ENDPOINT = process.env.NEXT_PUBLIC_API_ENDPOINT || "http://localhost:4000";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -14,33 +127,61 @@ export default function Navbar() {
   const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [user, setUser] = useState(null);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [checkingAuth, setCheckingAuth] = useState(true);
   const { cart } = useCart();
 
-  // Check if user is logged in
+  // Check if user is authenticated via cookies
   useEffect(() => {
-    const checkAuth = () => {
-      const token = localStorage.getItem("accessToken");
-      const userData = localStorage.getItem("user");
-      
-      if (token && userData) {
-        try {
-          setUser(JSON.parse(userData));
-        } catch (error) {
-          console.error("Error parsing user data:", error);
+    checkAuthStatus();
+  }, []);
+
+  const checkAuthStatus = async () => {
+    try {
+      // Try to access a protected endpoint to verify cookies
+      const response = await fetch(`${API_ENDPOINT}/api/auth/me`, {
+        method: "GET",
+        credentials: "include", // This sends cookies with the request
+        headers: {
+          "Content-Type": "application/json"
+        }
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        if (data.user) {
+          // User is authenticated
+          setIsAuthenticated(true);
+          setUser(data.user);
+          
+          // Store minimal user data in localStorage for quick access in UI
+          // This is optional and only used for display, not for authentication
+          localStorage.setItem("user", JSON.stringify({
+            id: data.user.id,
+            fullname: data.user.fullname,
+            email: data.user.email
+          }));
+        } else {
+          // Not authenticated
+          setIsAuthenticated(false);
+          setUser(null);
           localStorage.removeItem("user");
-          localStorage.removeItem("accessToken");
         }
       } else {
+        // Not authenticated (401)
+        setIsAuthenticated(false);
         setUser(null);
+        localStorage.removeItem("user");
       }
-    };
-
-    checkAuth();
-    
-    // Listen for auth changes
-    window.addEventListener("storage", checkAuth);
-    return () => window.removeEventListener("storage", checkAuth);
-  }, []);
+    } catch (error) {
+      console.error("Auth check error:", error);
+      setIsAuthenticated(false);
+      setUser(null);
+      localStorage.removeItem("user");
+    } finally {
+      setCheckingAuth(false);
+    }
+  };
 
   // Handle scroll effect
   useEffect(() => {
@@ -95,15 +236,40 @@ export default function Navbar() {
   };
 
   // Handle logout
-  const handleLogout = () => {
-    localStorage.removeItem("accessToken");
-    localStorage.removeItem("user");
-    setUser(null);
-    setIsUserDropdownOpen(false);
-    setIsOpen(false);
-    window.dispatchEvent(new Event("storage"));
-    // Optionally redirect to home
-    window.location.href = "/";
+  const handleLogout = async () => {
+    try {
+      // Call logout endpoint to clear cookies
+      await fetch(`${API_ENDPOINT}/api/auth/logout`, {
+        method: "POST",
+        credentials: "include", // This sends cookies with the request
+        headers: {
+          "Content-Type": "application/json"
+        }
+      });
+    } catch (error) {
+      console.error("Logout error:", error);
+    } finally {
+      // Clear local state regardless of API response
+      setIsAuthenticated(false);
+      setUser(null);
+      localStorage.removeItem("user");
+      setIsUserDropdownOpen(false);
+      setIsOpen(false);
+      
+      // Redirect to home
+      window.location.href = "/";
+    }
+  };
+
+  // Get display name for user
+  const getUserDisplayName = () => {
+    if (user?.fullname) {
+      return user.fullname.split(' ')[0];
+    }
+    if (user?.email) {
+      return user.email.split('@')[0];
+    }
+    return 'User';
   };
 
   // Navigation links with categories
@@ -149,9 +315,9 @@ export default function Navbar() {
               className="flex items-center space-x-3 group"
             >
               <Link href="/" className="flex items-center space-x-3">
-                <div className="relative w-12 h-12 rounded-xl overflow-hidden border-2 border-yellow-400 group-hover:border-blue-600 transition-all duration-500 shadow-lg">
+                <div className="relative w-12 h-12 rounded-xl overflow-hidden transition-all duration-500 shadow-lg">
                   <Image
-                    src="/images/84712fed-7915-4ea9-a169-ce0c5d8b3531.JPG"
+                    src="/images/0ddb8c41-20a9-446e-a056-9b6290b33d6b.JPG"
                     alt="Vendly - Premium Fashion"
                     fill
                     className="object-cover transform group-hover:scale-110 transition-transform duration-500"

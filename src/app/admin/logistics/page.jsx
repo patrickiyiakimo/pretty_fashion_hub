@@ -33,6 +33,8 @@ export default function LogisticsPage() {
   const [showCreateForm, setShowCreateForm] = useState(false);
   const [showUpdateForm, setShowUpdateForm] = useState(false);
   const [selectedShipment, setSelectedShipment] = useState(null);
+  const [authChecked, setAuthChecked] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   // Form states
   const [createForm, setCreateForm] = useState({
@@ -54,23 +56,76 @@ export default function LogisticsPage() {
     notes: ""
   });
 
+  // Check authentication on mount
   useEffect(() => {
-    loadShipments();
+    checkAuth();
   }, []);
+
+  const checkAuth = async () => {
+    try {
+      const response = await fetch(`${API_ENDPOINT}/api/auth/me`, {
+        method: "GET",
+        credentials: "include", // This sends HTTP-only cookies
+        headers: {
+          "Content-Type": "application/json"
+        }
+      });
+
+      if (!response.ok) {
+        if (response.status === 401) {
+          console.log("User not authenticated");
+          setIsAuthenticated(false);
+          setAuthChecked(true);
+          toast.error("Please login to access logistics");
+          setTimeout(() => {
+            window.location.href = "/login";
+          }, 1500);
+        }
+        return;
+      }
+
+      const data = await response.json();
+      
+      if (data.user) {
+        setIsAuthenticated(true);
+        setAuthChecked(true);
+        // Load shipments after successful auth
+        loadShipments();
+      }
+      
+    } catch (error) {
+      console.error("Auth check error:", error);
+      setIsAuthenticated(false);
+      setAuthChecked(true);
+      toast.error("Authentication failed");
+      setTimeout(() => {
+        window.location.href = "/login";
+      }, 1500);
+    }
+  };
 
   async function loadShipments() {
     setLoading(true);
     setError("");
     try {
-      const token = localStorage.getItem("accessToken") || "";
       const res = await fetch(`${API_ENDPOINT}/api/logistics`, {
-        headers: { 
-          Authorization: token ? `Bearer ${token}` : "",
+        credentials: "include", // This sends HTTP-only cookies
+        headers: {
           'Content-Type': 'application/json'
         },
       });
 
-      if (!res.ok) toast.error("Failed to load shipments");
+      if (res.status === 401) {
+        toast.error("Session expired. Please login again.");
+        setTimeout(() => {
+          window.location.href = "/login";
+        }, 1500);
+        return;
+      }
+
+      if (!res.ok) {
+        throw new Error(`Failed to load shipments: ${res.status}`);
+      }
       
       const data = await res.json();
       if (data.success) {
@@ -81,6 +136,7 @@ export default function LogisticsPage() {
     } catch (e) {
       console.error("Load shipments failed:", e);
       setError(e.message);
+      toast.error(e.message || "Failed to load shipments");
     } finally {
       setLoading(false);
     }
@@ -92,18 +148,25 @@ export default function LogisticsPage() {
     setError("");
     
     try {
-      const token = localStorage.getItem("accessToken") || "";
       const res = await fetch(`${API_ENDPOINT}/api/logistics`, {
         method: "POST",
+        credentials: "include", // This sends HTTP-only cookies
         headers: { 
-          "Content-Type": "application/json", 
-          Authorization: token ? `Bearer ${token}` : "" 
+          "Content-Type": "application/json"
         },
         body: JSON.stringify({
           ...createForm,
           currentLocation: createForm.origin
         }),
       });
+
+      if (res.status === 401) {
+        toast.error("Session expired. Please login again.");
+        setTimeout(() => {
+          window.location.href = "/login";
+        }, 1500);
+        return;
+      }
 
       const data = await res.json();
 
@@ -116,9 +179,10 @@ export default function LogisticsPage() {
         destination: "", item: "", weight: "", dimensions: "", shippingMethod: "Standard"
       });
       
-      alert(`Shipment created! Tracking: ${data.shipment.trackingNumber}`);
+      toast.success(`Shipment created! Tracking: ${data.shipment.trackingNumber}`);
     } catch (e) {
       setError(e.message);
+      toast.error(e.message || "Failed to create shipment");
     } finally {
       setLoading(false);
     }
@@ -127,7 +191,7 @@ export default function LogisticsPage() {
   async function updateShipment(e) {
     e.preventDefault();
     if (!updateForm.trackingNumber || !updateForm.location) {
-      alert("Please fill in all required fields");
+      toast.error("Please fill in all required fields");
       return;
     }
 
@@ -135,15 +199,22 @@ export default function LogisticsPage() {
     setError("");
     
     try {
-      const token = localStorage.getItem("accessToken") || "";
       const res = await fetch(`${API_ENDPOINT}/api/logistics/${updateForm.trackingNumber}`, {
         method: "PUT",
+        credentials: "include", // This sends HTTP-only cookies
         headers: { 
-          "Content-Type": "application/json", 
-          Authorization: token ? `Bearer ${token}` : "" 
+          "Content-Type": "application/json"
         },
         body: JSON.stringify(updateForm),
       });
+
+      if (res.status === 401) {
+        toast.error("Session expired. Please login again.");
+        setTimeout(() => {
+          window.location.href = "/login";
+        }, 1500);
+        return;
+      }
 
       const data = await res.json();
 
@@ -155,9 +226,10 @@ export default function LogisticsPage() {
       setShowUpdateForm(false);
       setUpdateForm({ trackingNumber: "", location: "", status: "In Transit", notes: "" });
       
-      alert(`Shipment ${data.shipment.trackingNumber} updated!`);
+      toast.success(`Shipment ${data.shipment.trackingNumber} updated!`);
     } catch (e) {
       setError(e.message);
+      toast.error(e.message || "Failed to update shipment");
     } finally {
       setLoading(false);
     }
@@ -168,7 +240,7 @@ export default function LogisticsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-44 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gray-50 py-16 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6 mb-8">
