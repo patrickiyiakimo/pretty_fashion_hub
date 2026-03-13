@@ -572,9 +572,9 @@ export default function Navbar() {
                   {/* Header with Close Button */}
                   <div className="flex items-center justify-between p-6 border-b border-gray-200 bg-white sticky top-0 z-10">
                     <div className="flex items-center space-x-3">
-                      <div className="relative w-10 h-10 rounded-xl overflow-hidden border-2 border-yellow-400">
+                      <div className="relative w-10 h-10 rounded-xl overflow-hidden">
                         <Image
-                          src="/images/84712fed-7915-4ea9-a169-ce0c5d8b3531.JPG"
+                          src="/images/0ddb8c41-20a9-446e-a056-9b6290b33d6b.JPG"
                           alt="Vendly"
                           fill
                           className="object-cover"
