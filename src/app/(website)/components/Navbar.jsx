@@ -328,7 +328,7 @@ export default function Navbar() {
                   <span className={`text-2xl font-bold transition-colors duration-300 ${
                     isScrolled ? "text-gray-900" : "text-white"
                   }`}>
-                    Vendly
+                    Vendlyyy
                   </span>
                   {/* <span className="text-xs text-yellow-400 font-medium tracking-wider">
                     PREMIUM FASHION

@@ -337,7 +337,153 @@
 
 
 
-"use client";
+// "use client";
+
+// import { useState, useEffect } from "react";
+// import { motion } from "framer-motion";
+// import Link from "next/link";
+// import { useRouter } from "next/navigation";
+// import { Toaster, toast } from "react-hot-toast";
+// import axios from "axios";
+
+// export default function SignUp() {
+//   const router = useRouter();
+//   const [form, setForm] = useState({
+//     fullname: "",
+//     email: "",
+//     phone: "",
+//     password: "",
+//     accept_terms: false
+//   });
+//   const [loading, setLoading] = useState(false);
+//   const [showPassword, setShowPassword] = useState(false);
+
+//   const API_ENDPOINT = process.env.NEXT_PUBLIC_API_ENDPOINT || "http://localhost:4000";
+
+//   // Check if user is already logged in
+//   useEffect(() => {
+//     checkAuthStatus();
+//   }, []);
+
+//   const checkAuthStatus = async () => {
+//     try {
+//       const response = await axios.get(`${API_ENDPOINT}/api/auth/me`, {
+//         withCredentials: true,
+//         timeout: 3000
+//       });
+
+//       if (response.data && response.data.user) {
+//         console.log("✅ User already logged in, redirecting to shop");
+        
+//         // Store minimal user data for UI (optional)
+//         localStorage.setItem("user", JSON.stringify({
+//           id: response.data.user.id,
+//           fullname: response.data.user.fullname,
+//           email: response.data.user.email
+//         }));
+        
+//         router.push("/shop");
+//       }
+//     } catch (error) {
+//       // 401 is expected - user is not logged in
+//       if (error.response?.status === 401) {
+//         console.log("User not logged in, staying on signup page");
+//         localStorage.removeItem("user");
+//       }
+//     }
+//   };
+
+//   const handleChange = (e) => {
+//     const { name, value, type, checked } = e.target;
+//     setForm({ 
+//       ...form, 
+//       [name]: type === 'checkbox' ? checked : value 
+//     });
+//   };
+
+//   const handleSubmit = async (e) => {
+//     e.preventDefault();
+//     setLoading(true);
+
+//     try {
+//       console.log("🚀 Creating account with:", { ...form, password: '[REDACTED]' });
+
+//       // Validate terms acceptance
+//       if (!form.accept_terms) {
+//         toast.error("Please accept the terms and conditions");
+//         setLoading(false);
+//         return;
+//       }
+
+//       const response = await axios.post(
+//         `${API_ENDPOINT}/api/auth/register`, 
+//         {
+//           fullname: form.fullname,
+//           email: form.email,
+//           phone: form.phone,
+//           password: form.password,
+//           accept_terms: form.accept_terms
+//         },
+//         {
+//           headers: { "Content-Type": "application/json" },
+//           withCredentials: true // This ensures cookies are sent and received
+//         }
+//       );
+
+//       const data = response.data;
+//       console.log("✅ Signup response:", data);
+
+//       if (response.status === 201) {
+//         const { user } = data;
+
+//         // Store ONLY user data (fullname, email, phone) in localStorage for UI
+//         // Tokens are stored in HTTP-only cookies by the server
+//         localStorage.setItem("user", JSON.stringify({
+//           id: user.id,
+//           fullname: user.fullname,
+//           email: user.email,
+//           phone: user.phone || "Not provided"
+//         }));
+
+//         console.log("💾 Saved user data to localStorage:", user.email);
+//         console.log("🍪 Cookies should be set by server (HTTP-only)");
+
+//         toast.success("Welcome to Vendly! Your account has been created.");
+
+//         setTimeout(() => {
+//           router.push("/shop");
+//         }, 1500);
+//       } else {
+//         toast.error(data.message || data.error || "Failed to register. Please try again.");
+//       }
+//     } catch (error) {
+//       console.error("❌ Signup error:", error);
+      
+//       if (error.response) {
+//         const errorMessage = error.response.data?.message || 
+//                            error.response.data?.error || 
+//                            "Registration failed. Please try again.";
+//         toast.error(errorMessage);
+        
+//         if (error.response.status === 400) {
+//           if (error.response.data?.message?.includes("already registered")) {
+//             toast.error("Email already registered. Please use a different email or login.");
+//           }
+//         }
+//       } else if (error.request) {
+//         toast.error("Network error. Please check your connection and try again.");
+//       } else {
+//         toast.error("An unexpected error occurred. Please try again.");
+//       }
+//     } finally {
+//       setLoading(false);
+//     }
+//   };
+
+
+
+
+
 
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
@@ -375,7 +521,6 @@ export default function SignUp() {
       if (response.data && response.data.user) {
         console.log("✅ User already logged in, redirecting to shop");
         
-        // Store minimal user data for UI (optional)
         localStorage.setItem("user", JSON.stringify({
           id: response.data.user.id,
           fullname: response.data.user.fullname,
@@ -385,7 +530,6 @@ export default function SignUp() {
         router.push("/shop");
       }
     } catch (error) {
-      // 401 is expected - user is not logged in
       if (error.response?.status === 401) {
         console.log("User not logged in, staying on signup page");
         localStorage.removeItem("user");
@@ -408,7 +552,6 @@ export default function SignUp() {
     try {
       console.log("🚀 Creating account with:", { ...form, password: '[REDACTED]' });
 
-      // Validate terms acceptance
       if (!form.accept_terms) {
         toast.error("Please accept the terms and conditions");
         setLoading(false);
@@ -430,14 +573,13 @@ export default function SignUp() {
         }
       );
 
-      const data = response.data;
-      console.log("✅ Signup response:", data);
+      console.log("✅ Signup response:", response.data);
+      console.log("🍪 Response headers:", response.headers); // Check for set-cookie headers
 
       if (response.status === 201) {
-        const { user } = data;
+        const { user } = response.data;
 
-        // Store ONLY user data (fullname, email, phone) in localStorage for UI
-        // Tokens are stored in HTTP-only cookies by the server
+        // Store user data in localStorage for UI
         localStorage.setItem("user", JSON.stringify({
           id: user.id,
           fullname: user.fullname,
@@ -445,16 +587,30 @@ export default function SignUp() {
           phone: user.phone || "Not provided"
         }));
 
-        console.log("💾 Saved user data to localStorage:", user.email);
-        console.log("🍪 Cookies should be set by server (HTTP-only)");
+        console.log("💾 Saved user data to localStorage");
+        console.log("🔍 Checking if cookies were set...");
+        
+        // Small delay to ensure cookies are processed
+        await new Promise(resolve => setTimeout(resolve, 500));
 
-        toast.success("Welcome to Vendly! Your account has been created.");
-
-        setTimeout(() => {
-          router.push("/shop");
-        }, 1500);
-      } else {
-        toast.error(data.message || data.error || "Failed to register. Please try again.");
+        // Verify that the session works by calling /me
+        try {
+          const meResponse = await axios.get(`${API_ENDPOINT}/api/auth/me`, {
+            withCredentials: true
+          });
+          console.log("✅ Session verified, user:", meResponse.data.user);
+          toast.success("Welcome to Vendly! Your account has been created.");
+          
+          setTimeout(() => {
+            router.push("/shop");
+          }, 1500);
+        } catch (meError) {
+          console.error("❌ Session verification failed:", meError);
+          toast.error("Account created but login failed. Please try logging in.");
+          setTimeout(() => {
+            router.push("/login");
+          }, 2000);
+        }
       }
     } catch (error) {
       console.error("❌ Signup error:", error);
