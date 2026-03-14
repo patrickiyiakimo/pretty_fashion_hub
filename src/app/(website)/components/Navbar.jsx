@@ -328,7 +328,7 @@ export default function Navbar() {
                   <span className={`text-2xl font-bold transition-colors duration-300 ${
                     isScrolled ? "text-gray-900" : "text-white"
                   }`}>
-                    Vendlyyy
+                    Vendly
                   </span>
                   {/* <span className="text-xs text-yellow-400 font-medium tracking-wider">
                     PREMIUM FASHION
@@ -687,7 +687,7 @@ export default function Navbar() {
                             <div className="text-center">
                               <p className="text-sm text-gray-600 mb-3">Don't have an account?</p>
                               <Link
-                                href="/register"
+                                href="/signup"
                                 onClick={() => setIsOpen(false)}
                                 className="inline-block bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 text-base w-full"
                               >
