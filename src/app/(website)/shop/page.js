@@ -599,7 +599,7 @@ export default function ShopPage() {
           <div className="text-center mb-12">
             <h1 className="text-4xl font-bold text-gray-900 mb-4">Loading Products...</h1>
             <p className="text-gray-600">
-              Welcome back, <span className="font-semibold text-blue-600">{user?.fullname || user?.email?.split('@')[0] || 'User'}</span>!
+              Welcome back, <span className="font-semibold text-blue-600">{user.fullname}</span>!
             </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
@@ -628,7 +628,7 @@ export default function ShopPage() {
           </h1>
           <p className="text-gray-600 text-lg max-w-2xl mx-auto mb-2">
             Welcome back, <span className="font-semibold text-blue-600">
-              {user?.fullname || user?.email?.split('@')[0] || 'User'}
+              {user?.fullname}
             </span>!
           </p>
           <p className="text-gray-600">

@@ -290,7 +290,7 @@ export default function Navbar() {
     // { name: "Collections", href: "/collections" },
     { name: "Brands", href: "/brands" },
     { name: "Partner", href: "/partner" },
-    { name: "Pre-Order", href: "/pre-order" },
+    // { name: "Pre-Order", href: "/pre-order" },
   ];
 
   const userDropdownItems = [
