@@ -544,8 +544,7 @@
 // }
 
 
-
-// app/api/auth/[...path]/route.js
+// app/api/auth/[[...slug]]/route.js
 export async function POST(request, { params }) {
   return handleRequest(request, params);
 }
@@ -558,16 +557,17 @@ async function handleRequest(request, { params }) {
   try {
     const BACKEND_URL = process.env.BACKEND_URL || 'https://kingz-server.onrender.com';
     
-    // Get the path segments - this is the key part!
-    // If URL is /api/auth/login, params.path = ['login']
-    const pathSegments = params?.path || [];
-    const endpoint = pathSegments.join('/');
+    // Get the slug - this will be ['login'] for /api/auth/login
+    const slug = params?.slug || [];
+    const endpoint = slug.join('/');
     
-    // Build the correct URL - NO trailing slash!
+    // Build the URL
     const url = `${BACKEND_URL}/api/auth/${endpoint}${request.nextUrl.search}`;
     
-    console.log('✅ Proxying to:', url);
-    console.log('📌 Path segments:', pathSegments);
+    console.log('🔍 Debug:');
+    console.log('- Slug:', slug);
+    console.log('- Endpoint:', endpoint);
+    console.log('- Full URL:', url);
 
     // Get request body
     let body = null;
