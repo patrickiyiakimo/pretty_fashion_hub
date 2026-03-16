@@ -16,7 +16,7 @@ const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
 
   // Make sure this matches your backend URL exactly
-  const BACKEND_URL = process.env.BACKEND_URL;
+  // const BACKEND_URL = process.env.BACKEND_URL;
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -89,7 +89,7 @@ const handleSubmit = async (e) => {
   try {
     console.log('Sending request to:', '/api/auth/login');
     
-    const response = await fetch( `${BACKEND_URL} /api/auth/login ` , {
+    const response = await fetch("/api/auth/login" , {
       method: 'POST',
       credentials: 'include',
       headers: {
