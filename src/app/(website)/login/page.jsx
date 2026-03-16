@@ -16,7 +16,7 @@ const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
 
   // Make sure this matches your backend URL exactly
-  // const API_ENDPOINT = process.env.BACKEND_URL || "http://localhost:4000";
+  const BACKEND_URL = process.env.BACKEND_URL || "http://localhost:4000";
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
