@@ -348,6 +348,102 @@
 
 
 
+// // app/api/[...path]/route.js
+// export async function GET(request, { params }) {
+//   return handleRequest(request, params);
+// }
+
+// export async function POST(request, { params }) {
+//   return handleRequest(request, params);
+// }
+
+// export async function PUT(request, { params }) {
+//   return handleRequest(request, params);
+// }
+
+// export async function DELETE(request, { params }) {
+//   return handleRequest(request, params);
+// }
+
+// export async function PATCH(request, { params }) {
+//   return handleRequest(request, params);
+// }
+
+// async function handleRequest(request, { params }) {
+//   try {
+//     const BACKEND_URL = process.env.BACKEND_URL;
+    
+//     if (!BACKEND_URL) {
+//       return new Response(JSON.stringify({ error: 'BACKEND_URL not set' }), {
+//         status: 500,
+//         headers: { 'Content-Type': 'application/json' }
+//       });
+//     }
+
+//     // Build the URL
+//     const path = params?.join('/') || '';
+//     const searchParams = request.nextUrl.search;
+//     const url = `${BACKEND_URL}/api/${path}${searchParams}`;
+    
+//     console.log(`🔄 ${request.method} to: ${url}`);
+
+//     // Get the request body for non-GET requests
+//     let body = null;
+//     if (request.method !== 'GET' && request.method !== 'HEAD') {
+//       body = await request.text();
+//       console.log('📦 Body length:', body?.length);
+//     }
+
+//     // Forward the request
+//     const response = await fetch(url, {
+//       method: request.method,
+//       headers: {
+//         'Content-Type': 'application/json',
+//         'Cookie': request.headers.get('cookie') || '',
+//       },
+//       body: body,
+//     });
+
+//     // Get response data
+//     const responseData = await response.text();
+
+//     // Create new response
+//     const newResponse = new Response(responseData, {
+//       status: response.status,
+//       statusText: response.statusText,
+//     });
+
+//     // Forward cookies
+//     const setCookieHeader = response.headers.get('set-cookie');
+//     if (setCookieHeader) {
+//       newResponse.headers.set('set-cookie', setCookieHeader);
+//     }
+
+//     // Forward content type
+//     const contentType = response.headers.get('content-type');
+//     if (contentType) {
+//       newResponse.headers.set('content-type', contentType);
+//     }
+
+//     return newResponse;
+
+//   } catch (error) {
+//     console.error('❌ Proxy error:', error);
+//     return new Response(JSON.stringify({ 
+//       error: 'Proxy error', 
+//       message: error.message 
+//     }), {
+//       status: 500,
+//       headers: { 'Content-Type': 'application/json' }
+//     });
+//   }
+// }
+
+
+
+
+
+
 // app/api/[...path]/route.js
 export async function GET(request, { params }) {
   return handleRequest(request, params);
@@ -380,10 +476,18 @@ async function handleRequest(request, { params }) {
       });
     }
 
-    // Build the URL
-    const path = params?.join('/') || '';
+    // ✅ FIX: Get the full path from params
+    // params should be an array like ['auth', 'login']
+    const fullPath = params?.join('/') || '';
+    console.log('📌 Full path from params:', fullPath);
+    
     const searchParams = request.nextUrl.search;
-    const url = `${BACKEND_URL}/api/${path}${searchParams}`;
+    
+    // ✅ CORRECT: Build URL with the full path
+    // BACKEND_URL = https://kingz-server.onrender.com
+    // fullPath = auth/login
+    // Result: https://kingz-server.onrender.com/api/auth/login
+    const url = `${BACKEND_URL}/api/${fullPath}${searchParams}`;
     
     console.log(`🔄 ${request.method} to: ${url}`);
 
