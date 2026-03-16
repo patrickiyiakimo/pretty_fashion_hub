@@ -348,7 +348,6 @@
 
 
 
-
 // app/api/[...path]/route.js
 export async function GET(request, { params }) {
   return handleRequest(request, params);
@@ -388,31 +387,21 @@ async function handleRequest(request, { params }) {
     
     console.log(`🔄 ${request.method} to: ${url}`);
 
-    // ✅ FIX: Get the request body properly
+    // Get the request body for non-GET requests
     let body = null;
     if (request.method !== 'GET' && request.method !== 'HEAD') {
-      // Clone the request to read the body
-      const clonedRequest = request.clone();
-      body = await clonedRequest.text();
-      console.log('📦 Request body:', body);
+      body = await request.text();
+      console.log('📦 Body length:', body?.length);
     }
-
-    // Prepare headers
-    const headers = {};
-    request.headers.forEach((value, key) => {
-      if (!['host', 'content-length'].includes(key)) {
-        headers[key] = value;
-      }
-    });
 
     // Forward the request
     const response = await fetch(url, {
       method: request.method,
       headers: {
-        ...headers,
         'Content-Type': 'application/json',
+        'Cookie': request.headers.get('cookie') || '',
       },
-      body: body || undefined,
+      body: body,
     });
 
     // Get response data
