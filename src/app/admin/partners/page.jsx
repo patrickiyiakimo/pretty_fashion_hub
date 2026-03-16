@@ -16,7 +16,7 @@ import {
 import toast from "react-hot-toast";
 import Link from "next/link";
 
-const API_ENDPOINT = process.env.NEXT_PUBLIC_API_ENDPOINT || "http://localhost:4000";
+// const API_ENDPOINT = process.env.BACKEND_URL || "http://localhost:4000";
 
 const statusConfig = {
   pending: { color: "bg-yellow-100 text-yellow-800", icon: HiClock, label: "Pending" },
@@ -47,7 +47,7 @@ export default function PartnersManagement() {
 
   const checkAuth = async () => {
     try {
-      const response = await fetch(`${API_ENDPOINT}/api/auth/me`, {
+      const response = await fetch("/api/auth/me", {
         method: "GET",
         credentials: "include", // This sends HTTP-only cookies
         headers: {
@@ -114,7 +114,7 @@ export default function PartnersManagement() {
         ...(filters.search && { search: filters.search })
       });
 
-      const res = await fetch(`${API_ENDPOINT}/api/partners?${queryParams}`, {
+      const res = await fetch(`/api/partners?${queryParams}`, {
         credentials: "include", // This sends HTTP-only cookies
         headers: {
           'Content-Type': 'application/json',
@@ -182,7 +182,7 @@ export default function PartnersManagement() {
         ...(filters.search && { search: filters.search })
       });
 
-      const res = await fetch(`${API_ENDPOINT}/api/partners?${queryParams}`, {
+      const res = await fetch(`/api/partners?${queryParams}`, {
         credentials: "include", // This sends HTTP-only cookies
         headers: {
           'Content-Type': 'application/json',
@@ -217,7 +217,7 @@ export default function PartnersManagement() {
   async function loadStats() {
     try {
       const timestamp = new Date().getTime();
-      const res = await fetch(`${API_ENDPOINT}/api/partners/stats?_t=${timestamp}`, {
+      const res = await fetch(`/api/partners/stats?_t=${timestamp}`, {
         credentials: "include", // This sends HTTP-only cookies
         headers: {
           'Content-Type': 'application/json',
@@ -273,7 +273,7 @@ export default function PartnersManagement() {
 
   async function updatePartnerStatus(partnerId, status, reason = "") {
     try {
-      const res = await fetch(`${API_ENDPOINT}/api/partners/${partnerId}/status`, {
+      const res = await fetch(`/api/partners/${partnerId}/status`, {
         method: "PATCH",
         credentials: "include", // This sends HTTP-only cookies
         headers: {

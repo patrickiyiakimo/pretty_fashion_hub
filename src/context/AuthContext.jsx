@@ -3,7 +3,7 @@ import { createContext, useContext, useState, useEffect, useCallback } from "rea
 import axios from "axios";
 import toast from "react-hot-toast";
 
-const API_ENDPOINT = process.env.NEXT_PUBLIC_API_ENDPOINT || "http://localhost:4000";
+const API_ENDPOINT = process.env.BACKEND_URL || "http://localhost:4000";
 
 // Create axios instance with better defaults
 const authAxios = axios.create({

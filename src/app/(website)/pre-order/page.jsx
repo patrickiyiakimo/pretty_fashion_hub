@@ -9,7 +9,7 @@ import PreOrderProduct from '../components/PreOrderProduct';
 import PreOrderBenefits from '../components/PreOrderBenefits';
 import PreOrderForm from '../components/PreOrderForm';
 
-const API_ENDPOINT = process.env.NEXT_PUBLIC_API_ENDPOINT || "http://localhost:4000";
+// const API_ENDPOINT = process.env.BACKEND_URL || "http://localhost:4000";
 
 export default function PreOrderPage() {
   const [selectedVariant, setSelectedVariant] = useState(null);
@@ -108,7 +108,7 @@ export default function PreOrderPage() {
       console.log('Pre-order submitted:', preOrderData);
       
       // Add your API call here
-      const response = await fetch(`${API_ENDPOINT}/api/pre-orders`, {
+      const response = await fetch("/api/pre-orders", {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

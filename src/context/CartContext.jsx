@@ -4,7 +4,7 @@ import axios from "axios";
 import toast, { Toaster } from "react-hot-toast";
 
 const CartContext = createContext();
-const API_BASE = process.env.NEXT_PUBLIC_API_ENDPOINT || "http://localhost:4000";
+const API_BASE = process.env.BACKEND_URL || "http://localhost:4000";
 
 // Create axios instance with credentials included
 const api = axios.create({

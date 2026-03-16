@@ -1,3 +1,64 @@
+// "use client";
+// import { useCart } from "@/context/CartContext";
+// import Image from "next/image";
+// import Link from "next/link";
+// import { motion, AnimatePresence } from "framer-motion";
+// import { useState } from "react";
+
+// export default function CartPage() {
+//   const { cart, removeFromCart, updateQuantity, clearCart } = useCart();
+//   const [isRemoving, setIsRemoving] = useState(null);
+
+//   // const API_ENDPOINT = process.env.BACKEND_URL || "http://localhost:4000";
+
+//   const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+//   const shipping = total > 50000 ? 0 : 1500; // Free shipping over ₦50,000
+//   const tax = total * 0.075; // 7.5% tax
+//   const grandTotal = total + shipping + tax;
+
+//   const getUniqueKey = (item) => {
+//     return `${item._id || item.id}-${item.productId || ''}-${item.name || ''}`;
+//   };
+
+//   // ✅ FIXED: Image URL function that works with ALL formats
+//   const getImageUrl = (imagePath) => {
+//     if (!imagePath) return "/api/placeholder-image";
+    
+//     // If it's already a full URL with proxy
+//     if (imagePath.includes('/api/proxy-image/')) {
+//       if (imagePath.startsWith('http')) return imagePath;
+//       if (imagePath.startsWith('/')) return `/${imagePath}`;
+//     }
+    
+//     // Extract filename from ANY format
+//     let filename = imagePath;
+//     if (imagePath.includes('/')) {
+//       filename = imagePath.split('/').pop();
+//     }
+//     filename = filename.split('?')[0];
+    
+//     return "/api/proxy-image/${filename}";
+//   };
+
+//   const handleRemoveItem = async (itemId) => {
+//     setIsRemoving(itemId);
+//     setTimeout(() => {
+//       removeFromCart(itemId);
+//       setIsRemoving(null);
+//     }, 300);
+//   };
+
+//   const handleQuantityChange = (itemId, newQuantity) => {
+//     if (newQuantity === 0) {
+//       handleRemoveItem(itemId);
+//     } else {
+//       updateQuantity(itemId, newQuantity);
+//     }
+//   };
+
+
+
+
 "use client";
 import { useCart } from "@/context/CartContext";
 import Image from "next/image";
@@ -8,8 +69,6 @@ import { useState } from "react";
 export default function CartPage() {
   const { cart, removeFromCart, updateQuantity, clearCart } = useCart();
   const [isRemoving, setIsRemoving] = useState(null);
-
-  const API_ENDPOINT = process.env.NEXT_PUBLIC_API_ENDPOINT || "http://localhost:4000";
 
   const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
   const shipping = total > 50000 ? 0 : 1500; // Free shipping over ₦50,000
@@ -22,12 +81,12 @@ export default function CartPage() {
 
   // ✅ FIXED: Image URL function that works with ALL formats
   const getImageUrl = (imagePath) => {
-    if (!imagePath) return `${API_ENDPOINT}/api/placeholder-image`;
+    if (!imagePath) return "/api/placeholder-image";
     
     // If it's already a full URL with proxy
     if (imagePath.includes('/api/proxy-image/')) {
       if (imagePath.startsWith('http')) return imagePath;
-      if (imagePath.startsWith('/')) return `${API_ENDPOINT}${imagePath}`;
+      if (imagePath.startsWith('/')) return imagePath;
     }
     
     // Extract filename from ANY format
@@ -37,7 +96,8 @@ export default function CartPage() {
     }
     filename = filename.split('?')[0];
     
-    return `${API_ENDPOINT}/api/proxy-image/${filename}`;
+    // ✅ FIXED: Use backticks for template literal
+    return `/api/proxy-image/${filename}`;
   };
 
   const handleRemoveItem = async (itemId) => {
@@ -180,7 +240,7 @@ export default function CartPage() {
                               className="w-full h-full object-cover hover:scale-110 transition-transform duration-300"
                               onError={(e) => {
                                 // Fallback to placeholder on error
-                                e.target.src = `${API_ENDPOINT}/api/placeholder-image`;
+                                e.target.src = "/api/placeholder-image";
                               }}
                               unoptimized={true}
                             />

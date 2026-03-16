@@ -29,7 +29,7 @@ export default function PartnerDashboard() {
   const [showForm, setShowForm] = useState(false);
   const [authChecked, setAuthChecked] = useState(false);
 
-  const API_ENDPOINT = process.env.NEXT_PUBLIC_API_ENDPOINT || "http://localhost:4000";
+  // const API_ENDPOINT = process.env.BACKEND_URL || "http://localhost:4000";
 
   // Categories for dropdown
   const categories = [
@@ -58,7 +58,7 @@ export default function PartnerDashboard() {
   const checkAuthentication = async () => {
     try {
       // Try to access a protected endpoint to verify cookies
-      const response = await fetch(`${API_ENDPOINT}/api/auth/me`, {
+      const response = await fetch("/api/auth/me", {
         method: "GET",
         credentials: "include", // This sends cookies with the request
         headers: {
@@ -97,7 +97,7 @@ export default function PartnerDashboard() {
   const fetchProducts = async () => {
     try {
       setFetching(true);
-      const res = await fetch(`${API_ENDPOINT}/api/partners/products`, {
+      const res = await fetch("/api/partners/products", {
         credentials: "include", // This sends cookies with the request
         headers: {
           "Content-Type": "application/json"
@@ -186,8 +186,8 @@ export default function PartnerDashboard() {
     setLoading(true);
     try {
       const url = editingProduct
-        ? `${API_ENDPOINT}/api/partners/products/${editingProduct._id}`
-        : `${API_ENDPOINT}/api/partners/products`;
+        ? "/api/partners/products/${editingProduct._id}"
+        : "/api/partners/products";
       
       const method = editingProduct ? "PUT" : "POST";
 
@@ -258,7 +258,7 @@ export default function PartnerDashboard() {
     if (!confirm("Are you sure you want to delete this product? This action cannot be undone.")) return;
 
     try {
-      const res = await fetch(`${API_ENDPOINT}/api/partners/products/${id}`, {
+      const res = await fetch("/api/partners/products/${id}", {
         method: "DELETE",
         credentials: "include", // This sends cookies with the request
         headers: {
@@ -340,7 +340,7 @@ export default function PartnerDashboard() {
     console.log('📁 Using filename:', filename);
     
     // ✅ USE PROXY ROUTE instead of direct static file
-    const fullUrl = `${API_ENDPOINT}/api/proxy-image/${filename}`;
+    const fullUrl = "/api/proxy-image/${filename}";
     console.log('🎯 Final image URL (proxy):', fullUrl);
     
     return fullUrl;

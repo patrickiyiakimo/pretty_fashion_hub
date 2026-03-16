@@ -9,7 +9,7 @@ export default function ResetPassword() {
   const token = params.get("token");
 
   // ✅ Load API endpoint from environment variable
-  const API_ENDPOINT = process.env.NEXT_PUBLIC_API_ENDPOINT;
+  const API_ENDPOINT = process.env.BACKEND_URL;
 
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");

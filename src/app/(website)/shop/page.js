@@ -6,7 +6,7 @@
 // import { useRouter } from "next/navigation";
 // import { Toaster, toast } from "react-hot-toast";
 
-// const API_ENDPOINT = process.env.NEXT_PUBLIC_API_ENDPOINT || "http://localhost:4000";
+// const API_ENDPOINT = process.env.BACKEND_URL || "http://localhost:4000";
 
 // export default function ShopPage() {
 //   const [products, setProducts] = useState([]);
@@ -387,7 +387,7 @@ import ProductCard from "@/app/(website)/components/ProductCard";
 import { useRouter } from "next/navigation";
 import { Toaster, toast } from "react-hot-toast";
 
-const API_ENDPOINT = process.env.NEXT_PUBLIC_API_ENDPOINT || "http://localhost:4000";
+// const API_ENDPOINT = process.env.BACKEND_URL || "http://localhost:4000";
 
 export default function ShopPage() {
   const [products, setProducts] = useState([]);
@@ -424,7 +424,7 @@ export default function ShopPage() {
   const checkAuthentication = async () => {
     try {
       // This will automatically send cookies with the request
-      const response = await fetch(`${API_ENDPOINT}/api/auth/me`, {
+      const response = await fetch("/api/auth/me", {
         method: "GET",
         credentials: "include", // Important: This sends cookies
         headers: {
@@ -484,7 +484,7 @@ export default function ShopPage() {
       params.append('limit', '12');
 
       // Using fetch with credentials: 'include' to send HTTP-only cookies automatically
-      const response = await fetch(`${API_ENDPOINT}/api/shop/products?${params}`, {
+      const response = await fetch(`/api/shop/products?${params}`, {
         credentials: 'include', // This sends cookies (including HTTP-only) with the request
         headers: {
           'Content-Type': 'application/json',
@@ -544,17 +544,17 @@ export default function ShopPage() {
     // Handle proxy URLs
     if (imagePath.includes('/api/proxy-image/')) {
       const filename = imagePath.split('/api/proxy-image/')[1];
-      return `${API_ENDPOINT}/api/proxy-image/${filename}`;
+      return `/api/proxy-image/${filename}`;
     }
     
     // Handle old /uploads/ URLs
     if (imagePath.startsWith('/uploads/')) {
       const filename = imagePath.replace('/uploads/', '');
-      return `${API_ENDPOINT}/api/proxy-image/${filename}`;
+      return `/api/proxy-image/${filename}`;
     }
     
     // Default to proxy
-    return `${API_ENDPOINT}/api/proxy-image/${imagePath}`;
+    return `/api/proxy-image/${imagePath}`;
   };
 
   // Show loading while checking auth

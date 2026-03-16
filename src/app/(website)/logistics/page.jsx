@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
 
-const API_ENDPOINT = process.env.NEXT_PUBLIC_API_ENDPOINT || "http://localhost:4000";
+// const API_ENDPOINT = process.env.BACKEND_URL || "http://localhost:4000";
 
 export default function LogisticsApplicationPage() {
   const router = useRouter();
@@ -133,7 +133,7 @@ export default function LogisticsApplicationPage() {
     setErrors({});
 
     try {
-      const response = await fetch(`${API_ENDPOINT}/api/logistics/applications`, {
+      const response = await fetch("/api/logistics/applications", {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -14,7 +14,7 @@ import {
 } from "react-icons/hi";
 import { HiMapPin } from "react-icons/hi2";
 
-const API_ENDPOINT = process.env.NEXT_PUBLIC_API_ENDPOINT;
+const API_ENDPOINT = process.env.BACKEND_URL;
 
 const statusConfig = {
   "Order Created": { color: "bg-blue-500", icon: HiCheckCircle, description: "Order confirmed and being processed" },

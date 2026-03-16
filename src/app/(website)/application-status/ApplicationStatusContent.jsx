@@ -6,7 +6,7 @@ import { motion } from 'framer-motion';
 import { FaSearch, FaClock, FaCheckCircle, FaTimesCircle, FaSpinner, FaEnvelope, FaIdCard, FaTruck, FaCalendarAlt } from 'react-icons/fa';
 import { MdEmail, MdPerson } from 'react-icons/md';
 
-const API_ENDPOINT = process.env.NEXT_PUBLIC_API_ENDPOINT || "http://localhost:4000";
+// const API_ENDPOINT = process.env.BACKEND_URL || "http://localhost:4000";
 
 export default function ApplicationStatusContent() {
   const searchParams = useSearchParams();
@@ -49,7 +49,7 @@ export default function ApplicationStatusContent() {
     
     try {
       const response = await fetch(
-        `${API_ENDPOINT}/api/logistics/applications/${applicationId}/${email}`
+        "/api/logistics/applications/${applicationId}/${email}"
       );
       
       const data = await response.json();

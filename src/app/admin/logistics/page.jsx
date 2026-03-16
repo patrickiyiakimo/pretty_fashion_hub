@@ -14,7 +14,7 @@ import {
 } from "react-icons/hi";
 import toast from "react-hot-toast";
 
-const API_ENDPOINT = process.env.NEXT_PUBLIC_API_ENDPOINT || "http://localhost:4000";
+// const API_ENDPOINT = process.env.BACKEND_URL || "http://localhost:4000";
 
 const statusColors = {
   "Order Created": "bg-blue-100 text-blue-800",
@@ -63,7 +63,7 @@ export default function LogisticsPage() {
 
   const checkAuth = async () => {
     try {
-      const response = await fetch(`${API_ENDPOINT}/api/auth/me`, {
+      const response = await fetch("/api/auth/me", {
         method: "GET",
         credentials: "include", // This sends HTTP-only cookies
         headers: {
@@ -108,7 +108,7 @@ export default function LogisticsPage() {
     setLoading(true);
     setError("");
     try {
-      const res = await fetch(`${API_ENDPOINT}/api/logistics`, {
+      const res = await fetch("/api/logistics", {
         credentials: "include", // This sends HTTP-only cookies
         headers: {
           'Content-Type': 'application/json'
@@ -148,7 +148,7 @@ export default function LogisticsPage() {
     setError("");
     
     try {
-      const res = await fetch(`${API_ENDPOINT}/api/logistics`, {
+      const res = await fetch("/api/logistics", {
         method: "POST",
         credentials: "include", // This sends HTTP-only cookies
         headers: { 
@@ -199,7 +199,7 @@ export default function LogisticsPage() {
     setError("");
     
     try {
-      const res = await fetch(`${API_ENDPOINT}/api/logistics/${updateForm.trackingNumber}`, {
+      const res = await fetch(`/api/logistics/${updateForm.trackingNumber}`, {
         method: "PUT",
         credentials: "include", // This sends HTTP-only cookies
         headers: { 

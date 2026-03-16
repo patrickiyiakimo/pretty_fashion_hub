@@ -26,7 +26,7 @@ import { MdEmail, MdPhone, MdLocationOn, MdPerson, MdAdminPanelSettings } from '
 import toast from 'react-hot-toast';
 import Link from 'next/link';
 
-const API_ENDPOINT = process.env.NEXT_PUBLIC_API_ENDPOINT || "http://localhost:4000";
+// const API_ENDPOINT = process.env.BACKEND_URL || "http://localhost:4000";
 
 export default function LogisticsDeliveryApplicationsPage() {
   const router = useRouter();
@@ -71,7 +71,7 @@ export default function LogisticsDeliveryApplicationsPage() {
     try {
       console.log('🔐 Starting auth check with HTTP-only cookies...');
       
-      const response = await fetch(`${API_ENDPOINT}/api/auth/me`, {
+      const response = await fetch("/api/auth/me", {
         method: "GET",
         credentials: "include", // This sends HTTP-only cookies
         headers: {
@@ -141,7 +141,7 @@ export default function LogisticsDeliveryApplicationsPage() {
       console.log('📦 Fetching applications with HTTP-only cookies...');
       
       // IMPORTANT: Correct endpoint is /api/logistics/admin/applications (plural)
-      const url = `${API_ENDPOINT}/api/logistics/admin/applications${force ? '?refresh=' + Date.now() : ''}`;
+      const url = `/api/logistics/admin/applications${force ? '?refresh=' + Date.now() : ''}`;
       console.log('📡 Fetching from:', url);
 
       const response = await fetch(url, {
@@ -295,7 +295,7 @@ export default function LogisticsDeliveryApplicationsPage() {
 
     setUpdatingId(selectedApplication._id);
     try {
-      const response = await fetch(`${API_ENDPOINT}/api/logistics/admin/applications/${selectedApplication._id}/status`, {
+      const response = await fetch(`/api/logistics/admin/applications/${selectedApplication._id}/status`, {
         method: 'PUT',
         credentials: "include", // This sends HTTP-only cookies
         headers: {
@@ -401,7 +401,7 @@ export default function LogisticsDeliveryApplicationsPage() {
   // Logout using HTTP-only cookies
   const handleLogout = async () => {
     try {
-      await fetch(`${API_ENDPOINT}/api/auth/logout`, {
+      await fetch("/api/auth/logout", {
         method: "POST",
         credentials: "include", // This sends HTTP-only cookies
         headers: {

@@ -109,6 +109,173 @@
 
 
 
+// "use client";
+// import { useState, useEffect } from "react";
+// import Link from "next/link";
+// import { HiMenu, HiX, HiOutlineShoppingCart, HiSearch, HiUser, HiChevronDown, HiLogout, HiCog } from "react-icons/hi";
+// import { useCart } from "@/context/CartContext";
+// import Image from "next/image";
+// import { motion, AnimatePresence } from "framer-motion";
+
+// const API_ENDPOINT = process.env.BACKEND_URL || "http://localhost:4000";
+
+// export default function Navbar() {
+//   const [isOpen, setIsOpen] = useState(false);
+//   const [isScrolled, setIsScrolled] = useState(false);
+//   const [isSearchOpen, setIsSearchOpen] = useState(false);
+//   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+//   const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false);
+//   const [searchQuery, setSearchQuery] = useState("");
+//   const [user, setUser] = useState(null);
+//   const [isAuthenticated, setIsAuthenticated] = useState(false);
+//   const [checkingAuth, setCheckingAuth] = useState(true);
+//   const { cart } = useCart();
+
+//   // Check if user is authenticated via cookies
+//   useEffect(() => {
+//     checkAuthStatus();
+//   }, []);
+
+//   const checkAuthStatus = async () => {
+//     try {
+//       // Try to access a protected endpoint to verify cookies
+//       const response = await fetch(`${API_ENDPOINT}/api/auth/me`, {
+//         method: "GET",
+//         credentials: "include", // This sends cookies with the request
+//         headers: {
+//           "Content-Type": "application/json"
+//         }
+//       });
+
+//       if (response.ok) {
+//         const data = await response.json();
+//         if (data.user) {
+//           // User is authenticated
+//           setIsAuthenticated(true);
+//           setUser(data.user);
+          
+//           // Store minimal user data in localStorage for quick access in UI
+//           // This is optional and only used for display, not for authentication
+//           localStorage.setItem("user", JSON.stringify({
+//             id: data.user.id,
+//             fullname: data.user.fullname,
+//             email: data.user.email
+//           }));
+//         } else {
+//           // Not authenticated
+//           setIsAuthenticated(false);
+//           setUser(null);
+//           localStorage.removeItem("user");
+//         }
+//       } else {
+//         // Not authenticated (401)
+//         setIsAuthenticated(false);
+//         setUser(null);
+//         localStorage.removeItem("user");
+//       }
+//     } catch (error) {
+//       console.error("Auth check error:", error);
+//       setIsAuthenticated(false);
+//       setUser(null);
+//       localStorage.removeItem("user");
+//     } finally {
+//       setCheckingAuth(false);
+//     }
+//   };
+
+//   // Handle scroll effect
+//   useEffect(() => {
+//     const handleScroll = () => {
+//       setIsScrolled(window.scrollY > 50);
+//     };
+//     window.addEventListener("scroll", handleScroll);
+//     return () => window.removeEventListener("scroll", handleScroll);
+//   }, []);
+
+//   // Close dropdowns when clicking outside
+//   useEffect(() => {
+//     const handleClickOutside = (event) => {
+//       if (!event.target.closest('.user-dropdown')) {
+//         setIsUserDropdownOpen(false);
+//       }
+//       if (!event.target.closest('.shop-dropdown')) {
+//         setIsDropdownOpen(false);
+//       }
+//     };
+
+//     document.addEventListener('mousedown', handleClickOutside);
+//     return () => document.removeEventListener('mousedown', handleClickOutside);
+//   }, []);
+
+//   // Prevent body scroll when mobile menu is open
+//   useEffect(() => {
+//     if (isOpen) {
+//       document.body.style.overflow = 'hidden';
+//     } else {
+//       document.body.style.overflow = 'unset';
+//     }
+    
+//     return () => {
+//       document.body.style.overflow = 'unset';
+//     };
+//   }, [isOpen]);
+
+//   // Safely calculate cart count
+//   const cartCount = Array.isArray(cart)
+//     ? cart.reduce((sum, item) => sum + (item.quantity || 0), 0)
+//     : 0;
+
+//   // Handle search
+//   const handleSearch = (e) => {
+//     e.preventDefault();
+//     if (searchQuery.trim()) {
+//       window.location.href = `/shop?search=${encodeURIComponent(searchQuery.trim())}`;
+//       setIsSearchOpen(false);
+//       setSearchQuery("");
+//     }
+//   };
+
+//   // Handle logout
+//   const handleLogout = async () => {
+//     try {
+//       // Call logout endpoint to clear cookies
+//       await fetch(`${API_ENDPOINT}/api/auth/logout`, {
+//         method: "POST",
+//         credentials: "include", // This sends cookies with the request
+//         headers: {
+//           "Content-Type": "application/json"
+//         }
+//       });
+//     } catch (error) {
+//       console.error("Logout error:", error);
+//     } finally {
+//       // Clear local state regardless of API response
+//       setIsAuthenticated(false);
+//       setUser(null);
+//       localStorage.removeItem("user");
+//       setIsUserDropdownOpen(false);
+//       setIsOpen(false);
+      
+//       // Redirect to home
+//       window.location.href = "/";
+//     }
+//   };
+
+//   // Get display name for user
+//   const getUserDisplayName = () => {
+//     if (user?.fullname) {
+//       return user.fullname.split(' ')[0];
+//     }
+//     if (user?.email) {
+//       return user.email.split('@')[0];
+//     }
+//     return 'User';
+//   };
+
+
+
+
+
 "use client";
 import { useState, useEffect } from "react";
 import Link from "next/link";
@@ -117,10 +284,10 @@ import { useCart } from "@/context/CartContext";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 
-const API_ENDPOINT = process.env.NEXT_PUBLIC_API_ENDPOINT || "http://localhost:4000";
+// ✅ REMOVED - No longer needed with proxy
+// const API_ENDPOINT = process.env.BACKEND_URL || "http://localhost:4000";
 
-export default function Navbar() {
-  const [isOpen, setIsOpen] = useState(false);
+export default function Navbar() {  const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -138,8 +305,8 @@ export default function Navbar() {
 
   const checkAuthStatus = async () => {
     try {
-      // Try to access a protected endpoint to verify cookies
-      const response = await fetch(`${API_ENDPOINT}/api/auth/me`, {
+      // ✅ UPDATED: Use relative path (goes through proxy)
+      const response = await fetch('/api/auth/me', {
         method: "GET",
         credentials: "include", // This sends cookies with the request
         headers: {
@@ -155,7 +322,6 @@ export default function Navbar() {
           setUser(data.user);
           
           // Store minimal user data in localStorage for quick access in UI
-          // This is optional and only used for display, not for authentication
           localStorage.setItem("user", JSON.stringify({
             id: data.user.id,
             fullname: data.user.fullname,
@@ -238,8 +404,8 @@ export default function Navbar() {
   // Handle logout
   const handleLogout = async () => {
     try {
-      // Call logout endpoint to clear cookies
-      await fetch(`${API_ENDPOINT}/api/auth/logout`, {
+      // ✅ UPDATED: Use relative path (goes through proxy)
+      await fetch('/api/auth/logout', {
         method: "POST",
         credentials: "include", // This sends cookies with the request
         headers: {
@@ -328,7 +494,7 @@ export default function Navbar() {
                   <span className={`text-2xl font-bold transition-colors duration-300 ${
                     isScrolled ? "text-gray-900" : "text-white"
                   }`}>
-                    Vendly
+                    Vendlyyyy
                   </span>
                   {/* <span className="text-xs text-yellow-400 font-medium tracking-wider">
                     PREMIUM FASHION

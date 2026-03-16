@@ -23,7 +23,7 @@ import toast, { Toaster } from "react-hot-toast";
 import Confetti from "react-confetti";
 import Link from "next/link";
 
-const API_ENDPOINT = process.env.NEXT_PUBLIC_API_ENDPOINT || "http://localhost:4000";
+// const API_ENDPOINT = process.env.BACKEND_URL || "http://localhost:4000";
 
 export default function PartnerPage() {
   const [formData, setFormData] = useState({
@@ -110,7 +110,7 @@ export default function PartnerPage() {
       }
 
       // Try to access the partner endpoint to verify authentication
-      const response = await fetch(`${API_ENDPOINT}/api/partners/me`, {
+      const response = await fetch("/api/partners/me", {
         method: "GET",
         credentials: "include",
         headers: {
@@ -178,7 +178,7 @@ export default function PartnerPage() {
     setError("");
     
     try {
-      const response = await fetch(`${API_ENDPOINT}/api/partners/me`, {
+      const response = await fetch("/api/partners/me", {
         method: "GET",
         credentials: "include",
         headers: {
@@ -267,7 +267,7 @@ export default function PartnerPage() {
     }
 
     try {
-      const response = await fetch(`${API_ENDPOINT}/api/partners/apply`, {
+      const response = await fetch("/api/partners/apply", {
         method: "POST",
         credentials: "include",
         headers: {
@@ -819,7 +819,7 @@ export default function PartnerPage() {
                 </motion.a>
                 <motion.button
                   onClick={async () => {
-                    await fetch(`${API_ENDPOINT}/api/auth/logout`, {
+                    await fetch("/api/auth/logout", {
                       method: "POST",
                       credentials: "include"
                     });

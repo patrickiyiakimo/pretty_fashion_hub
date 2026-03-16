@@ -22,7 +22,7 @@ import { FaCarSide } from "react-icons/fa";
 import { motion } from "framer-motion";
 import toast from "react-hot-toast";
 
-const API_ENDPOINT = process.env.NEXT_PUBLIC_API_ENDPOINT || "http://localhost:4000";
+// const API_ENDPOINT = process.env.BACKEND_URL || "http://localhost:4000";
 
 export default function AdminDashboard() {
   const router = useRouter();
@@ -121,7 +121,7 @@ export default function AdminDashboard() {
       console.log('🔐 Starting auth check for admin dashboard using cookies...');
       
       // Call /api/auth/me with credentials: 'include' to send HTTP-only cookies
-      const response = await fetch(`${API_ENDPOINT}/api/auth/me`, {
+      const response = await fetch("/api/auth/me", {
         method: "GET",
         credentials: "include", // This sends HTTP-only cookies with the request
         headers: {
@@ -211,25 +211,25 @@ export default function AdminDashboard() {
     try {
       // Fetch data from multiple endpoints - using credentials: 'include' to send cookies
       const [partnersRes, consultationsRes, usersRes, logisticsRes] = await Promise.allSettled([
-        fetch(`${API_ENDPOINT}/api/partners?limit=5&status=pending`, {
+        fetch("/api/partners?limit=5&status=pending", {
           credentials: "include", // This sends cookies with the request
           headers: {
             "Content-Type": "application/json"
           }
         }),
-        fetch(`${API_ENDPOINT}/api/consultations?limit=5&status=pending`, {
+        fetch("/api/consultations?limit=5&status=pending", {
           credentials: "include",
           headers: {
             "Content-Type": "application/json"
           }
         }),
-        fetch(`${API_ENDPOINT}/api/auth/admin/users?limit=5`, {
+        fetch("/api/auth/admin/users?limit=5", {
           credentials: "include",
           headers: {
             "Content-Type": "application/json"
           }
         }),
-        fetch(`${API_ENDPOINT}/api/logistics?limit=5`, {
+        fetch("/api/logistics?limit=5", {
           credentials: "include",
           headers: {
             "Content-Type": "application/json"
@@ -342,19 +342,19 @@ export default function AdminDashboard() {
     setLoading(prev => ({ ...prev, stats: true }));
     try {
       const [partnersRes, consultationsRes, usersRes] = await Promise.allSettled([
-        fetch(`${API_ENDPOINT}/api/partners?status=pending`, {
+        fetch("/api/partners?status=pending", {
           credentials: "include",
           headers: {
             "Content-Type": "application/json"
           }
         }),
-        fetch(`${API_ENDPOINT}/api/consultations?status=pending`, {
+        fetch("/api/consultations?status=pending", {
           credentials: "include",
           headers: {
             "Content-Type": "application/json"
           }
         }),
-        fetch(`${API_ENDPOINT}/api/auth/admin/users?limit=1`, {
+        fetch("/api/auth/admin/users?limit=1", {
           credentials: "include",
           headers: {
             "Content-Type": "application/json"
@@ -417,11 +417,11 @@ export default function AdminDashboard() {
 
   async function checkSystemStatus() {
     const endpoints = [
-      { url: `${API_ENDPOINT}/api/health`, service: "Website" },
-      { url: `${API_ENDPOINT}/api/partners?limit=1`, service: "Database" },
-      { url: `${API_ENDPOINT}/api/consultations?limit=1`, service: "Payment Gateway" },
-      { url: `${API_ENDPOINT}/api/health/email`, service: "Email Service" },
-      { url: `${API_ENDPOINT}/api/logistics?limit=1`, service: "CDN" }
+      { url: "/api/health", service: "Website" },
+      { url: "/api/partners?limit=1", service: "Database" },
+      { url: "/api/consultations?limit=1", service: "Payment Gateway" },
+      { url: "/api/health/email", service: "Email Service" },
+      { url: "/api/logistics?limit=1", service: "CDN" }
     ];
 
     const newStatus = [...systemStatus];
@@ -509,7 +509,7 @@ export default function AdminDashboard() {
   const handleLogout = async () => {
     try {
       // Call logout endpoint to clear HTTP-only cookies
-      await fetch(`${API_ENDPOINT}/api/auth/logout`, {
+      await fetch("/api/auth/logout", {
         method: "POST",
         credentials: "include",
         headers: {
