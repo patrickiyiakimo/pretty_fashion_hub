@@ -494,7 +494,7 @@ export default function Navbar() {  const [isOpen, setIsOpen] = useState(false);
                   <span className={`text-2xl font-bold transition-colors duration-300 ${
                     isScrolled ? "text-gray-900" : "text-white"
                   }`}>
-                    Vendlyyyy
+                    Vendlyy
                   </span>
                   {/* <span className="text-xs text-yellow-400 font-medium tracking-wider">
                     PREMIUM FASHION

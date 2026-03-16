@@ -27,54 +27,110 @@ const LoginPage = () => {
     if (error) setError('');
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    setError('');
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   setLoading(true);
+  //   setError('');
 
-    try {
-      console.log('Sending request to:', "/api/auth/login"); // Debug log
+  //   try {
+  //     console.log('Sending request to:', "/api/auth/login"); // Debug log
       
-      const response = await fetch("/api/auth/login", {
-        method: 'POST',
-        credentials: 'include',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData)
-      });
+  //     const response = await fetch("/api/auth/login", {
+  //       method: 'POST',
+  //       credentials: 'include',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //       body: JSON.stringify(formData)
+  //     });
 
-      // First check if response is OK
-      if (!response.ok) {
-        // Try to get error message from response
-        const contentType = response.headers.get('content-type');
-        if (contentType && contentType.includes('application/json')) {
-          const errorData = await response.json();
-          throw new Error(errorData.message || 'Login failed');
-        } else {
-          // If not JSON, get text and throw error
-          const text = await response.text();
-          console.error('Non-JSON response:', text.substring(0, 200)); // Log first 200 chars
-          throw new Error('Server error. Please try again later.');
-        }
+  //     // First check if response is OK
+  //     if (!response.ok) {
+  //       // Try to get error message from response
+  //       const contentType = response.headers.get('content-type');
+  //       if (contentType && contentType.includes('application/json')) {
+  //         const errorData = await response.json();
+  //         throw new Error(errorData.message || 'Login failed');
+  //       } else {
+  //         // If not JSON, get text and throw error
+  //         const text = await response.text();
+  //         console.error('Non-JSON response:', text.substring(0, 200)); // Log first 200 chars
+  //         throw new Error('Server error. Please try again later.');
+  //       }
+  //     }
+
+  //     // Parse JSON response
+  //     const data = await response.json();
+      
+  //     // Store user data
+  //     localStorage.setItem('user', JSON.stringify(data.user));
+      
+  //     // Redirect to dashboard
+  //     router.push('/shop');
+      
+  //   } catch (err) {
+  //     console.error('Login error:', err);
+  //     setError(err.message);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
+
+
+
+  // src/app/(website)/login/page.jsx
+// Update your handleSubmit function:
+
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  setLoading(true);
+  setError('');
+
+  try {
+    console.log('Sending request to:', '/api/auth/login');
+    
+    const response = await fetch('/api/auth/login', {
+      method: 'POST',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(formData)
+    });
+
+    // 🔴 TEMPORARY: Log response details
+    console.log('Response status:', response.status);
+    console.log('Response headers:', Object.fromEntries(response.headers.entries()));
+
+    if (!response.ok) {
+      const contentType = response.headers.get('content-type');
+      
+      // Try to get the actual error response
+      const responseText = await response.text();
+      console.log('🔴 Error response text:', responseText);
+      
+      try {
+        // Try to parse as JSON if possible
+        const errorData = JSON.parse(responseText);
+        throw new Error(errorData.message || 'Login failed');
+      } catch (jsonError) {
+        // If not JSON, show the actual response
+        throw new Error(`Server error: ${response.status} - ${responseText.substring(0, 100)}`);
       }
-
-      // Parse JSON response
-      const data = await response.json();
-      
-      // Store user data
-      localStorage.setItem('user', JSON.stringify(data.user));
-      
-      // Redirect to dashboard
-      router.push('/shop');
-      
-    } catch (err) {
-      console.error('Login error:', err);
-      setError(err.message);
-    } finally {
-      setLoading(false);
     }
-  };
+
+    const data = await response.json();
+    
+    localStorage.setItem('user', JSON.stringify(data.user));
+    router.push('/shop');
+    
+  } catch (err) {
+    console.error('Login error:', err);
+    setError(err.message);
+  } finally {
+    setLoading(false);
+  }
+};
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-white py-12 px-4 sm:px-6 lg:px-8">
