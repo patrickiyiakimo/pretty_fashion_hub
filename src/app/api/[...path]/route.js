@@ -248,6 +248,107 @@
 
 
 
+// // app/api/[...path]/route.js
+// export async function GET(request, { params }) {
+//   return handleRequest(request, params);
+// }
+
+// export async function POST(request, { params }) {
+//   return handleRequest(request, params);
+// }
+
+// export async function PUT(request, { params }) {
+//   return handleRequest(request, params);
+// }
+
+// export async function DELETE(request, { params }) {
+//   return handleRequest(request, params);
+// }
+
+// export async function PATCH(request, { params }) {
+//   return handleRequest(request, params);
+// }
+
+// async function handleRequest(request, params) {
+//   try {
+//     const BACKEND_URL = process.env.BACKEND_URL;
+    
+//     if (!BACKEND_URL) {
+//       return new Response(JSON.stringify({ error: 'BACKEND_URL not set' }), {
+//         status: 500,
+//         headers: { 'Content-Type': 'application/json' }
+//       });
+//     }
+
+//     // Build the URL
+//     const path = params?.path?.join('/') || '';
+//     const searchParams = request.nextUrl.search;
+//     const url = `${BACKEND_URL}/api/${path}${searchParams}`;
+    
+//     console.log(`🔄 ${request.method} to: ${url}`);
+
+//     // ✅ CRITICAL: Get the request body as raw text
+//     const body = await request.text();
+//     console.log('📦 Request body length:', body?.length || 0);
+
+//     // Prepare headers
+//     const headers = {};
+//     request.headers.forEach((value, key) => {
+//       if (key !== 'host') {
+//         headers[key] = value;
+//       }
+//     });
+
+//     // Forward the request with the body
+//     const response = await fetch(url, {
+//       method: request.method,
+//       headers: {
+//         ...headers,
+//         'Content-Type': headers['content-type'] || 'application/json',
+//         'Content-Length': body ? Buffer.byteLength(body).toString() : undefined,
+//       },
+//       body: body || undefined, // ✅ Send the body!
+//     });
+
+//     // Get response data
+//     const responseData = await response.text();
+
+//     // Create response
+//     const newResponse = new Response(responseData, {
+//       status: response.status,
+//       statusText: response.statusText,
+//     });
+
+//     // Forward cookies
+//     const setCookieHeader = response.headers.get('set-cookie');
+//     if (setCookieHeader) {
+//       newResponse.headers.set('set-cookie', setCookieHeader);
+//     }
+
+//     // Forward content type
+//     const contentType = response.headers.get('content-type');
+//     if (contentType) {
+//       newResponse.headers.set('content-type', contentType);
+//     }
+
+//     return newResponse;
+
+//   } catch (error) {
+//     console.error('❌ Proxy error:', error);
+//     return new Response(JSON.stringify({ 
+//       error: 'Proxy error', 
+//       message: error.message 
+//     }), {
+//       status: 500,
+//       headers: { 'Content-Type': 'application/json' }
+//     });
+//   }
+// }
+
+
+
+
+
 // app/api/[...path]/route.js
 export async function GET(request, { params }) {
   return handleRequest(request, params);
@@ -269,7 +370,7 @@ export async function PATCH(request, { params }) {
   return handleRequest(request, params);
 }
 
-async function handleRequest(request, params) {
+async function handleRequest(request, { params }) {
   try {
     const BACKEND_URL = process.env.BACKEND_URL;
     
@@ -281,39 +382,43 @@ async function handleRequest(request, params) {
     }
 
     // Build the URL
-    const path = params?.path?.join('/') || '';
+    const path = params?.join('/') || '';
     const searchParams = request.nextUrl.search;
     const url = `${BACKEND_URL}/api/${path}${searchParams}`;
     
     console.log(`🔄 ${request.method} to: ${url}`);
 
-    // ✅ CRITICAL: Get the request body as raw text
-    const body = await request.text();
-    console.log('📦 Request body length:', body?.length || 0);
+    // ✅ FIX: Get the request body properly
+    let body = null;
+    if (request.method !== 'GET' && request.method !== 'HEAD') {
+      // Clone the request to read the body
+      const clonedRequest = request.clone();
+      body = await clonedRequest.text();
+      console.log('📦 Request body:', body);
+    }
 
     // Prepare headers
     const headers = {};
     request.headers.forEach((value, key) => {
-      if (key !== 'host') {
+      if (!['host', 'content-length'].includes(key)) {
         headers[key] = value;
       }
     });
 
-    // Forward the request with the body
+    // Forward the request
     const response = await fetch(url, {
       method: request.method,
       headers: {
         ...headers,
-        'Content-Type': headers['content-type'] || 'application/json',
-        'Content-Length': body ? Buffer.byteLength(body).toString() : undefined,
+        'Content-Type': 'application/json',
       },
-      body: body || undefined, // ✅ Send the body!
+      body: body || undefined,
     });
 
     // Get response data
     const responseData = await response.text();
 
-    // Create response
+    // Create new response
     const newResponse = new Response(responseData, {
       status: response.status,
       statusText: response.statusText,
