@@ -545,46 +545,34 @@
 
 
 
-
 // app/api/auth/[...path]/route.js
 export async function POST(request, { params }) {
-  return handleAuthRequest(request, params);
+  return handleRequest(request, params);
 }
 
 export async function GET(request, { params }) {
-  return handleAuthRequest(request, params);
+  return handleRequest(request, params);
 }
 
-export async function PUT(request, { params }) {
-  return handleAuthRequest(request, params);
-}
-
-export async function DELETE(request, { params }) {
-  return handleAuthRequest(request, params);
-}
-
-async function handleAuthRequest(request, { params }) {
+async function handleRequest(request, { params }) {
   try {
     const BACKEND_URL = process.env.BACKEND_URL || 'https://kingz-server.onrender.com';
     
-    // ✅ Get the full path from params
-    // params should be like { path: ['login'] } or { path: ['me'] }
+    // Get the path segments - this is the key part!
+    // If URL is /api/auth/login, params.path = ['login']
     const pathSegments = params?.path || [];
-    const pathString = pathSegments.join('/');
+    const endpoint = pathSegments.join('/');
     
+    // Build the correct URL - NO trailing slash!
+    const url = `${BACKEND_URL}/api/auth/${endpoint}${request.nextUrl.search}`;
+    
+    console.log('✅ Proxying to:', url);
     console.log('📌 Path segments:', pathSegments);
-    console.log('📌 Path string:', pathString);
-    
-    // ✅ Build URL - NO trailing slash!
-    const url = `${BACKEND_URL}/api/auth/${pathString}${request.nextUrl.search}`;
-    
-    console.log(`🔄 Auth proxy to: ${url}`);
 
-    // Get the request body for non-GET requests
+    // Get request body
     let body = null;
-    if (request.method !== 'GET' && request.method !== 'HEAD') {
+    if (request.method !== 'GET') {
       body = await request.text();
-      console.log('📦 Body length:', body?.length);
     }
 
     // Forward to backend
@@ -597,9 +585,7 @@ async function handleAuthRequest(request, { params }) {
       body: body,
     });
 
-    console.log(`✅ Backend response status: ${response.status}`);
-
-    // Get response data
+    // Get response
     const data = await response.text();
 
     // Create response
@@ -611,24 +597,14 @@ async function handleAuthRequest(request, { params }) {
     // Forward cookies
     const cookies = response.headers.get('set-cookie');
     if (cookies) {
-      console.log('🍪 Forwarding cookies');
       newResponse.headers.set('set-cookie', cookies);
-    }
-
-    // Forward content type
-    const contentType = response.headers.get('content-type');
-    if (contentType) {
-      newResponse.headers.set('content-type', contentType);
     }
 
     return newResponse;
 
   } catch (error) {
-    console.error('❌ Auth proxy error:', error);
-    return new Response(JSON.stringify({ 
-      error: 'Auth proxy error', 
-      message: error.message 
-    }), {
+    console.error('❌ Proxy error:', error);
+    return new Response(JSON.stringify({ error: error.message }), {
       status: 500,
       headers: { 'Content-Type': 'application/json' }
     });
