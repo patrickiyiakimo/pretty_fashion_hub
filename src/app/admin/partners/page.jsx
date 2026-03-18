@@ -16,7 +16,7 @@ import {
 import toast from "react-hot-toast";
 import Link from "next/link";
 
-// const API_ENDPOINT = process.env.BACKEND_URL || "http://localhost:4000";
+const API_URL = "";
 
 const statusConfig = {
   pending: { color: "bg-yellow-100 text-yellow-800", icon: HiClock, label: "Pending" },

@@ -22,7 +22,7 @@ import { FaCarSide } from "react-icons/fa";
 import { motion } from "framer-motion";
 import toast from "react-hot-toast";
 
-// const API_ENDPOINT = process.env.BACKEND_URL || "http://localhost:4000";
+const API_ENDPOINT = "";
 
 export default function AdminDashboard() {
   const router = useRouter();

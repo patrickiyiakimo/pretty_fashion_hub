@@ -26,7 +26,7 @@ import { MdEmail, MdPhone, MdLocationOn, MdPerson, MdAdminPanelSettings } from '
 import toast from 'react-hot-toast';
 import Link from 'next/link';
 
-// const API_ENDPOINT = process.env.BACKEND_URL || "http://localhost:4000";
+const API_URL = "";
 
 export default function LogisticsDeliveryApplicationsPage() {
   const router = useRouter();

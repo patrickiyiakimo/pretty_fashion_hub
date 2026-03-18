@@ -37,7 +37,7 @@ export default function AdminUsers() {
     hasPrev: false
   });
 
-  const API_URL = process.env.BACKEND_URL || 'http://localhost:4000';
+  const API_URL = "";
 
   // Check authentication on mount
   useEffect(() => {

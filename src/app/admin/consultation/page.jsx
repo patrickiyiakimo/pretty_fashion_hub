@@ -135,7 +135,7 @@ export default function AdminConsultations() {
 
   const updateConsultationStatus = async (id, status) => {
     try {
-      const response = await fetch( `/api/consultations/${id}`, {
+      const response = await fetch( "/api/consultations/${id}", {
         method: 'PUT',
         credentials: "include", // This sends HTTP-only cookies
         headers: {
@@ -189,7 +189,7 @@ export default function AdminConsultations() {
     }
 
     try {
-      const response = await fetch(`/api/consultations/${id}`, {
+      const response = await fetch("/api/consultations/id", {
         method: 'DELETE',
         credentials: "include", // This sends HTTP-only cookies
         headers: {
