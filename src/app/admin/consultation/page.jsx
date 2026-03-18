@@ -29,7 +29,7 @@ export default function AdminConsultations() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
 
-  const API_URL = process.env.BACKEND_URL || 'http://localhost:4000';
+  const API_URL = "";
 
   // Check authentication on mount
   useEffect(() => {
@@ -38,7 +38,7 @@ export default function AdminConsultations() {
 
   const checkAuth = useCallback(async () => {
     try {
-      const response = await fetch(`${API_URL}/api/auth/me`, {
+      const response = await fetch("/api/auth/me", {
         method: "GET",
         credentials: "include", // This sends HTTP-only cookies
         headers: {
@@ -97,7 +97,7 @@ export default function AdminConsultations() {
     try {
       setLoading(true);
       
-      const response = await fetch(`${API_URL}/api/consultations`, {
+      const response = await fetch("/api/consultations", {
         credentials: "include", // This sends HTTP-only cookies
         headers: {
           'Content-Type': 'application/json'
@@ -135,7 +135,7 @@ export default function AdminConsultations() {
 
   const updateConsultationStatus = async (id, status) => {
     try {
-      const response = await fetch(`${API_URL}/api/consultations/${id}`, {
+      const response = await fetch( `/api/consultations/${id}`, {
         method: 'PUT',
         credentials: "include", // This sends HTTP-only cookies
         headers: {
@@ -189,7 +189,7 @@ export default function AdminConsultations() {
     }
 
     try {
-      const response = await fetch(`${API_URL}/api/consultations/${id}`, {
+      const response = await fetch(`/api/consultations/${id}`, {
         method: 'DELETE',
         credentials: "include", // This sends HTTP-only cookies
         headers: {
