@@ -3,14 +3,16 @@ import { NextResponse } from "next/server";
 const BACKEND_URL =
   process.env.BACKEND_URL || "https://kingz-server.onrender.com";
 
-async function proxyRequest(request, method) {
+export async function proxyRequest(request, endpoint, method = "GET") {
   try {
     const body =
       method === "GET" || method === "DELETE"
         ? null
         : await request.text();
 
-    const backendResponse = await fetch(`${BACKEND_URL}/api/cart`, {
+    const { search } = new URL(request.url);
+
+    const backendResponse = await fetch(`${BACKEND_URL}${endpoint}${search}`, {
       method,
       headers: {
         "Content-Type": "application/json",
@@ -29,7 +31,6 @@ async function proxyRequest(request, method) {
       },
     });
 
-    // Forward cookies if backend sends any
     const cookies = backendResponse.headers.get("set-cookie");
 
     if (cookies) {
@@ -38,27 +39,11 @@ async function proxyRequest(request, method) {
 
     return response;
   } catch (error) {
-    console.error("Cart proxy error:", error);
+    console.error("Proxy error:", error);
 
     return NextResponse.json(
-      { message: "Cart request failed", error: error.message },
+      { message: "Proxy request failed" },
       { status: 500 }
     );
   }
-}
-
-export async function GET(request) {
-  return proxyRequest(request, "GET");
-}
-
-export async function POST(request) {
-  return proxyRequest(request, "POST");
-}
-
-export async function PUT(request) {
-  return proxyRequest(request, "PUT");
-}
-
-export async function DELETE(request) {
-  return proxyRequest(request, "DELETE");
 }
