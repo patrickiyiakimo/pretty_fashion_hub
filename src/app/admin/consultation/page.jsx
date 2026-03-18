@@ -614,7 +614,7 @@ export default function AdminConsultations() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
 
-  API_URL = "";
+  // API_URL = "";
 
   // Check authentication on mount
   useEffect(() => {
