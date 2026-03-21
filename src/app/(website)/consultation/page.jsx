@@ -65,9 +65,9 @@ export default function ConsultationPage() {
     setError("");
 
     try {
-      const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
+      // const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
       
-      const response = await fetch(`${API_URL}/api/consultations`, {
+      const response = await fetch("/api/consultations", {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -129,9 +129,9 @@ export default function ConsultationPage() {
     setTrackingResult(null);
 
     try {
-      const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
+      // const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
       
-      const response = await fetch(`${API_URL}/api/consultations`);
+      const response = await fetch("/api/consultations");
       const result = await response.json();
 
       if (result.success) {
