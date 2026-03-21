@@ -1,5 +1,5 @@
-import { proxyRequest } from "@/lib/proxyRequest";
+// import { proxyRequest } from "@/lib/proxyRequest";
 
-export async function POST(request) {
-  return proxyRequest(request, "/api/applications", "POST");
-}
+// export async function GET(request) {
+//   return proxyRequest(request, "/api/applications", "GET");
+// }
