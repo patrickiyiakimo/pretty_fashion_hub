@@ -844,7 +844,7 @@ export default function PartnerPage() {
     const StatusIcon = statusConfig.icon;
 
     return (
-      <section className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50 flex items-center justify-center p-4">
+      <section className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50 flex items-center justify-center pt-24">
         <Toaster position="top-right" />
         <motion.div
           initial={{ opacity: 0, y: 30 }}

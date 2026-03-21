@@ -1,5 +1,5 @@
 import { proxyRequest } from "@/lib/proxyRequest";
 
-export async function GET(request, { params }) {
-  return proxyRequest(request, `/api/shop/products/${params.id}`, "GET");
+export async function POST(request) {
+  return proxyRequest(request, `/api/partners/apply`, "POST");
 }
