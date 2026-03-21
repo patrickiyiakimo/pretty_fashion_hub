@@ -1,9 +1,11 @@
 import { proxyRequest } from "@/lib/proxyRequest";
 
 export async function GET(request, { params }) {
+  const { applicationId, email } = params;
+
   return proxyRequest(
     request,
-    `/api/logistics/track/${params.trackingNumber}`,
+    `/api/applications/${applicationId}/${email}`,
     "GET"
   );
 }
