@@ -274,7 +274,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { HiArrowRight, HiStar, HiClock, HiShoppingBag,  HiUserGroup, HiShieldCheck, HiTruck, HiSparkles, HiMiniStorefront, HiMiniShoppingBag } from "react-icons/hi";
+import { HiArrowRight, HiStar, HiClock, HiUserGroup, HiShieldCheck, HiTruck, HiSparkles, HiMiniStorefront, HiMiniShoppingBag, HiShoppingBag } from "react-icons/hi";
 import { HiBuildingStorefront } from "react-icons/hi2";
 
 // Sample marketplace data with vendors and sellers
