@@ -1,11 +1,11 @@
-import { proxyRequest } from "@/lib/proxyRequest";
+// import { proxyRequest } from "@/lib/proxyRequest";
 
-export async function GET(request, { params }) {
-  const { applicationId, email } = params;
+// export async function GET(request, { params }) {
+//   const { applicationId, email } = params;
 
-  return proxyRequest(
-    request,
-    `/api/applications/${applicationId}/${email}`,
-    "GET"
-  );
-}
+//   return proxyRequest(
+//     request,
+//     `/api/applications/${applicationId}/${email}`,
+//     "GET"
+//   );
+// }

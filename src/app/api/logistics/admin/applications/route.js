@@ -7,3 +7,11 @@ export async function GET(request) {
     "GET"
   );
 }
+
+export async function POST(request) {
+  return proxyRequest(
+    request,
+    "/api/logistics/applications",
+    "POST"
+  );
+}
