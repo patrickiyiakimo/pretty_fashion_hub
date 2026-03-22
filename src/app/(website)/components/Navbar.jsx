@@ -869,7 +869,7 @@ export default function Navbar() {
         className={`fixed w-full z-50 transition-all duration-500 ${
           isScrolled 
             ? "bg-white shadow-lg border-b border-gray-100" 
-            : "bg-gradient-to-r from-gray-900/95 to-gray-800/95 backdrop-blur-md"
+            : "bg-gray-400 backdrop-blur-md"
         }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -1121,7 +1121,7 @@ export default function Navbar() {
                 animate={{ x: 0 }}
                 exit={{ x: "100%" }}
                 transition={{ type: "spring", damping: 30, stiffness: 300 }}
-                className="absolute top-0 right-0 h-full w-85 bg-white shadow-2xl overflow-hidden"
+                className="absolute top-0 right-0 h-full w-96 bg-white shadow-2xl overflow-hidden"
                 onClick={(e) => e.stopPropagation()}
               >
                 <div className="h-full flex flex-col">
