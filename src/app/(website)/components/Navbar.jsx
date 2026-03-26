@@ -869,7 +869,7 @@ export default function Navbar() {
         className={`fixed w-full z-50 transition-all duration-500 ${
           isScrolled 
             ? "bg-white shadow-lg border-b border-gray-100" 
-            : "bg-gray-400 backdrop-blur-md"
+            : "backdrop-blur-md"
         }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
