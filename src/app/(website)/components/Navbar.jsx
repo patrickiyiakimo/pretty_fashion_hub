@@ -1531,7 +1531,7 @@ const Navbar = () => {
             </div>
             <div className="flex items-center gap-2">
               <i className="fas fa-map-marker-alt text-xs"></i>
-              <span>123 Market St, San Francisco, CA</span>
+              <span>Lagos, Nigeria</span>
             </div>
           </div>
           <div className="flex gap-4 text-xs">

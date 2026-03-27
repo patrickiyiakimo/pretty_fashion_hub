@@ -577,7 +577,7 @@ export default function Hero() {
       </div>
 
       {/* Content Container */}
-      <div className="relative z-10 h-full flex items-center">
+      <div className="relative pt-20 z-10 flex items-center">
         <div className="container mx-auto px-6 lg:px-8">
           <div className="max-w-3xl">
             <motion.div
@@ -586,22 +586,6 @@ export default function Hero() {
               transition={{ duration: 0.8 }}
               className="space-y-6"
             >
-              {/* Badge */}
-              {/* <div className="flex flex-wrap gap-3">
-                <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md px-4 py-2 rounded-full border border-white/20">
-                  <svg className="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M10 2c-1.716 0-3.408.106-5.07.31C3.806 2.45 3 3.414 3 4.517V10c0 4.418 3.422 8 7 8s7-3.582 7-8V4.517c0-1.103-.806-2.068-1.93-2.207A49.2 49.2 0 0010 2z" clipRule="evenodd" />
-                  </svg>
-                  <span className="text-sm font-semibold text-white">Trusted Marketplace</span>
-                </div>
-                <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md px-4 py-2 rounded-full border border-white/20">
-                  <svg className="w-4 h-4 text-green-400" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                  </svg>
-                  <span className="text-sm font-semibold text-white">Verified Vendors</span>
-                </div>
-              </div> */}
-
               {/* Title */}
               <h1 className="text-5xl font-oswald lg:text-7xl font-bold text-white leading-tight">
                 Marketplace Trust
@@ -616,35 +600,9 @@ export default function Hero() {
                 Connect with verified sellers. Get authentic products from trusted sources with 100% buyer protection.
               </p>
 
-              {/* Stats */}
-              <div className="grid font-grotesk grid-cols-3 gap-4 max-w-2xl pt-4">
-                <div className="bg-white/10 backdrop-blur-md rounded-lg p-3 text-center border border-white/20">
-                  <div className="text-white font-bold text-2xl mb-1">4.9</div>
-                  <p className="text-xs text-gray-300">Vendor Rating</p>
-                </div>
-                <div className="bg-white/10 backdrop-blur-md rounded-lg p-3 text-center border border-white/20">
-                  <div className="text-white font-bold text-2xl mb-1">2,500+</div>
-                  <p className="text-xs text-gray-300">Trusted Vendors</p>
-                </div>
-                <div className="bg-white/10 backdrop-blur-md rounded-lg p-3 text-center border border-white/20">
-                  <div className="text-white font-bold text-2xl mb-1">100%</div>
-                  <p className="text-xs text-gray-300">Buyer Protection</p>
-                </div>
-              </div>
-
               {/* CTA Buttons */}
               <div className="flex font-grotesk flex-col sm:flex-row gap-4 pt-4">
-                <Link href="/vendors">
-                  <button className="group relative bg-gradient-to-r from-yellow-400 to-amber-500 text-gray-900 font-bold px-8 py-4 rounded-lg text-lg shadow-2xl hover:shadow-yellow-500/25 transition-all duration-300 hover:scale-105">
-                    <span className="relative z-10 flex items-center gap-2">
-                      Explore Vendors
-                      <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                      </svg>
-                    </span>
-                  </button>
-                </Link>
-                <Link href="/become-vendor">
+                <Link href="/partner">
                   <button className="group border-2 border-white/30 bg-white/10 backdrop-blur-md text-white font-semibold px-8 py-4 rounded-lg text-lg hover:bg-white/20 transition-all duration-300">
                     Become a Vendor
                   </button>
