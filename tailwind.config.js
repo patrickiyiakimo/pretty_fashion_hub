@@ -4,7 +4,7 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        montserrat: ["Montserrat", "sans-serif"],
+        grotesk: ["Space Grotesk", "sans-serif"],
         oswald: ["Oswald", "sans-serif"],
         satisfy: ["Satisfy", "cursive"],
       },
