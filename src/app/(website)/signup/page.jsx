@@ -112,7 +112,7 @@ const SignupPage = () => {
             Create Account
           </h2>
           <p className="text-sm text-gray-600">
-            Join Kingz_World today
+            Join Vefiri today
           </p>
         </div>
 
@@ -139,7 +139,7 @@ const SignupPage = () => {
                 value={formData.fullname}
                 onChange={handleChange}
                 disabled={loading}
-                className="appearance-none relative block w-full px-4 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent focus:z-10 sm:text-sm disabled:bg-gray-100 disabled:cursor-not-allowed"
+                className="appearance-none relative block w-full px-4 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent focus:z-10 sm:text-sm disabled:bg-gray-100 disabled:cursor-not-allowed"
                 placeholder="Enter your full name"
               />
             </div>
@@ -156,7 +156,7 @@ const SignupPage = () => {
                 value={formData.email}
                 onChange={handleChange}
                 disabled={loading}
-                className="appearance-none relative block w-full px-4 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent focus:z-10 sm:text-sm disabled:bg-gray-100 disabled:cursor-not-allowed"
+                className="appearance-none relative block w-full px-4 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent focus:z-10 sm:text-sm disabled:bg-gray-100 disabled:cursor-not-allowed"
                 placeholder="Enter your email"
               />
             </div>
@@ -173,7 +173,7 @@ const SignupPage = () => {
                 value={formData.phone}
                 onChange={handleChange}
                 disabled={loading}
-                className="appearance-none relative block w-full px-4 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent focus:z-10 sm:text-sm disabled:bg-gray-100 disabled:cursor-not-allowed"
+                className="appearance-none relative block w-full px-4 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent focus:z-10 sm:text-sm disabled:bg-gray-100 disabled:cursor-not-allowed"
                 placeholder="Enter your phone number"
               />
             </div>
@@ -191,7 +191,7 @@ const SignupPage = () => {
                   value={formData.password}
                   onChange={handleChange}
                   disabled={loading}
-                  className="appearance-none relative block w-full px-4 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent sm:text-sm disabled:bg-gray-100 disabled:cursor-not-allowed pr-12"
+                  className="appearance-none relative block w-full px-4 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent sm:text-sm disabled:bg-gray-100 disabled:cursor-not-allowed pr-12"
                   placeholder="Create a password"
                 />
                 <button
@@ -218,7 +218,7 @@ const SignupPage = () => {
                   value={formData.confirmPassword}
                   onChange={handleChange}
                   disabled={loading}
-                  className="appearance-none relative block w-full px-4 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent sm:text-sm disabled:bg-gray-100 disabled:cursor-not-allowed pr-12"
+                  className="appearance-none relative block w-full px-4 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent sm:text-sm disabled:bg-gray-100 disabled:cursor-not-allowed pr-12"
                   placeholder="Confirm your password"
                 />
                 <button
@@ -241,13 +241,13 @@ const SignupPage = () => {
               checked={formData.accept_terms}
               onChange={handleChange}
               disabled={loading}
-              className="h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300 rounded"
+              className="h-4 w-4 text-orange-500 focus:ring-orange-400 border-gray-300 rounded"
             />
             <label htmlFor="accept_terms" className="ml-2 block text-sm text-gray-900">
               I accept the{' '}
               <Link 
                 href="/terms" 
-                className="font-medium text-purple-600 hover:text-purple-500 transition-colors"
+                className="font-medium text-orange-500 hover:text-orange-400 transition-colors"
               >
                 Terms and Conditions
               </Link>
@@ -258,7 +258,7 @@ const SignupPage = () => {
             <button
               type="submit"
               disabled={loading}
-              className={`group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-lg text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition-colors ${
+              className={`group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-lg text-white bg-orange-500 hover:bg-orange-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 transition-colors ${
                 loading ? 'opacity-50 cursor-not-allowed' : ''
               }`}
             >
@@ -282,7 +282,7 @@ const SignupPage = () => {
             Already have an account?{' '}
             <Link 
               href="/login" 
-              className="font-medium text-purple-600 hover:text-purple-500 transition-colors"
+              className="font-medium text-orange-500 hover:text-orange-400 transition-colors"
             >
               Sign in
             </Link>

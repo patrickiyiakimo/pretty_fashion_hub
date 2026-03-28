@@ -206,7 +206,7 @@
 //                 <div className="relative w-12 h-12 rounded-xl overflow-hidden transition-all duration-500 shadow-lg">
 //                   <Image
 //                     src="/images/0ddb8c41-20a9-446e-a056-9b6290b33d6b.JPG"
-//                     alt="Vendly - Premium Fashion"
+//                     alt="Vefiri - Premium Fashion"
 //                     fill
 //                     className="object-cover transform group-hover:scale-110 transition-transform duration-500"
 //                     priority
@@ -216,7 +216,7 @@
 //                   <span className={`text-2xl font-bold transition-colors duration-300 ${
 //                     isScrolled ? "text-gray-900" : "text-white"
 //                   }`}>
-//                     Vendly
+//                     Vefiri
 //                   </span>
 //                   {/* <span className="text-xs text-yellow-400 font-medium tracking-wider">
 //                     PREMIUM FASHION
@@ -463,13 +463,13 @@
 //                       <div className="relative w-10 h-10 rounded-xl overflow-hidden">
 //                         <Image
 //                           src="/images/0ddb8c41-20a9-446e-a056-9b6290b33d6b.JPG"
-//                           alt="Vendly"
+//                           alt="Vefiri"
 //                           fill
 //                           className="object-cover"
 //                         />
 //                       </div>
 //                       <div className="flex flex-col">
-//                         <span className="font-bold text-gray-900">Vendly</span>
+//                         <span className="font-bold text-gray-900">Vefiri</span>
 //                         {/* <span className="text-xs text-yellow-400 font-medium">PREMIUM FASHION</span> */}
 //                       </div>
 //                     </div>
@@ -884,7 +884,7 @@
 //                 <div className="relative w-10 h-10 lg:w-12 lg:h-12 rounded-xl overflow-hidden transition-all duration-500 shadow-lg">
 //                   <Image
 //                     src="/images/0ddb8c41-20a9-446e-a056-9b6290b33d6b.JPG"
-//                     alt="Vendly - Premium Fashion"
+//                     alt="Vefiri - Premium Fashion"
 //                     fill
 //                     className="object-cover transform group-hover:scale-110 transition-transform duration-500"
 //                     priority
@@ -894,7 +894,7 @@
 //                   <span className={`text-xl lg:text-2xl font-bold transition-colors duration-300 ${
 //                     isScrolled ? "text-gray-900" : "text-white"
 //                   }`}>
-//                     Vendly
+//                     Vefiri
 //                   </span>
 //                   {/* <span className={`text-[10px] lg:text-xs tracking-wider transition-colors duration-300 ${
 //                     isScrolled ? "text-gray-500" : "text-gray-300"
@@ -1131,13 +1131,13 @@
 //                       <div className="relative w-10 h-10 rounded-xl overflow-hidden">
 //                         <Image
 //                           src="/images/0ddb8c41-20a9-446e-a056-9b6290b33d6b.JPG"
-//                           alt="Vendly"
+//                           alt="Vefiri"
 //                           fill
 //                           className="object-cover"
 //                         />
 //                       </div>
 //                       <div>
-//                         <span className="font-bold text-gray-900 text-lg">Vendly</span>
+//                         <span className="font-bold text-gray-900 text-lg">Vefiri</span>
 //                         {/* <p className="text-xs text-gray-500">Premium Fashion</p> */}
 //                       </div>
 //                     </div>
@@ -1172,7 +1172,7 @@
 //                           </div>
 //                         ) : (
 //                           <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl p-4 mb-4">
-//                             <p className="text-gray-700 text-sm mb-3">Welcome to Vendly!</p>
+//                             <p className="text-gray-700 text-sm mb-3">Welcome to Vefiri!</p>
 //                             <div className="flex space-x-3">
 //                               <Link
 //                                 href="/login"

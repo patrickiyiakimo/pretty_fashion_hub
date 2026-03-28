@@ -159,7 +159,7 @@ export default function MarketplaceCollections() {
           </h2>
           
           <p className="text-xl md:text-2xl text-gray-600 max-w-4xl mx-auto leading-relaxed">
-            Welcome to Vendly Marketplace — where multiple vendors, independent designers, and premium brands 
+            Welcome to Vefiri Marketplace — where multiple vendors, independent designers, and premium brands 
             come together. Compare, choose, and shop with confidence from verified sellers across Nigeria.
           </p>
         </div>

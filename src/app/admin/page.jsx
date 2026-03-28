@@ -616,7 +616,7 @@
 //               Admin Dashboard
 //             </h1>
 //             <p className="text-gray-600 text-base md:text-lg">
-//               Welcome back, {user.fullname || user.email}! Manage your Vendly platform.
+//               Welcome back, {user.fullname || user.email}! Manage your Vefiri platform.
 //             </p>
 //           </div>
 //           <div className="flex items-center gap-4 mt-4 lg:mt-0">
@@ -1509,7 +1509,7 @@ export default function AdminDashboard() {
               Admin Dashboard
             </h1>
             <p className="text-gray-600 text-base md:text-lg">
-              Welcome back, {user.fullname || user.email}! Manage your Vendly platform.
+              Welcome back, {user.fullname || user.email}! Manage your Vefiri platform.
             </p>
           </div>
           <div className="flex items-center gap-4 mt-4 lg:mt-0">

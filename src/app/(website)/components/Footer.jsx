@@ -106,7 +106,7 @@ export default function Footer() {
                 <div className="relative w-12 h-12 rounded-xl overflow-hidden transition-all duration-500 shadow-lg">
                   <Image
                     src="/images/0ddb8c41-20a9-446e-a056-9b6290b33d6b.JPG"
-                    alt="Vendly - Premium Fashion"
+                    alt="Vefiri - Premium Fashion"
                     fill
                     className="object-cover transform group-hover:scale-110 transition-transform duration-500"
                     priority
@@ -115,7 +115,7 @@ export default function Footer() {
               </div>
               <div>
                 <h3 className="text-2xl font-bold bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
-                  Vendly
+                  Vefiri
                 </h3>
                 <p className="text-sm text-gray-400">Premium Fashion & Lifestyle</p>
               </div>
@@ -217,7 +217,7 @@ export default function Footer() {
           <div className="grid lg:grid-cols-2 gap-8 items-center">
             <div>
               <h4 className="text-2xl font-bold text-white mb-2">
-                Join the Vendly
+                Join the Vefiri
               </h4>
               <p className="text-gray-400">
                 Be the first to access exclusive collections, premium content, and special offers.
@@ -249,7 +249,7 @@ export default function Footer() {
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             {/* Copyright */}
             <p className="text-gray-500 text-sm">
-              &copy; {currentYear} Vendly. All rights reserved.
+              &copy; {currentYear} Vefiri. All rights reserved.
             </p>
 
             {/* Legal Links */}

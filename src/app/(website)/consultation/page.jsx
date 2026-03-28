@@ -372,7 +372,7 @@ export default function ConsultationPage() {
                             <div>
                               <h5 className="font-semibold text-blue-800">Completed Successfully!</h5>
                               <p className="text-blue-700 text-sm">
-                                Thank you for choosing Vendly! We hope you enjoyed your consultation experience.
+                                Thank you for choosing Vefiri! We hope you enjoyed your consultation experience.
                               </p>
                             </div>
                           </div>
@@ -470,7 +470,7 @@ export default function ConsultationPage() {
               href="/"
               className="text-2xl font-bold bg-gradient-to-r from-gray-900 to-purple-600 bg-clip-text text-transparent"
             >
-              Vendly
+              Vefiri
             </Link>
             <Link 
               href="/shop"

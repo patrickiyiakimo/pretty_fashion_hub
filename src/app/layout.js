@@ -14,8 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "Vendly",
-  description: "Vendly is your premier online marketplace...",
+  title: "Vefiri",
+  description: "Vefiri is your premier online marketplace...",
 };
 
 export default function RootLayout({ children }) {

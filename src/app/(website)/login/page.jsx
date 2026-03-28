@@ -84,7 +84,7 @@ const handleSubmit = async (e) => {
             Welcome Back
           </h2>
           <p className="text-sm text-gray-600">
-            Sign in to continue to Vendly
+            Sign in to continue to Vefiri
           </p>
         </div>
 
@@ -115,7 +115,7 @@ const handleSubmit = async (e) => {
                 value={formData.email}
                 onChange={handleChange}
                 disabled={loading}
-                className="appearance-none relative block w-full px-4 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent focus:z-10 sm:text-sm disabled:bg-gray-50 disabled:cursor-not-allowed"
+                className="appearance-none relative block w-full px-4 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent focus:z-10 sm:text-sm disabled:bg-gray-50 disabled:cursor-not-allowed"
                 placeholder="Enter your email"
               />
             </div>
@@ -135,7 +135,7 @@ const handleSubmit = async (e) => {
                   value={formData.password}
                   onChange={handleChange}
                   disabled={loading}
-                  className="appearance-none relative block w-full px-4 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent sm:text-sm disabled:bg-gray-50 disabled:cursor-not-allowed pr-12"
+                  className="appearance-none relative block w-full px-4 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent sm:text-sm disabled:bg-gray-50 disabled:cursor-not-allowed pr-12"
                   placeholder="Enter your password"
                 />
                 <button
@@ -169,7 +169,7 @@ const handleSubmit = async (e) => {
                 checked={formData.remember_me}
                 onChange={handleChange}
                 disabled={loading}
-                className="h-4 w-4 bg-orange-500 focus:ring-purple-500 border-gray-300 rounded"
+                className="h-4 w-4 bg-orange-500 focus:ring-orange-500 border-gray-300 rounded"
               />
               <label htmlFor="remember_me" className="ml-2 block text-sm text-gray-900">
                 Remember me
@@ -179,7 +179,7 @@ const handleSubmit = async (e) => {
             <div className="text-sm">
               <Link 
                 href="/forgot-password" 
-                className="font-medium bg-orange-500 hover:text-orange-400 transition-colors"
+                className="font-medium text-orange-500 hover:text-orange-400 transition-colors"
               >
                 Forgot your password?
               </Link>
