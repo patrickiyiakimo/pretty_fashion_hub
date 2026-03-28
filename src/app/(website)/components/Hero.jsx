@@ -588,7 +588,7 @@ export default function Hero() {
             >
               {/* Title */}
               <h1 className="text-5xl font-oswald lg:text-7xl font-bold text-white leading-tight">
-                Marketplace Trust
+                Marketplace Trusted By
                 <br />
                 <span className="font-oswald bg-gradient-to-r from-yellow-400 to-orange-400 bg-clip-text text-transparent">
                   Verified Vendors Only

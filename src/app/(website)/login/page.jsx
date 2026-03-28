@@ -15,9 +15,6 @@ const LoginPage = () => {
   const [error, setError] = useState('');
   const [showPassword, setShowPassword] = useState(false);
 
-  // Make sure this matches your backend URL exactly
-  // const BACKEND_URL = process.env.BACKEND_URL;
-
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     setFormData(prev => ({
@@ -26,60 +23,6 @@ const LoginPage = () => {
     }));
     if (error) setError('');
   };
-
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  //   setLoading(true);
-  //   setError('');
-
-  //   try {
-  //     console.log('Sending request to:', "/api/auth/login"); // Debug log
-      
-  //     const response = await fetch("/api/auth/login", {
-  //       method: 'POST',
-  //       credentials: 'include',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //       },
-  //       body: JSON.stringify(formData)
-  //     });
-
-  //     // First check if response is OK
-  //     if (!response.ok) {
-  //       // Try to get error message from response
-  //       const contentType = response.headers.get('content-type');
-  //       if (contentType && contentType.includes('application/json')) {
-  //         const errorData = await response.json();
-  //         throw new Error(errorData.message || 'Login failed');
-  //       } else {
-  //         // If not JSON, get text and throw error
-  //         const text = await response.text();
-  //         console.error('Non-JSON response:', text.substring(0, 200)); // Log first 200 chars
-  //         throw new Error('Server error. Please try again later.');
-  //       }
-  //     }
-
-  //     // Parse JSON response
-  //     const data = await response.json();
-      
-  //     // Store user data
-  //     localStorage.setItem('user', JSON.stringify(data.user));
-      
-  //     // Redirect to dashboard
-  //     router.push('/shop');
-      
-  //   } catch (err) {
-  //     console.error('Login error:', err);
-  //     setError(err.message);
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
-
-
-
-  // src/app/(website)/login/page.jsx
-// Update your handleSubmit function:
 
 const handleSubmit = async (e) => {
   e.preventDefault();
@@ -226,7 +169,7 @@ const handleSubmit = async (e) => {
                 checked={formData.remember_me}
                 onChange={handleChange}
                 disabled={loading}
-                className="h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300 rounded"
+                className="h-4 w-4 bg-orange-500 focus:ring-purple-500 border-gray-300 rounded"
               />
               <label htmlFor="remember_me" className="ml-2 block text-sm text-gray-900">
                 Remember me
@@ -236,7 +179,7 @@ const handleSubmit = async (e) => {
             <div className="text-sm">
               <Link 
                 href="/forgot-password" 
-                className="font-medium text-purple-600 hover:text-purple-500 transition-colors"
+                className="font-medium bg-orange-500 hover:text-orange-400 transition-colors"
               >
                 Forgot your password?
               </Link>
@@ -248,7 +191,7 @@ const handleSubmit = async (e) => {
             <button
               type="submit"
               disabled={loading}
-              className={`group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-lg text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition-colors ${
+              className={`group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-lg text-white bg-orange-500 hover:bg-orange-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 transition-colors ${
                 loading ? 'opacity-50 cursor-not-allowed' : ''
               }`}
             >
@@ -273,7 +216,7 @@ const handleSubmit = async (e) => {
             Don't have an account?{' '}
             <Link 
               href="/signup" 
-              className="font-medium text-purple-600 hover:text-purple-500 transition-colors"
+              className="font-medium text-orange-500 hover:text-orange-400 transition-colors"
             >
               Sign up
             </Link>
