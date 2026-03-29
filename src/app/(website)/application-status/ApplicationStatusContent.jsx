@@ -49,7 +49,7 @@ export default function ApplicationStatusContent() {
     
     try {
       const response = await fetch(
-        "/api/logistics/applications/${applicationId}/${email}"
+        `/api/logistics/applications/${applicationId}/${email}`
       );
       
       const data = await response.json();
@@ -107,7 +107,7 @@ export default function ApplicationStatusContent() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white pt-20">
+    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white pt-10">
       <div className="max-w-4xl mx-auto px-4 py-12">
         {/* Header */}
         <motion.div
@@ -120,7 +120,7 @@ export default function ApplicationStatusContent() {
             Application Status
           </h1>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Track your logistics partner application with Kingz_World
+            Track your logistics partner application with Vefiri
           </p>
         </motion.div>
 
@@ -182,7 +182,7 @@ export default function ApplicationStatusContent() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white font-bold py-4 px-8 rounded-xl hover:from-blue-700 hover:to-purple-700 transition-all duration-300 transform hover:-translate-y-1 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3"
+              className="w-full bg-orange-500 text-white font-bold py-4 px-8 rounded-xl hover:bg-orange-400 transition-all duration-300 transform hover:-translate-y-1 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3"
             >
               {loading ? (
                 <>
@@ -244,7 +244,7 @@ export default function ApplicationStatusContent() {
                 {/* Personal Information */}
                 <div className="space-y-4">
                   <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
-                    <MdPerson className="text-blue-500 text-xl" />
+                    <MdPerson className="text-orange-500 text-xl" />
                     <div>
                       <p className="text-sm text-gray-500">Full Name</p>
                       <p className="font-medium">{status.fullName}</p>
@@ -252,7 +252,7 @@ export default function ApplicationStatusContent() {
                   </div>
                   
                   <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
-                    <MdEmail className="text-blue-500 text-xl" />
+                    <MdEmail className="text-orange-500 text-xl" />
                     <div>
                       <p className="text-sm text-gray-500">Email</p>
                       <p className="font-medium">{status.email}</p>
@@ -260,7 +260,7 @@ export default function ApplicationStatusContent() {
                   </div>
                   
                   <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
-                    <FaTruck className="text-blue-500 text-xl" />
+                    <FaTruck className="text-orange-500 text-xl" />
                     <div>
                       <p className="text-sm text-gray-500">Vehicle Type</p>
                       <p className="font-medium">{status.vehicleType}</p>
@@ -271,7 +271,7 @@ export default function ApplicationStatusContent() {
                 {/* Application Info */}
                 <div className="space-y-4">
                   <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
-                    <FaIdCard className="text-blue-500 text-xl" />
+                    <FaIdCard className="text-orange-500 text-xl" />
                     <div>
                       <p className="text-sm text-gray-500">Application ID</p>
                       <p className="font-mono font-medium">{status._id}</p>
@@ -279,7 +279,7 @@ export default function ApplicationStatusContent() {
                   </div>
                   
                   <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
-                    <FaCalendarAlt className="text-blue-500 text-xl" />
+                    <FaCalendarAlt className="text-orange-500 text-xl" />
                     <div>
                       <p className="text-sm text-gray-500">Submitted On</p>
                       <p className="font-medium">

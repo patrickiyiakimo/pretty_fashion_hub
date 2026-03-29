@@ -208,7 +208,7 @@ export default function LogisticsApplicationPage() {
             <div className="space-y-4">
               <button
                 onClick={() => router.push('/')}
-                className="w-full bg-blue-600 text-white font-bold py-3 px-6 rounded-xl hover:bg-blue-700 transition-colors"
+                className="w-full bg-orange-500 text-white font-bold py-3 px-6 rounded-xl hover:bg-orange-400 transition-colors"
               >
                 Return to Home
               </button>
@@ -237,7 +237,7 @@ export default function LogisticsApplicationPage() {
             Vefiri Logistics Partner Application
           </h1>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-            Join our delivery network and earn money delivering Kingz-Stylez products to customers.
+            Join our delivery network and earn money delivering Vefiri products to customers.
           </p>
         </div>
 
