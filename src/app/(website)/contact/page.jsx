@@ -198,7 +198,7 @@ export default function ContactPage() {
     {
       icon: <MdEmail className="text-2xl" />,
       title: "Email Us",
-      details: "info@kingz-world.com",
+      details: "info@Vefiri.com",
       subtitle: "Response within 24 hours",
       color: "from-orange-500 to-red-500"
     },

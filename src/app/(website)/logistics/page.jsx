@@ -234,39 +234,11 @@ export default function LogisticsApplicationPage() {
         {/* Header */}
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold text-gray-900 mb-4">
-            Kingz-World Logistics Partner Application
+            Vefiri Logistics Partner Application
           </h1>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto">
             Join our delivery network and earn money delivering Kingz-Stylez products to customers.
           </p>
-        </div>
-
-        {/* Progress Indicator */}
-        <div className="mb-12">
-          <div className="flex items-center justify-between mb-4">
-            <div className="text-center">
-              <div className="w-12 h-12 bg-blue-600 text-white rounded-full flex items-center justify-center mx-auto mb-2">
-                <span className="font-bold">1</span>
-              </div>
-              <span className="text-sm font-medium text-gray-900">Application</span>
-            </div>
-            <div className="flex-1 h-1 bg-gray-200 mx-4">
-              <div className="h-full w-1/3 bg-blue-600"></div>
-            </div>
-            <div className="text-center">
-              <div className="w-12 h-12 bg-gray-200 text-gray-400 rounded-full flex items-center justify-center mx-auto mb-2">
-                <span className="font-bold">2</span>
-              </div>
-              <span className="text-sm font-medium text-gray-500">Verification</span>
-            </div>
-            <div className="flex-1 h-1 bg-gray-200 mx-4"></div>
-            <div className="text-center">
-              <div className="w-12 h-12 bg-gray-200 text-gray-400 rounded-full flex items-center justify-center mx-auto mb-2">
-                <span className="font-bold">3</span>
-              </div>
-              <span className="text-sm font-medium text-gray-500">Approval</span>
-            </div>
-          </div>
         </div>
 
         {/* Application Form */}
@@ -557,7 +529,7 @@ export default function LogisticsApplicationPage() {
                     Privacy Policy
                   </a>
                   . I certify that all information provided is accurate and complete. I understand
-                  that Kingz-World will conduct background checks as part of the application process.
+                  that Vefiri will conduct background checks as part of the application process.
                 </label>
               </div>
               {errors.termsAccepted && (
@@ -602,7 +574,7 @@ export default function LogisticsApplicationPage() {
 
         {/* Benefits Section */}
         <div className="mt-12 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl p-8">
-          <h3 className="text-2xl font-bold text-gray-900 mb-6 text-center">Why Join Kingz-World Logistics?</h3>
+          <h3 className="text-2xl font-bold text-gray-900 mb-6 text-center">Why Join Vefiri Logistics?</h3>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="bg-white rounded-xl p-6 shadow-sm">
               <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-4">

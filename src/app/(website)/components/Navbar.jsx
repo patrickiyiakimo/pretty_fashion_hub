@@ -1564,8 +1564,8 @@ const Navbar = () => {
               <Link href="/shop" className="text-gray-700 hover:text-blue-600 font-medium transition">
                 Shop
               </Link>
-              <Link href="/deals" className="text-gray-700 hover:text-blue-600 font-medium transition">
-                Today's Deals
+              <Link href="/partner" className="text-gray-700 hover:text-blue-600 font-medium transition">
+                Partner
               </Link>
               <Link href="/vendors" className="text-gray-700 hover:text-blue-600 font-medium transition">
                 Vendors
