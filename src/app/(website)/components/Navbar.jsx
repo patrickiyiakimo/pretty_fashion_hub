@@ -1502,231 +1502,551 @@
 // export default Navbar;
 
 
+// "use client"
+
+// import React, { useState } from 'react';
+// import Link from 'next/link';
+// import Image from 'next/image';
+
+// const Navbar = () => {
+//   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+//   const closeMobileMenu = () => {
+//     setIsMobileMenuOpen(false);
+//   };
+
+//   return (
+//     <header className="w-full font-grotesk bg-white shadow-sm sticky top-0 z-50">
+//       {/* Top bar with contact info - orange background */}
+//       <div className="bg-orange-500 text-white text-sm py-2 px-4">
+//         <div className="container mx-auto flex flex-col sm:flex-row justify-between items-center gap-2">
+//           <div className="flex flex-wrap items-center justify-center gap-4">
+//             <div className="flex items-center gap-2">
+//               <i className="fas fa-phone-alt text-xs"></i>
+//               <span>+234 81 **** ****</span>
+//             </div>
+//             <div className="flex items-center gap-2">
+//               <i className="fas fa-envelope text-xs"></i>
+//               <span>support@vefiri.com</span>
+//             </div>
+//             <div className="flex items-center gap-2">
+//               <i className="fas fa-map-marker-alt text-xs"></i>
+//               <span>Lagos, Nigeria</span>
+//             </div>
+//           </div>
+//           <div className="flex gap-4 text-xs">
+//             <Link href="/signup" className="hover:text-orange-100 transition">Sign Up</Link>
+//             <Link href="/login" className="hover:text-orange-100 transition">Log In</Link>
+//           </div>
+//         </div>
+//       </div>
+
+//       {/* Main navbar */}
+//       <div className="container mx-auto px-4 py-3">
+//         {/* Desktop layout: left nav | center logo | right profile */}
+//         <div className="flex items-center justify-between gap-6">
+//           {/* Left side - Hamburger icon (mobile) + Desktop navigation links */}
+//           <div className="flex items-center gap-4">
+//             {/* Hamburger Menu Button - Mobile only */}
+//             <button 
+//               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+//               className="md:hidden text-gray-600 hover:text-blue-600 focus:outline-none transition-colors"
+//               aria-label="Toggle menu"
+//             >
+//               <i className={`fas ${isMobileMenuOpen ? 'fa-times' : 'fa-bars'} text-2xl`}></i>
+//             </button>
+            
+//             {/* Desktop navigation links */}
+//             <div className="hidden md:flex items-center gap-6">
+//               <Link href="/" className="text-gray-700 hover:text-blue-600 font-medium transition">
+//                 Home
+//               </Link>
+//               <Link href="/shop" className="text-gray-700 hover:text-blue-600 font-medium transition">
+//                 Shop
+//               </Link>
+//               <Link href="/partner" className="text-gray-700 hover:text-blue-600 font-medium transition">
+//                 Partner
+//               </Link>
+//               <Link href="/vendors" className="text-gray-700 hover:text-blue-600 font-medium transition">
+//                 Vendors
+//               </Link>
+//             </div>
+//           </div>
+
+//           {/* Centered Logo */}
+//           <div className="absolute left-1/2 transform -translate-x-1/2 md:relative md:left-auto md:transform-none">
+//             <Link href="/" className="flex items-center gap-2">
+//               <div className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center overflow-hidden">
+//                 <Image
+//                   src="/images/0ddb8c41-20a9-446e-a056-9b6290b33d6b.JPG"
+//                   alt="Logo"
+//                   width={40}
+//                   height={40}
+//                   className="object-cover w-full h-full"
+//                 />
+//               </div>
+//               <span className="text-2xl font-bold bg-gradient-to-r from-orange-500 to-blue-600 bg-clip-text text-transparent">
+//                 Vefiri
+//               </span>
+//             </Link>
+//           </div>
+
+//           {/* Right side - profile image + icons */}
+//           <div className="flex items-center gap-4">
+//             {/* Search icon */}
+//             <button className="text-gray-600 hover:text-blue-600">
+//               <i className="fas fa-search text-xl"></i>
+//             </button>
+            
+//             {/* Cart icon */}
+//             <Link href="/cart" className="relative text-gray-600 hover:text-blue-600 transition">
+//               <i className="fas fa-shopping-cart text-xl"></i>
+//               <span className="absolute -top-2 -right-2 bg-orange-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+//                 3
+//               </span>
+//             </Link>
+            
+//             {/* Profile image */}
+//             <Link href="/profile" className="flex items-center gap-2">
+//               <div className="w-10 h-10 rounded-full bg-gray-200 overflow-hidden border-2 border-orange-300 hover:border-blue-500 transition">
+//                 <Image
+//                   src=""
+//                   alt="Profile"
+//                   width={40}
+//                   height={40}
+//                   className="object-cover w-full h-full"
+//                 />
+//               </div>
+//             </Link>
+//           </div>
+//         </div>
+
+//         {/* Mobile Menu Dropdown - appears when hamburger is clicked */}
+//         <div 
+//           className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out ${
+//             isMobileMenuOpen ? 'max-h-96 opacity-100 mt-4' : 'max-h-0 opacity-0'
+//           }`}
+//         >
+//           <div className="flex flex-col gap-2 pt-2 pb-3 border-t border-gray-100">
+//             <Link 
+//               href="/" 
+//               onClick={closeMobileMenu}
+//               className="text-gray-700 hover:text-blue-600 font-medium py-2 px-2 hover:bg-blue-50 rounded-lg transition"
+//             >
+//               <i className="fas fa-home mr-3 w-5"></i> Home
+//             </Link>
+//             <Link 
+//               href="/shop" 
+//               onClick={closeMobileMenu}
+//               className="text-gray-700 hover:text-blue-600 font-medium py-2 px-2 hover:bg-blue-50 rounded-lg transition"
+//             >
+//               <i className="fas fa-store mr-3 w-5"></i> Shop
+//             </Link>
+//             <Link 
+//               href="/deals" 
+//               onClick={closeMobileMenu}
+//               className="text-gray-700 hover:text-blue-600 font-medium py-2 px-2 hover:bg-blue-50 rounded-lg transition"
+//             >
+//               <i className="fas fa-tag mr-3 w-5"></i> Today's Deals
+//             </Link>
+//             <Link 
+//               href="/vendors" 
+//               onClick={closeMobileMenu}
+//               className="text-gray-700 hover:text-blue-600 font-medium py-2 px-2 hover:bg-blue-50 rounded-lg transition"
+//             >
+//               <i className="fas fa-users mr-3 w-5"></i> Vendors
+//             </Link>
+//           </div>
+//         </div>
+
+//         {/* Mobile bottom navigation - shows main links on small screens */}
+//         <div className="md:hidden flex items-center justify-around mt-4 pt-2 border-t border-gray-100">
+//           <Link href="/" className="flex flex-col items-center text-gray-600 hover:text-blue-600">
+//             <i className="fas fa-home text-lg"></i>
+//             <span className="text-xs mt-1">Home</span>
+//           </Link>
+//           <Link href="/shop" className="flex flex-col items-center text-gray-600 hover:text-blue-600">
+//             <i className="fas fa-store text-lg"></i>
+//             <span className="text-xs mt-1">Shop</span>
+//           </Link>
+//           <Link href="/deals" className="flex flex-col items-center text-gray-600 hover:text-blue-600">
+//             <i className="fas fa-tag text-lg"></i>
+//             <span className="text-xs mt-1">Deals</span>
+//           </Link>
+//           <Link href="/vendors" className="flex flex-col items-center text-gray-600 hover:text-blue-600">
+//             <i className="fas fa-users text-lg"></i>
+//             <span className="text-xs mt-1">Vendors</span>
+//           </Link>
+//         </div>
+//       </div>
+
+//       {/* Mobile category scroll */}
+//       <div className="md:hidden bg-white border-b border-gray-100 py-2">
+//         <div className="flex gap-4 overflow-x-auto px-4 scrollbar-hide">
+//           {['Electronics', 'Fashion', 'Home', 'Beauty', 'Sports', 'Toys'].map((cat) => (
+//             <Link
+//               key={cat}
+//               href={`/category/${cat.toLowerCase()}`}
+//               className="text-gray-600 text-sm whitespace-nowrap hover:text-orange-500 font-medium"
+//             >
+//               {cat}
+//             </Link>
+//           ))}
+//           <Link href="/all-categories" className="text-blue-600 text-sm whitespace-nowrap font-medium">
+//             More <i className="fas fa-angle-right"></i>
+//           </Link>
+//         </div>
+//       </div>
+//     </header>
+//   );
+// };
+
+// export default Navbar;
+
+
+
+
 "use client"
 
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { usePathname } from 'next/navigation';
 
 const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+  const mobileMenuRef = useRef(null);
+  const pathname = usePathname();
+
+  // Handle scroll effect
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // Close mobile menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (mobileMenuRef.current && !mobileMenuRef.current.contains(event.target)) {
+        setIsMobileMenuOpen(false);
+      }
+    };
+
+    if (isMobileMenuOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.body.style.overflow = 'unset';
+    };
+  }, [isMobileMenuOpen]);
+
+  // Close mobile menu on route change
+  useEffect(() => {
+    setIsMobileMenuOpen(false);
+  }, [pathname]);
 
   const closeMobileMenu = () => {
     setIsMobileMenuOpen(false);
   };
 
+  const navLinks = [
+    { name: 'Home', href: '/', icon: 'fas fa-home' },
+    { name: 'Shop', href: '/shop', icon: 'fas fa-store' },
+    { name: 'Partner', href: '/partner', icon: 'fas fa-handshake' },
+    { name: 'Vendors', href: '/vendors', icon: 'fas fa-users' },
+    { name: 'Deals', href: '/deals', icon: 'fas fa-tag' }
+  ];
+
+  const categories = [
+    'Electronics', 'Fashion', 'Home', 'Beauty', 'Sports', 'Toys'
+  ];
+
   return (
-    <header className="w-full font-grotesk bg-white shadow-sm sticky top-0 z-50">
-      {/* Top bar with contact info - orange background */}
-      <div className="bg-orange-500 text-white text-sm py-2 px-4">
-        <div className="container mx-auto flex flex-col sm:flex-row justify-between items-center gap-2">
-          <div className="flex flex-wrap items-center justify-center gap-4">
-            <div className="flex items-center gap-2">
-              <i className="fas fa-phone-alt text-xs"></i>
-              <span>+234 81 **** ****</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <i className="fas fa-envelope text-xs"></i>
-              <span>support@vefiri.com</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <i className="fas fa-map-marker-alt text-xs"></i>
-              <span>Lagos, Nigeria</span>
-            </div>
-          </div>
-          <div className="flex gap-4 text-xs">
-            <Link href="/signup" className="hover:text-orange-100 transition">Sign Up</Link>
-            <Link href="/login" className="hover:text-orange-100 transition">Log In</Link>
-          </div>
-        </div>
-      </div>
-
-      {/* Main navbar */}
+    <header className={`w-full font-grotesk bg-white sticky top-0 z-50 transition-all duration-300 ${
+      isScrolled ? 'shadow-lg' : 'shadow-sm'
+    }`}>
+      {/* Main navbar - Clean and minimal */}
       <div className="container mx-auto px-4 py-3">
-        {/* Desktop layout: left nav | center logo | right profile */}
-        <div className="flex items-center justify-between gap-6">
-          {/* Left side - Hamburger icon (mobile) + Desktop navigation links */}
-          <div className="flex items-center gap-4">
-            {/* Hamburger Menu Button - Mobile only */}
-            <button 
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="md:hidden text-gray-600 hover:text-blue-600 focus:outline-none transition-colors"
-              aria-label="Toggle menu"
-            >
-              <i className={`fas ${isMobileMenuOpen ? 'fa-times' : 'fa-bars'} text-2xl`}></i>
-            </button>
-            
-            {/* Desktop navigation links */}
-            <div className="hidden md:flex items-center gap-6">
-              <Link href="/" className="text-gray-700 hover:text-blue-600 font-medium transition">
-                Home
-              </Link>
-              <Link href="/shop" className="text-gray-700 hover:text-blue-600 font-medium transition">
-                Shop
-              </Link>
-              <Link href="/partner" className="text-gray-700 hover:text-blue-600 font-medium transition">
-                Partner
-              </Link>
-              <Link href="/vendors" className="text-gray-700 hover:text-blue-600 font-medium transition">
-                Vendors
-              </Link>
+        <div className="flex items-center justify-between">
+          {/* Left side - Hamburger icon */}
+          <button 
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            className="lg:hidden relative w-10 h-10 flex items-center justify-center rounded-full hover:bg-gray-100 transition-colors focus:outline-none"
+            aria-label="Toggle menu"
+          >
+            <div className="relative w-5 h-5">
+              <span className={`absolute block h-0.5 bg-gray-800 rounded-full transition-all duration-300 ease-in-out ${
+                isMobileMenuOpen ? 'rotate-45 top-2' : 'top-0'
+              } w-5`}></span>
+              <span className={`absolute block h-0.5 bg-gray-800 rounded-full transition-all duration-300 ease-in-out top-2 ${
+                isMobileMenuOpen ? 'opacity-0' : 'w-5'
+              }`}></span>
+              <span className={`absolute block h-0.5 bg-gray-800 rounded-full transition-all duration-300 ease-in-out ${
+                isMobileMenuOpen ? '-rotate-45 top-2' : 'top-4'
+              } w-5`}></span>
             </div>
-          </div>
+          </button>
 
-          {/* Centered Logo */}
-          <div className="absolute left-1/2 transform -translate-x-1/2 md:relative md:left-auto md:transform-none">
-            <Link href="/" className="flex items-center gap-2">
-              <div className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center overflow-hidden">
-                <Image
-                  src="/images/0ddb8c41-20a9-446e-a056-9b6290b33d6b.JPG"
-                  alt="Logo"
-                  width={40}
-                  height={40}
-                  className="object-cover w-full h-full"
-                />
-              </div>
-              <span className="text-2xl font-bold bg-gradient-to-r from-orange-500 to-blue-600 bg-clip-text text-transparent">
-                Vefiri
-              </span>
-            </Link>
-          </div>
+          {/* Logo - Centered on mobile, left on desktop */}
+          <Link href="/" className="flex items-center gap-2 lg:absolute lg:left-1/2 lg:transform lg:-translate-x-1/2">
+            <div className="w-9 h-9 lg:w-10 lg:h-10 bg-gradient-to-r from-orange-500 to-blue-600 rounded-full flex items-center justify-center overflow-hidden shadow-md">
+              <Image
+                src="/images/0ddb8c41-20a9-446e-a056-9b6290b33d6b.JPG"
+                alt="Vefiri"
+                width={36}
+                height={36}
+                className="object-cover w-full h-full"
+              />
+            </div>
+            <span className="text-xl lg:text-2xl font-bold bg-gradient-to-r from-orange-500 to-blue-600 bg-clip-text text-transparent">
+              Vefiri
+            </span>
+          </Link>
 
-          {/* Right side - profile image + icons */}
-          <div className="flex items-center gap-4">
-            {/* Search icon */}
-            <button className="text-gray-600 hover:text-blue-600">
-              <i className="fas fa-search text-xl"></i>
-            </button>
-            
+          {/* Right side - Cart and Profile icons */}
+          <div className="flex items-center gap-3">
             {/* Cart icon */}
-            <Link href="/cart" className="relative text-gray-600 hover:text-blue-600 transition">
+            <Link href="/cart" className="relative text-gray-700 hover:text-orange-500 transition-colors">
               <i className="fas fa-shopping-cart text-xl"></i>
-              <span className="absolute -top-2 -right-2 bg-orange-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+              <span className="absolute -top-2 -right-2 bg-orange-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center shadow-md">
                 3
               </span>
             </Link>
             
-            {/* Profile image */}
-            <Link href="/profile" className="flex items-center gap-2">
-              <div className="w-10 h-10 rounded-full bg-gray-200 overflow-hidden border-2 border-orange-300 hover:border-blue-500 transition">
+            {/* Profile icon (only icon, no text) */}
+            <Link href="/profile" className="flex items-center">
+              <div className="w-9 h-9 rounded-full bg-gradient-to-r from-orange-400 to-blue-500 overflow-hidden border-2 border-transparent hover:border-orange-300 transition-all duration-300">
                 <Image
                   src=""
                   alt="Profile"
-                  width={40}
-                  height={40}
+                  width={36}
+                  height={36}
                   className="object-cover w-full h-full"
                 />
               </div>
             </Link>
           </div>
         </div>
+      </div>
 
-        {/* Mobile Menu Dropdown - appears when hamburger is clicked */}
-        <div 
-          className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out ${
-            isMobileMenuOpen ? 'max-h-96 opacity-100 mt-4' : 'max-h-0 opacity-0'
-          }`}
-        >
-          <div className="flex flex-col gap-2 pt-2 pb-3 border-t border-gray-100">
-            <Link 
-              href="/" 
-              onClick={closeMobileMenu}
-              className="text-gray-700 hover:text-blue-600 font-medium py-2 px-2 hover:bg-blue-50 rounded-lg transition"
-            >
-              <i className="fas fa-home mr-3 w-5"></i> Home
-            </Link>
-            <Link 
-              href="/shop" 
-              onClick={closeMobileMenu}
-              className="text-gray-700 hover:text-blue-600 font-medium py-2 px-2 hover:bg-blue-50 rounded-lg transition"
-            >
-              <i className="fas fa-store mr-3 w-5"></i> Shop
-            </Link>
-            <Link 
-              href="/deals" 
-              onClick={closeMobileMenu}
-              className="text-gray-700 hover:text-blue-600 font-medium py-2 px-2 hover:bg-blue-50 rounded-lg transition"
-            >
-              <i className="fas fa-tag mr-3 w-5"></i> Today's Deals
-            </Link>
-            <Link 
-              href="/vendors" 
-              onClick={closeMobileMenu}
-              className="text-gray-700 hover:text-blue-600 font-medium py-2 px-2 hover:bg-blue-50 rounded-lg transition"
-            >
-              <i className="fas fa-users mr-3 w-5"></i> Vendors
-            </Link>
+      {/* Desktop Navigation Links - Hidden on mobile */}
+      <div className="hidden lg:block border-t border-gray-100">
+        <div className="container mx-auto px-4">
+          <div className="flex items-center justify-center gap-8 py-3">
+            {navLinks.map((link) => (
+              <Link
+                key={link.name}
+                href={link.href}
+                className={`relative text-gray-700 hover:text-orange-500 font-medium transition-all duration-300 py-2 group ${
+                  pathname === link.href ? 'text-orange-500' : ''
+                }`}
+              >
+                {link.name}
+                <span className={`absolute bottom-0 left-0 w-0 h-0.5 bg-orange-500 transition-all duration-300 group-hover:w-full ${
+                  pathname === link.href ? 'w-full' : ''
+                }`}></span>
+              </Link>
+            ))}
           </div>
-        </div>
-
-        {/* Mobile bottom navigation - shows main links on small screens */}
-        <div className="md:hidden flex items-center justify-around mt-4 pt-2 border-t border-gray-100">
-          <Link href="/" className="flex flex-col items-center text-gray-600 hover:text-blue-600">
-            <i className="fas fa-home text-lg"></i>
-            <span className="text-xs mt-1">Home</span>
-          </Link>
-          <Link href="/shop" className="flex flex-col items-center text-gray-600 hover:text-blue-600">
-            <i className="fas fa-store text-lg"></i>
-            <span className="text-xs mt-1">Shop</span>
-          </Link>
-          <Link href="/deals" className="flex flex-col items-center text-gray-600 hover:text-blue-600">
-            <i className="fas fa-tag text-lg"></i>
-            <span className="text-xs mt-1">Deals</span>
-          </Link>
-          <Link href="/vendors" className="flex flex-col items-center text-gray-600 hover:text-blue-600">
-            <i className="fas fa-users text-lg"></i>
-            <span className="text-xs mt-1">Vendors</span>
-          </Link>
         </div>
       </div>
 
-      {/* Category strip - additional e-commerce navigation */}
-      {/* <div className="bg-blue-50 border-b border-blue-100 hidden md:block">
-        <div className="container mx-auto px-4">
-          <div className="flex items-center gap-6 overflow-x-auto py-3 text-sm">
-            <Link href="/category/electronics" className="text-gray-700 hover:text-orange-500 whitespace-nowrap transition font-medium">
-              Electronics
-            </Link>
-            <Link href="/category/fashion" className="text-gray-700 hover:text-orange-500 whitespace-nowrap transition font-medium">
-              Fashion
-            </Link>
-            <Link href="/category/home-living" className="text-gray-700 hover:text-orange-500 whitespace-nowrap transition font-medium">
-              Home & Living
-            </Link>
-            <Link href="/category/beauty" className="text-gray-700 hover:text-orange-500 whitespace-nowrap transition font-medium">
-              Beauty
-            </Link>
-            <Link href="/category/sports" className="text-gray-700 hover:text-orange-500 whitespace-nowrap transition font-medium">
-              Sports
-            </Link>
-            <Link href="/category/toys" className="text-gray-700 hover:text-orange-500 whitespace-nowrap transition font-medium">
-              Toys & Games
-            </Link>
-            <Link href="/category/books" className="text-gray-700 hover:text-orange-500 whitespace-nowrap transition font-medium">
-              Books
-            </Link>
-            <Link href="/all-categories" className="text-blue-600 hover:text-orange-500 whitespace-nowrap transition font-medium ml-auto">
-              All Categories <i className="fas fa-chevron-right text-xs ml-1"></i>
-            </Link>
-          </div>
-        </div> */}
-      {/* </div> */}
+      {/* Mobile Menu Overlay */}
+      <div 
+        className={`fixed inset-0 bg-black/50 z-40 transition-opacity duration-300 lg:hidden ${
+          isMobileMenuOpen ? 'opacity-100 visible' : 'opacity-0 invisible'
+        }`}
+        onClick={closeMobileMenu}
+      />
 
-      {/* Mobile category scroll */}
-      <div className="md:hidden bg-white border-b border-gray-100 py-2">
-        <div className="flex gap-4 overflow-x-auto px-4 scrollbar-hide">
-          {['Electronics', 'Fashion', 'Home', 'Beauty', 'Sports', 'Toys'].map((cat) => (
-            <Link
-              key={cat}
-              href={`/category/${cat.toLowerCase()}`}
-              className="text-gray-600 text-sm whitespace-nowrap hover:text-orange-500 font-medium"
-            >
-              {cat}
-            </Link>
-          ))}
-          <Link href="/all-categories" className="text-blue-600 text-sm whitespace-nowrap font-medium">
-            More <i className="fas fa-angle-right"></i>
-          </Link>
+      {/* Mobile Menu Sidebar - All content consolidated here */}
+      <div
+        ref={mobileMenuRef}
+        className={`fixed top-0 left-0 h-full w-full max-w-sm bg-white z-50 transform transition-transform duration-300 ease-in-out shadow-2xl lg:hidden ${
+          isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'
+        }`}
+      >
+        <div className="flex flex-col h-full">
+          {/* Header with logo and close button */}
+          <div className="p-6 border-b border-gray-100 bg-gradient-to-r from-orange-50 to-blue-50">
+            <div className="flex items-center justify-between">
+              <Link href="/" className="flex items-center gap-2" onClick={closeMobileMenu}>
+                <div className="w-10 h-10 bg-gradient-to-r from-orange-500 to-blue-600 rounded-full flex items-center justify-center overflow-hidden shadow-md">
+                  <Image
+                    src="/images/0ddb8c41-20a9-446e-a056-9b6290b33d6b.JPG"
+                    alt="Vefiri"
+                    width={40}
+                    height={40}
+                    className="object-cover w-full h-full"
+                  />
+                </div>
+                <span className="text-xl font-bold bg-gradient-to-r from-orange-500 to-blue-600 bg-clip-text text-transparent">
+                  Vefiri
+                </span>
+              </Link>
+              <button
+                onClick={closeMobileMenu}
+                className="w-10 h-10 rounded-full flex items-center justify-center hover:bg-white/50 transition-colors"
+                aria-label="Close menu"
+              >
+                <i className="fas fa-times text-xl text-gray-600"></i>
+              </button>
+            </div>
+            <p className="text-sm text-gray-600 mt-4">Welcome to Vefiri! Find your perfect style.</p>
+          </div>
+
+          {/* Scrollable Content */}
+          <div className="flex-1 overflow-y-auto">
+            {/* Contact Info Section */}
+            <div className="p-6 border-b border-gray-100">
+              <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-4">
+                Contact Information
+              </h3>
+              <div className="space-y-3">
+                <div className="flex items-center gap-3 text-gray-700">
+                  <div className="w-8 h-8 rounded-full bg-orange-100 flex items-center justify-center">
+                    <i className="fas fa-phone-alt text-orange-500 text-sm"></i>
+                  </div>
+                  <span className="text-sm">+234 81 **** ****</span>
+                </div>
+                <div className="flex items-center gap-3 text-gray-700">
+                  <div className="w-8 h-8 rounded-full bg-orange-100 flex items-center justify-center">
+                    <i className="fas fa-envelope text-orange-500 text-sm"></i>
+                  </div>
+                  <span className="text-sm">support@vefiri.com</span>
+                </div>
+                <div className="flex items-center gap-3 text-gray-700">
+                  <div className="w-8 h-8 rounded-full bg-orange-100 flex items-center justify-center">
+                    <i className="fas fa-map-marker-alt text-orange-500 text-sm"></i>
+                  </div>
+                  <span className="text-sm">Lagos, Nigeria</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Auth Buttons */}
+            <div className="p-6 border-b border-gray-100">
+              <div className="flex gap-3">
+                <Link
+                  href="/login"
+                  onClick={closeMobileMenu}
+                  className="flex-1 text-center px-4 py-3 border-2 border-orange-500 text-orange-600 rounded-xl font-semibold hover:bg-orange-50 transition-all"
+                >
+                  Log In
+                </Link>
+                <Link
+                  href="/signup"
+                  onClick={closeMobileMenu}
+                  className="flex-1 text-center px-4 py-3 bg-gradient-to-r from-orange-500 to-blue-600 text-white rounded-xl font-semibold hover:shadow-lg transition-all"
+                >
+                  Sign Up
+                </Link>
+              </div>
+            </div>
+
+            {/* Navigation Links */}
+            <div className="p-6 border-b border-gray-100">
+              <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-4">
+                Menu
+              </h3>
+              <div className="space-y-1">
+                {navLinks.map((link) => (
+                  <Link
+                    key={link.name}
+                    href={link.href}
+                    onClick={closeMobileMenu}
+                    className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 ${
+                      pathname === link.href
+                        ? 'bg-gradient-to-r from-orange-50 to-blue-50 text-orange-600 font-semibold'
+                        : 'text-gray-700 hover:bg-gray-50 hover:text-orange-500'
+                    }`}
+                  >
+                    <i className={`${link.icon} w-5 text-lg`}></i>
+                    <span className="font-medium flex-1">{link.name}</span>
+                    {pathname === link.href && (
+                      <i className="fas fa-check-circle text-orange-500"></i>
+                    )}
+                  </Link>
+                ))}
+              </div>
+            </div>
+
+            {/* Categories Section */}
+            <div className="p-6 border-b border-gray-100">
+              <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-4">
+                Shop by Category
+              </h3>
+              <div className="grid grid-cols-2 gap-2">
+                {categories.map((category) => (
+                  <Link
+                    key={category}
+                    href={`/category/${category.toLowerCase()}`}
+                    onClick={closeMobileMenu}
+                    className="px-3 py-2 text-sm text-gray-600 hover:text-orange-500 hover:bg-orange-50 rounded-lg transition-colors text-center"
+                  >
+                    {category}
+                  </Link>
+                ))}
+              </div>
+              <Link
+                href="/all-categories"
+                onClick={closeMobileMenu}
+                className="flex items-center justify-center gap-2 mt-4 px-4 py-2 text-sm text-orange-600 hover:bg-orange-50 rounded-lg transition-colors font-medium"
+              >
+                <span>View All Categories</span>
+                <i className="fas fa-arrow-right text-xs"></i>
+              </Link>
+            </div>
+
+            {/* User Actions */}
+            <div className="p-6">
+              <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-4">
+                Account
+              </h3>
+              <div className="space-y-1">
+                <Link
+                  href="/profile"
+                  onClick={closeMobileMenu}
+                  className="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-700 hover:bg-gray-50 transition-colors"
+                >
+                  <i className="fas fa-user-circle w-5 text-xl"></i>
+                  <span>My Profile</span>
+                </Link>
+                <Link
+                  href="/orders"
+                  onClick={closeMobileMenu}
+                  className="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-700 hover:bg-gray-50 transition-colors"
+                >
+                  <i className="fas fa-shopping-bag w-5 text-xl"></i>
+                  <span>My Orders</span>
+                </Link>
+                <Link
+                  href="/wishlist"
+                  onClick={closeMobileMenu}
+                  className="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-700 hover:bg-gray-50 transition-colors"
+                >
+                  <i className="fas fa-heart w-5 text-xl"></i>
+                  <span>Wishlist</span>
+                </Link>
+              </div>
+            </div>
+          </div>
+
+          {/* Footer with app info */}
+          <div className="p-6 border-t border-gray-100 bg-gray-50">
+            <p className="text-xs text-center text-gray-500">
+              © 2024 Vefiri. All rights reserved.
+            </p>
+          </div>
         </div>
       </div>
     </header>
