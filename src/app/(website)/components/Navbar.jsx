@@ -1817,7 +1817,7 @@ const Navbar = () => {
             {/* Cart icon */}
             <Link href="/cart" className="relative text-gray-700 hover:text-orange-500 transition-colors">
               <i className="fas fa-shopping-cart text-xl"></i>
-              <span className="absolute -top-2 -right-2 bg-orange-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center shadow-md">
+              <span className="absolute -top-2 -right-2 bg-orange-500 text-white text-xs animate-pulse font-bold rounded-full w-5 h-5 flex items-center justify-center shadow-md">
                 3
               </span>
             </Link>
@@ -1833,6 +1833,14 @@ const Navbar = () => {
                   className="object-cover w-full h-full"
                 />
               </div>
+            </Link>
+          </div>
+          <div className="flex items-center gap-4">
+            <Link href="/signup" className="hidden lg:block text-sm text-gray-700 hover:text-orange-500 transition-colors">
+              Sign Up
+            </Link>
+            <Link href="/login" className="hidden lg:block text-sm text-gray-700 hover:text-orange-500 transition-colors">
+              Log In
             </Link>
           </div>
         </div>
