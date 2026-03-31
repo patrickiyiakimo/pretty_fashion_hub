@@ -107,7 +107,7 @@ const SignupPage = () => {
   return (
     <div className="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8 bg-white rounded-2xl p-3">
-        <div className="text-center">
+        <div className="text-center font-oswald">
           <h2 className="text-4xl font-extrabold text-gray-900 mb-2">
             Create Account
           </h2>
@@ -125,7 +125,7 @@ const SignupPage = () => {
           </div>
         )}
 
-        <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
+        <form className="mt-8 space-y-6 font-grotesk" onSubmit={handleSubmit}>
           <div className="space-y-4">
             <div>
               <label htmlFor="fullname" className="block text-sm font-medium text-gray-700 mb-1">

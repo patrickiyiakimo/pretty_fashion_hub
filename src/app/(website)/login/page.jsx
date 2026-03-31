@@ -79,7 +79,7 @@ const handleSubmit = async (e) => {
     <div className="min-h-screen flex items-center justify-center bg-white py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8">
         {/* Header */}
-        <div className="text-center">
+        <div className="text-center font-oswald">
           <h2 className="text-4xl font-extrabold text-gray-900 mb-2">
             Welcome Back
           </h2>
@@ -99,7 +99,7 @@ const handleSubmit = async (e) => {
         )}
 
         {/* Login Form */}
-        <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
+        <form className="mt-8 space-y-6 font-grotesk" onSubmit={handleSubmit}>
           <div className="space-y-4">
             {/* Email Field */}
             <div>

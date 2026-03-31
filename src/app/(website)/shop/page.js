@@ -617,12 +617,12 @@ export default function ShopPage() {
   }
 
   return (
-    <section className="min-h-screen bg-gray-50 py-20">
+    <section className="min-h-screen bg-gray-50 py-10">
       <Toaster position="top-right" />
       
       <div className="max-w-7xl mx-auto px-4">
         {/* Welcome Header */}
-        <div className="text-center mb-12">
+        <div className="text-center mb-12 font-oswald">
           <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
             Shop All Products
           </h1>
@@ -637,7 +637,7 @@ export default function ShopPage() {
         </div>
 
         {/* Filters */}
-        <div className="bg-white rounded-2xl p-6 mb-8 shadow-sm border border-gray-200">
+        <div className="bg-white rounded-2xl p-6 mb-8 font-oswald shadow-sm border border-gray-200">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             {/* Search */}
             <div>
@@ -646,7 +646,7 @@ export default function ShopPage() {
                 placeholder="Search products..."
                 value={filters.search}
                 onChange={(e) => handleFilterChange('search', e.target.value)}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full px-4 py-2 border-2  rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               />
             </div>
             
@@ -692,7 +692,7 @@ export default function ShopPage() {
         {/* Products Grid */}
         {products.length > 0 ? (
           <>
-            <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6 mb-8">
+            <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 font-oswald gap-6 mb-8">
               {products.map((product, index) => (
                 <motion.div
                   key={product._id}
@@ -712,7 +712,7 @@ export default function ShopPage() {
 
             {/* Pagination */}
             {pagination.totalPages > 1 && (
-              <div className="flex justify-center gap-2">
+              <div className="flex justify-center gap-2 font-oswald">
                 <button
                   onClick={() => setPagination(prev => ({ ...prev, currentPage: prev.currentPage - 1 }))}
                   disabled={pagination.currentPage === 1}
@@ -736,7 +736,7 @@ export default function ShopPage() {
             )}
           </>
         ) : (
-          <div className="text-center py-12">
+          <div className="text-center py-12 font-oswald">
             <div className="text-gray-400 text-6xl mb-4">🛍️</div>
             <h3 className="text-xl font-semibold text-gray-900 mb-2">No products found</h3>
             <p className="text-gray-600">Try adjusting your filters or search terms</p>
