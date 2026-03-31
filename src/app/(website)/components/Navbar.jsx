@@ -1712,7 +1712,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
-
+import { FaTimes } from "react-icons/fa";
+ 
 const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
@@ -1826,7 +1827,7 @@ const Navbar = () => {
             <Link href="/profile" className="flex items-center">
               <div className="w-9 h-9 rounded-full bg-gradient-to-r from-orange-400 to-blue-500 overflow-hidden border-2 border-transparent hover:border-orange-300 transition-all duration-300">
                 <Image
-                  src=""
+                  src="/images/0ddb8c41-20a9-446e-a056-9b6290b33d6b.JPG"
                   alt="Profile"
                   width={36}
                   height={36}
@@ -1906,7 +1907,8 @@ const Navbar = () => {
                 className="w-10 h-10 rounded-full flex items-center justify-center hover:bg-white/50 transition-colors"
                 aria-label="Close menu"
               >
-                <i className="fas fa-times text-xl text-gray-600"></i>
+                {/* <i className="fas fa-times text-xl text-gray-600"></i> */}
+                <FaTimes className="w-7 h-7 text-orange-500"/>
               </button>
             </div>
             <p className="text-sm text-gray-600 mt-4">Welcome to Vefiri! Find your perfect style.</p>
