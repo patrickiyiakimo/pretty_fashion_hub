@@ -1706,6 +1706,371 @@
 
 
 
+// "use client"
+
+// import React, { useState, useEffect, useRef } from 'react';
+// import Link from 'next/link';
+// import Image from 'next/image';
+// import { usePathname } from 'next/navigation';
+// import { FaTimes } from "react-icons/fa";
+ 
+// const Navbar = () => {
+//   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+//   const [isScrolled, setIsScrolled] = useState(false);
+//   const mobileMenuRef = useRef(null);
+//   const pathname = usePathname();
+
+//   // Handle scroll effect
+//   useEffect(() => {
+//     const handleScroll = () => {
+//       setIsScrolled(window.scrollY > 50);
+//     };
+//     window.addEventListener('scroll', handleScroll);
+//     return () => window.removeEventListener('scroll', handleScroll);
+//   }, []);
+
+//   // Close mobile menu when clicking outside
+//   useEffect(() => {
+//     const handleClickOutside = (event) => {
+//       if (mobileMenuRef.current && !mobileMenuRef.current.contains(event.target)) {
+//         setIsMobileMenuOpen(false);
+//       }
+//     };
+
+//     if (isMobileMenuOpen) {
+//       document.addEventListener('mousedown', handleClickOutside);
+//       document.body.style.overflow = 'hidden';
+//     } else {
+//       document.body.style.overflow = 'unset';
+//     }
+
+//     return () => {
+//       document.removeEventListener('mousedown', handleClickOutside);
+//       document.body.style.overflow = 'unset';
+//     };
+//   }, [isMobileMenuOpen]);
+
+//   // Close mobile menu on route change
+//   useEffect(() => {
+//     setIsMobileMenuOpen(false);
+//   }, [pathname]);
+
+//   const closeMobileMenu = () => {
+//     setIsMobileMenuOpen(false);
+//   };
+
+//   const navLinks = [
+//     { name: 'Home', href: '/', icon: 'fas fa-home' },
+//     { name: 'Shop', href: '/shop', icon: 'fas fa-store' },
+//     { name: 'Partner', href: '/partner', icon: 'fas fa-handshake' },
+//     { name: 'Vendors', href: '/vendor', icon: 'fas fa-users' },
+//     // { name: 'Deals', href: '/deals', icon: 'fas fa-tag' }
+//   ];
+
+//   const categories = [
+//     'Electronics', 'Fashion', 'Home', 'Beauty', 'Sports', 'Toys'
+//   ];
+
+//   return (
+//     <header className={`w-full font-grotesk bg-white sticky top-0 z-50 transition-all duration-300 ${
+//       isScrolled ? 'shadow-lg' : 'shadow-sm'
+//     }`}>
+//       {/* Main navbar - Clean and minimal */}
+//       <div className="container mx-auto px-4 py-3">
+//         <div className="flex items-center justify-between">
+//           {/* Left side - Hamburger icon */}
+//           <button 
+//             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+//             className="lg:hidden relative w-10 h-10 flex items-center justify-center rounded-full hover:bg-gray-100 transition-colors focus:outline-none"
+//             aria-label="Toggle menu"
+//           >
+//             <div className="relative w-5 h-5">
+//               <span className={`absolute block h-0.5 bg-gray-800 rounded-full transition-all duration-300 ease-in-out ${
+//                 isMobileMenuOpen ? 'rotate-45 top-2' : 'top-0'
+//               } w-5`}></span>
+//               <span className={`absolute block h-0.5 bg-gray-800 rounded-full transition-all duration-300 ease-in-out top-2 ${
+//                 isMobileMenuOpen ? 'opacity-0' : 'w-5'
+//               }`}></span>
+//               <span className={`absolute block h-0.5 bg-gray-800 rounded-full transition-all duration-300 ease-in-out ${
+//                 isMobileMenuOpen ? '-rotate-45 top-2' : 'top-4'
+//               } w-5`}></span>
+//             </div>
+//           </button>
+
+//           {/* Logo - Centered on mobile, left on desktop */}
+//           <Link href="/" className="flex items-center gap-2 lg:absolute lg:left-1/2 lg:transform lg:-translate-x-1/2">
+//             <div className="w-9 h-9 lg:w-10 lg:h-10 bg-gradient-to-r from-orange-500 to-blue-600 rounded-full flex items-center justify-center overflow-hidden shadow-md">
+//               <Image
+//                 src="/images/0ddb8c41-20a9-446e-a056-9b6290b33d6b.JPG"
+//                 alt="Vefiri"
+//                 width={36}
+//                 height={36}
+//                 className="object-cover w-full h-full"
+//               />
+//             </div>
+//             <span className="text-xl lg:text-2xl font-bold bg-gradient-to-r from-orange-500 to-blue-600 bg-clip-text text-transparent">
+//               Vefiri
+//             </span>
+//           </Link>
+
+//           {/* Right side - Cart and Profile icons */}
+//           <div className="flex items-center gap-3">
+//             {/* Cart icon */}
+//             <Link href="/cart" className="relative text-gray-700 hover:text-orange-500 transition-colors">
+//               <i className="fas fa-shopping-cart text-xl"></i>
+//               <span className="absolute -top-2 -right-2 bg-orange-500 text-white text-xs animate-pulse font-bold rounded-full w-5 h-5 flex items-center justify-center shadow-md">
+//                 3
+//               </span>
+//             </Link>
+            
+//             {/* Profile icon (only icon, no text) */}
+//             <Link href="/profile" className="flex items-center">
+//               <div className="w-9 h-9 rounded-full bg-gradient-to-r from-orange-400 to-blue-500 overflow-hidden border-2 border-transparent hover:border-orange-300 transition-all duration-300">
+//                 <Image
+//                   src="/images/0ddb8c41-20a9-446e-a056-9b6290b33d6b.JPG"
+//                   alt="Profile"
+//                   width={36}
+//                   height={36}
+//                   className="object-cover w-full h-full"
+//                 />
+//               </div>
+//             </Link>
+//           </div>
+//           <div className="flex items-center gap-4">
+//             <Link href="/signup" className="hidden lg:block text-sm text-gray-700 hover:text-orange-500 transition-colors">
+//               Sign Up
+//             </Link>
+//             <Link href="/login" className="hidden lg:block text-sm text-gray-700 hover:text-orange-500 transition-colors">
+//               Log In
+//             </Link>
+//           </div>
+//         </div>
+//       </div>
+
+//       {/* Desktop Navigation Links - Hidden on mobile */}
+//       <div className="hidden lg:block border-t border-gray-100">
+//         <div className="container mx-auto px-4">
+//           <div className="flex items-center justify-center gap-8 py-3">
+//             {navLinks.map((link) => (
+//               <Link
+//                 key={link.name}
+//                 href={link.href}
+//                 className={`relative text-gray-700 hover:text-orange-500 font-medium transition-all duration-300 py-2 group ${
+//                   pathname === link.href ? 'text-orange-500' : ''
+//                 }`}
+//               >
+//                 {link.name}
+//                 <span className={`absolute bottom-0 left-0 w-0 h-0.5 bg-orange-500 transition-all duration-300 group-hover:w-full ${
+//                   pathname === link.href ? 'w-full' : ''
+//                 }`}></span>
+//               </Link>
+//             ))}
+//           </div>
+//         </div>
+//       </div>
+
+//       {/* Mobile Menu Overlay */}
+//       <div 
+//         className={`fixed inset-0 bg-black/50 z-40 transition-opacity duration-300 lg:hidden ${
+//           isMobileMenuOpen ? 'opacity-100 visible' : 'opacity-0 invisible'
+//         }`}
+//         onClick={closeMobileMenu}
+//       />
+
+//       {/* Mobile Menu Sidebar - All content consolidated here */}
+//       <div
+//         ref={mobileMenuRef}
+//         className={`fixed top-0 left-0 h-full w-full max-w-sm bg-white z-50 transform transition-transform duration-300 ease-in-out shadow-2xl lg:hidden ${
+//           isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'
+//         }`}
+//       >
+//         <div className="flex flex-col h-full">
+//           {/* Header with logo and close button */}
+//           <div className="p-6 border-b border-gray-100 bg-gradient-to-r from-orange-50 to-blue-50">
+//             <div className="flex items-center justify-between">
+//               <Link href="/" className="flex items-center gap-2" onClick={closeMobileMenu}>
+//                 <div className="w-10 h-10 bg-gradient-to-r from-orange-500 to-blue-600 rounded-full flex items-center justify-center overflow-hidden shadow-md">
+//                   <Image
+//                     src="/images/0ddb8c41-20a9-446e-a056-9b6290b33d6b.JPG"
+//                     alt="Vefiri"
+//                     width={40}
+//                     height={40}
+//                     className="object-cover w-full h-full"
+//                   />
+//                 </div>
+//                 <span className="text-xl font-bold bg-gradient-to-r from-orange-500 to-blue-600 bg-clip-text text-transparent">
+//                   Vefiri
+//                 </span>
+//               </Link>
+//               <button
+//                 onClick={closeMobileMenu}
+//                 className="w-10 h-10 rounded-full flex items-center justify-center hover:bg-white/50 transition-colors"
+//                 aria-label="Close menu"
+//               >
+//                 {/* <i className="fas fa-times text-xl text-gray-600"></i> */}
+//                 <FaTimes className="w-7 h-7 text-orange-500"/>
+//               </button>
+//             </div>
+//             <p className="text-sm text-gray-600 mt-4">Welcome to Vefiri! Find your perfect style.</p>
+//           </div>
+
+//           {/* Scrollable Content */}
+//           <div className="flex-1 overflow-y-auto">
+//             {/* Contact Info Section */}
+//             <div className="p-6 border-b border-gray-100">
+//               <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-4">
+//                 Contact Information
+//               </h3>
+//               <div className="space-y-3">
+//                 <div className="flex items-center gap-3 text-gray-700">
+//                   <div className="w-8 h-8 rounded-full bg-orange-100 flex items-center justify-center">
+//                     <i className="fas fa-phone-alt text-orange-500 text-sm"></i>
+//                   </div>
+//                   <span className="text-sm">+234 81 **** ****</span>
+//                 </div>
+//                 <div className="flex items-center gap-3 text-gray-700">
+//                   <div className="w-8 h-8 rounded-full bg-orange-100 flex items-center justify-center">
+//                     <i className="fas fa-envelope text-orange-500 text-sm"></i>
+//                   </div>
+//                   <span className="text-sm">support@vefiri.com</span>
+//                 </div>
+//                 <div className="flex items-center gap-3 text-gray-700">
+//                   <div className="w-8 h-8 rounded-full bg-orange-100 flex items-center justify-center">
+//                     <i className="fas fa-map-marker-alt text-orange-500 text-sm"></i>
+//                   </div>
+//                   <span className="text-sm">Lagos, Nigeria</span>
+//                 </div>
+//               </div>
+//             </div>
+
+//             {/* Auth Buttons */}
+//             <div className="p-6 border-b border-gray-100">
+//               <div className="flex gap-3">
+//                 <Link
+//                   href="/login"
+//                   onClick={closeMobileMenu}
+//                   className="flex-1 text-center px-4 py-3 border-2 border-orange-500 text-orange-600 rounded-xl font-semibold hover:bg-orange-50 transition-all"
+//                 >
+//                   Log In
+//                 </Link>
+//                 <Link
+//                   href="/signup"
+//                   onClick={closeMobileMenu}
+//                   className="flex-1 text-center px-4 py-3 bg-gradient-to-r from-orange-500 to-blue-600 text-white rounded-xl font-semibold hover:shadow-lg transition-all"
+//                 >
+//                   Sign Up
+//                 </Link>
+//               </div>
+//             </div>
+
+//             {/* Navigation Links */}
+//             <div className="p-6 border-b border-gray-100">
+//               <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-4">
+//                 Menu
+//               </h3>
+//               <div className="space-y-1">
+//                 {navLinks.map((link) => (
+//                   <Link
+//                     key={link.name}
+//                     href={link.href}
+//                     onClick={closeMobileMenu}
+//                     className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 ${
+//                       pathname === link.href
+//                         ? 'bg-gradient-to-r from-orange-50 to-blue-50 text-orange-600 font-semibold'
+//                         : 'text-gray-700 hover:bg-gray-50 hover:text-orange-500'
+//                     }`}
+//                   >
+//                     <i className={`${link.icon} w-5 text-lg`}></i>
+//                     <span className="font-medium flex-1">{link.name}</span>
+//                     {pathname === link.href && (
+//                       <i className="fas fa-check-circle text-orange-500"></i>
+//                     )}
+//                   </Link>
+//                 ))}
+//               </div>
+//             </div>
+
+//             {/* Categories Section */}
+//             <div className="p-6 border-b border-gray-100">
+//               <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-4">
+//                 Shop by Category
+//               </h3>
+//               <div className="grid grid-cols-2 gap-2">
+//                 {categories.map((category) => (
+//                   <Link
+//                     key={category}
+//                     href={`/category/${category.toLowerCase()}`}
+//                     onClick={closeMobileMenu}
+//                     className="px-3 py-2 text-sm text-gray-600 hover:text-orange-500 hover:bg-orange-50 rounded-lg transition-colors text-center"
+//                   >
+//                     {category}
+//                   </Link>
+//                 ))}
+//               </div>
+//               <Link
+//                 href="/all-categories"
+//                 onClick={closeMobileMenu}
+//                 className="flex items-center justify-center gap-2 mt-4 px-4 py-2 text-sm text-orange-600 hover:bg-orange-50 rounded-lg transition-colors font-medium"
+//               >
+//                 <span>View All Categories</span>
+//                 <i className="fas fa-arrow-right text-xs"></i>
+//               </Link>
+//             </div>
+
+//             {/* User Actions */}
+//             <div className="p-6">
+//               <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-4">
+//                 Account
+//               </h3>
+//               <div className="space-y-1">
+//                 <Link
+//                   href="/profile"
+//                   onClick={closeMobileMenu}
+//                   className="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-700 hover:bg-gray-50 transition-colors"
+//                 >
+//                   <i className="fas fa-user-circle w-5 text-xl"></i>
+//                   <span>My Profile</span>
+//                 </Link>
+//                 <Link
+//                   href="/orders"
+//                   onClick={closeMobileMenu}
+//                   className="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-700 hover:bg-gray-50 transition-colors"
+//                 >
+//                   <i className="fas fa-shopping-bag w-5 text-xl"></i>
+//                   <span>My Orders</span>
+//                 </Link>
+//                 <Link
+//                   href="/wishlist"
+//                   onClick={closeMobileMenu}
+//                   className="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-700 hover:bg-gray-50 transition-colors"
+//                 >
+//                   <i className="fas fa-heart w-5 text-xl"></i>
+//                   <span>Wishlist</span>
+//                 </Link>
+//               </div>
+//             </div>
+//           </div>
+
+//           {/* Footer with app info */}
+//           <div className="p-6 border-t border-gray-100 bg-gray-50">
+//             <p className="text-xs text-center text-gray-500">
+//               © 2024 Vefiri. All rights reserved.
+//             </p>
+//           </div>
+//         </div>
+//       </div>
+//     </header>
+//   );
+// };
+
+// export default Navbar;
+
+
+
+
+
+
+
 "use client"
 
 import React, { useState, useEffect, useRef } from 'react';
@@ -1713,12 +2078,19 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { FaTimes } from "react-icons/fa";
- 
+import { useCart } from '@/context/CartContext'; // Import useCart hook
+
 const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const mobileMenuRef = useRef(null);
   const pathname = usePathname();
+  const { cart } = useCart(); // Get cart data from context
+
+  // Safely calculate cart count
+  const cartCount = Array.isArray(cart)
+    ? cart.reduce((sum, item) => sum + (item.quantity || 0), 0)
+    : 0;
 
   // Handle scroll effect
   useEffect(() => {
@@ -1764,7 +2136,6 @@ const Navbar = () => {
     { name: 'Shop', href: '/shop', icon: 'fas fa-store' },
     { name: 'Partner', href: '/partner', icon: 'fas fa-handshake' },
     { name: 'Vendors', href: '/vendor', icon: 'fas fa-users' },
-    // { name: 'Deals', href: '/deals', icon: 'fas fa-tag' }
   ];
 
   const categories = [
@@ -1815,15 +2186,17 @@ const Navbar = () => {
 
           {/* Right side - Cart and Profile icons */}
           <div className="flex items-center gap-3">
-            {/* Cart icon */}
+            {/* Cart icon with count */}
             <Link href="/cart" className="relative text-gray-700 hover:text-orange-500 transition-colors">
               <i className="fas fa-shopping-cart text-xl"></i>
-              <span className="absolute -top-2 -right-2 bg-orange-500 text-white text-xs animate-pulse font-bold rounded-full w-5 h-5 flex items-center justify-center shadow-md">
-                3
-              </span>
+              {cartCount > 0 && (
+                <span className="absolute -top-2 -right-2 bg-orange-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center shadow-md animate-pulse">
+                  {cartCount}
+                </span>
+              )}
             </Link>
             
-            {/* Profile icon (only icon, no text) */}
+            {/* Profile icon */}
             <Link href="/profile" className="flex items-center">
               <div className="w-9 h-9 rounded-full bg-gradient-to-r from-orange-400 to-blue-500 overflow-hidden border-2 border-transparent hover:border-orange-300 transition-all duration-300">
                 <Image
@@ -1907,7 +2280,6 @@ const Navbar = () => {
                 className="w-10 h-10 rounded-full flex items-center justify-center hover:bg-white/50 transition-colors"
                 aria-label="Close menu"
               >
-                {/* <i className="fas fa-times text-xl text-gray-600"></i> */}
                 <FaTimes className="w-7 h-7 text-orange-500"/>
               </button>
             </div>
