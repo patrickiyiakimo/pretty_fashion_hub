@@ -122,7 +122,7 @@ const Navbar = () => {
             
             {/* Profile icon */}
             <Link href="/profile" className="flex items-center">
-              <div className="w-9 h-9 rounded-full bg-gradient-to-r from-orange-400 to-blue-500 overflow-hidden border-2 border-transparent hover:border-orange-300 transition-all duration-300">
+              <div className="w-9 h-9 hidden lg:block rounded-full bg-gradient-to-r from-orange-400 to-blue-500 overflow-hidden border-2 border-transparent hover:border-orange-300 transition-all duration-300">
                 <Image
                   src="/images/0ddb8c41-20a9-446e-a056-9b6290b33d6b.JPG"
                   alt="Profile"
