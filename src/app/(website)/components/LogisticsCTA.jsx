@@ -8,9 +8,9 @@ export default function LogisticsCTA() {
   const [isHovered, setIsHovered] = useState(false);
 
   return (
-    <section className="py-16 bg-gradient-to-r from-blue-50 to-indigo-50">
+    <section className="py-16 bg-gradient-to-r from-blue-50 to-indigo-50 font-grotesk">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="bg-gradient-to-r from-blue-600 to-purple-700 rounded-2xl shadow-xl overflow-hidden">
+        <div className="bg-gradient-to-r from-orange-600 to-blue-700 rounded-2xl shadow-xl overflow-hidden">
           <div className="md:flex md:items-center md:justify-between p-8 md:p-12">
             <div className="md:w-2/3">
               <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
@@ -75,7 +75,7 @@ export default function LogisticsCTA() {
                 
                 <Link 
                   href="/logistics"
-                  className="block w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white text-center font-bold py-4 px-6 rounded-xl hover:from-blue-700 hover:to-purple-700 transition-all duration-300 transform hover:-translate-y-1 shadow-lg hover:shadow-xl"
+                  className="block w-full bg-gradient-to-r from-orange-600 to-blue-600 text-white text-center font-bold py-4 px-6 rounded-xl hover:from-blue-600 hover:to-orange-500 transition-all duration-300 transform hover:-translate-y-1 shadow-lg hover:shadow-xl"
                 >
                   Apply Now
                 </Link>

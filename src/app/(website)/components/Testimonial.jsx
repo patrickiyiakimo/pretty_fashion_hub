@@ -236,8 +236,8 @@ export default function Testimonials() {
         </div>
 
         {/* CTA Section */}
-        <div className="text-center mt-20">
-          <div className="bg-gradient-to-r from-purple-600 to-pink-600 rounded-3xl p-12 text-white relative overflow-hidden">
+        <div className="text-center mt-20 font-grotesk">
+          <div className="bg-blue-600 rounded-3xl p-12 text-white relative overflow-hidden">
             {/* Background Pattern */}
             <div className="absolute inset-0 bg-grid-white/10" />
             
