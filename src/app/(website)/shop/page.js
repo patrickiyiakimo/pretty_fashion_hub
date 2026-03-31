@@ -560,7 +560,7 @@ export default function ShopPage() {
   // Show loading while checking auth
   if (!authChecked) {
     return (
-      <section className="min-h-screen bg-gray-50 py-20 flex items-center justify-center">
+      <section className="min-h-screen bg-gray-50 py-5 flex items-center justify-center">
         <Toaster position="top-right" />
         <div className="text-center">
           <div className="w-16 h-16 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>

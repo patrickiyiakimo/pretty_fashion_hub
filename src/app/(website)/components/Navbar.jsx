@@ -1763,7 +1763,7 @@ const Navbar = () => {
     { name: 'Home', href: '/', icon: 'fas fa-home' },
     { name: 'Shop', href: '/shop', icon: 'fas fa-store' },
     { name: 'Partner', href: '/partner', icon: 'fas fa-handshake' },
-    { name: 'Vendors', href: '/vendors', icon: 'fas fa-users' },
+    { name: 'Vendors', href: '/vendor', icon: 'fas fa-users' },
     // { name: 'Deals', href: '/deals', icon: 'fas fa-tag' }
   ];
 
