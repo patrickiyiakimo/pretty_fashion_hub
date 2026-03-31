@@ -1764,7 +1764,7 @@ const Navbar = () => {
     { name: 'Shop', href: '/shop', icon: 'fas fa-store' },
     { name: 'Partner', href: '/partner', icon: 'fas fa-handshake' },
     { name: 'Vendors', href: '/vendors', icon: 'fas fa-users' },
-    { name: 'Deals', href: '/deals', icon: 'fas fa-tag' }
+    // { name: 'Deals', href: '/deals', icon: 'fas fa-tag' }
   ];
 
   const categories = [
