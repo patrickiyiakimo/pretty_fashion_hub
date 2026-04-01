@@ -14,7 +14,7 @@ import {
 } from "react-icons/hi";
 import { HiMapPin } from "react-icons/hi2";
 
-const API_ENDPOINT = process.env.BACKEND_URL;
+// const API_ENDPOINT = process.env.BACKEND_URL;
 
 const statusConfig = {
   "Order Created": { color: "bg-blue-500", icon: HiCheckCircle, description: "Order confirmed and being processed" },
@@ -41,7 +41,7 @@ export default function TrackPage() {
     setSearched(true);
 
     try {
-      const res = await fetch(`${API_ENDPOINT}/api/logistics/track/${trackingNumber.trim()}`);
+      const res = await fetch(`/api/logistics/track/${trackingNumber.trim()}`);
       const data = await res.json();
 
       if (!res.ok) throw new Error(data.error || "Tracking failed. Please check your tracking number.");
@@ -89,7 +89,7 @@ export default function TrackPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 py-44 px-4 sm:px-6 lg:px-8">
+    <div className="bg-gradient-to-br from-blue-50 via-white to-purple-50 py-44 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto">
         {/* Header */}
         <motion.div
