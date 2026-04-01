@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { HiArrowRight, HiStar } from "react-icons/hi";
+import { HiArrowRight, HiShoppingBag, HiStar, HiUsers } from "react-icons/hi";
 import { motion } from "framer-motion";
 
 const marketplaceCollections = [
@@ -137,7 +137,7 @@ export default function MarketplaceCollections() {
               transition={{ duration: 0.5, delay: index * 0.1 }}
               className="group"
             >
-              <Link href={collection.href}>
+              {/* <Link href={collection.href}> */}
                 <div className="relative h-80 mb-4 overflow-hidden rounded-2xl bg-gray-100">
                   <Image
                     src={collection.image}
@@ -175,40 +175,52 @@ export default function MarketplaceCollections() {
                     <span className="text-lg font-bold text-orange-600">{collection.priceRange}</span>
                   </div>
                 </div>
-              </Link>
+              {/* </Link> */}
             </motion.div>
           ))}
         </motion.div>
 
         {/* Simple CTA Section */}
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.3 }}
-          className="grid md:grid-cols-2 gap-6 mt-20 pt-8 border-t border-gray-100"
-        >
-          <Link
-            href="/shop"
-            className="group flex items-center justify-between p-6 bg-orange-50 rounded-2xl hover:bg-orange-100 transition-colors"
+        <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.6 }}
+            className="flex flex-col sm:flex-row gap-8 justify-center items-center pt-8 font-grotesk w-full max-w-4xl mx-auto px-4"
           >
-            <div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-1">Start Shopping</h3>
-              <p className="text-gray-600">Discover products from our trusted sellers</p>
+            {/* Start Shopping Section */}
+            <div className="flex flex-col items-center gap-4 sm:flex-1">
+              <Image 
+                src="/images/Successful purchase-cuate.png" 
+                alt="Successful shopping experience" 
+                width={200}
+                height={200}
+                className="w-full max-w-[200px] h-auto"
+              />
+              <Link href="/shop" className="w-full">
+                <button className="w-full whitespace-nowrap inline-flex items-center justify-center gap-3 bg-gradient-to-r from-orange-600 to-blue-600 text-white font-semibold px-6 py-3 rounded-xl hover:from-blue-500 hover:to-orange-600 duration-300 shadow-lg hover:shadow-xl">
+                  <HiShoppingBag className="w-5 h-5" />
+                  Start Shopping
+                </button>
+              </Link>
             </div>
-            <HiArrowRight className="w-6 h-6 text-orange-600 group-hover:translate-x-1 transition-transform" />
-          </Link>
-          
-          <Link
-            href="/partner"
-            className="group flex items-center justify-between p-6 bg-blue-50 rounded-2xl hover:bg-blue-100 transition-colors"
-          >
-            <div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-1">Become a Seller</h3>
-              <p className="text-gray-600">Join our marketplace and grow your business</p>
+
+            {/* Become a Seller Section */}
+            <div className="flex flex-col items-center gap-4 sm:flex-1">
+              <Image 
+                src="/images/In no time-amico.png" 
+                alt="Become a seller quickly" 
+                width={200}
+                height={200}
+                className="w-full max-w-[200px] h-auto"
+              />
+              <Link href="/partner" className="w-full">
+                <button className="w-full whitespace-nowrap inline-flex items-center justify-center gap-3 border-2 border-orange-200 bg-white/80 text-gray-700 font-semibold px-6 py-3 rounded-xl hover:border-orange-500 hover:text-orange-600 transition-all duration-300 backdrop-blur-sm">
+                  <HiUsers className="w-5 h-5" />
+                  Become a Seller
+                </button>
+              </Link>
             </div>
-            <HiArrowRight className="w-6 h-6 text-blue-600 group-hover:translate-x-1 transition-transform" />
-          </Link>
-        </motion.div>
+          </motion.div>
       </div>
     </section>
   );

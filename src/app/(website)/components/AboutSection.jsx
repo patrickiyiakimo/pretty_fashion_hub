@@ -16,6 +16,7 @@ import {
 } from "react-icons/hi";
 import { motion } from "framer-motion";
 import Link from "next/link";
+import Image from "next/image";
 
 export default function AboutSection() {
   const values = [
@@ -211,15 +212,17 @@ export default function AboutSection() {
               transition={{ duration: 0.6, delay: 0.6 }}
               className="flex flex-col sm:flex-row gap-4 justify-center pt-8 font-grotesk w-full max-w-md mx-auto"
             >
+              {/* <Image src="/images/Successful purchase-cuate.png" alt="Successful Purchase" className="w-full h-auto" /> */}
               <Link href="/shop" className="sm:flex-1 w-full">
-                <button className="w-full inline-flex items-center justify-center gap-3 bg-gradient-to-r from-orange-600 to-blue-600 text-white font-semibold px-8 py-4 rounded-xl hover:from-orange-700 hover:to-blue-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105">
+                <button className="w-full whitespace-nowrap inline-flex items-center justify-center gap-3 bg-gradient-to-r from-orange-600 to-blue-600 text-white font-semibold px-8 py-4 rounded-xl hover:from-orange-700 hover:to-blue-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105">
                   <HiShoppingBag className="w-5 h-5" />
                   Start Shopping
                 </button>
               </Link>
               
+              {/* <Image src="/images/In no time-amico.png" alt="Successful Purchase" className="w-full h-auto" /> */}
               <Link href="/partner" className="sm:flex-1 w-full">
-                <button className="w-full inline-flex items-center justify-center gap-3 border-2 border-orange-200 bg-white/80 text-gray-700 font-semibold px-8 py-4 rounded-xl hover:border-orange-500 hover:text-orange-600 transition-all duration-300 backdrop-blur-sm">
+                <button className="w-full whitespace-nowrap inline-flex items-center justify-center gap-3 border-2 border-orange-200 bg-white/80 text-gray-700 font-semibold px-8 py-4 rounded-xl hover:border-orange-500 hover:text-orange-600 transition-all duration-300 backdrop-blur-sm">
                   <HiUsers className="w-5 h-5" />
                   Become a Seller
                 </button>
