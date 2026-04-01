@@ -2,6 +2,7 @@
 
 import { FaQuoteLeft, FaStar } from "react-icons/fa";
 import { motion } from "framer-motion";
+import Link from "next/link";
 
 const testimonials = [
   {
@@ -129,7 +130,7 @@ export default function Testimonials() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="grid lg:grid-cols-2 gap-8 mb-12"
+          className="grid lg:grid-cols-3 gap-8 mb-12"
         >
           {featuredTestimonials.map((testimonial, index) => (
             <motion.div
@@ -219,18 +220,20 @@ export default function Testimonials() {
           transition={{ duration: 0.6, delay: 0.4 }}
           className="text-center mt-20"
         >
-          <div className="bg-gray-50 rounded-2xl p-12">
-            <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">
+          <div className="bg-blue-500 text-white rounded-2xl p-12">
+            <h3 className="text-2xl md:text-3xl font-bold mb-4">
               Join Our Growing Community
             </h3>
-            <p className="text-gray-600 mb-8 max-w-2xl mx-auto">
+            <p className="mb-8 max-w-2xl mx-auto">
               Experience the difference that thousands of satisfied customers trust
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Link href="/shop">
               <button className="bg-orange-600 text-white font-semibold px-8 py-3 rounded-lg hover:bg-orange-700 transition-colors">
                 Shop Now
               </button>
-              <button className="border-2 border-gray-300 text-gray-700 font-semibold px-8 py-3 rounded-lg hover:border-orange-600 hover:text-orange-600 transition-colors">
+              </Link>
+              <button className="border-2 border-gray-300 text-white font-semibold px-8 py-3 rounded-lg hover:bg-white hover:text-blue-500 transition-colors">
                 Read More Reviews
               </button>
             </div>

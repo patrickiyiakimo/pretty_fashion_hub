@@ -23,7 +23,7 @@ export default function CTASection() {
   ];
 
   return (
-    <section className="relative py-24 px-4 sm:px-6 lg:px-8 bg-white font-oswald overflow-hidden">
+    <section className="relative py-24 px-4 sm:px-6 lg:px-8 bg-orange-500 font-oswald overflow-hidden">
       {/* Subtle Background Pattern */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-orange-50/30 via-transparent to-transparent" />
       
@@ -51,7 +51,7 @@ export default function CTASection() {
             <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-6 leading-tight">
               Elevate Your Style
               <br />
-              <span className="text-orange-600">with Confidence</span>
+              <span className="text-orange-800">with Confidence</span>
             </h2>
             <div className="w-20 h-1 bg-orange-600 mx-auto mb-8" />
           </motion.div>
@@ -61,7 +61,7 @@ export default function CTASection() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto mb-12 leading-relaxed"
+            className="text-lg md:text-xl text-white max-w-3xl mx-auto mb-12 leading-relaxed"
           >
             Discover premium products from trusted sellers across Nigeria. 
             Shop with confidence and experience the best in quality and service.
@@ -131,8 +131,8 @@ export default function CTASection() {
                 ))}
               </div>
               <div>
-                <div className="font-semibold text-gray-900 text-lg">1,000+</div>
-                <div className="text-sm text-gray-500">Happy Customers</div>
+                <div className="font-semibold text-white text-lg">1,000+</div>
+                <div className="text-sm text-white">Happy Customers</div>
               </div>
             </div>
 
@@ -144,17 +144,17 @@ export default function CTASection() {
                 ))}
               </div>
               <div>
-                <div className="font-semibold text-gray-900 text-lg">4.9/5</div>
-                <div className="text-sm text-gray-500">Customer Rating</div>
+                <div className="font-semibold text-white text-lg">4.9/5</div>
+                <div className="text-sm text-white">Customer Rating</div>
               </div>
             </div>
 
             {/* Guarantee */}
             <div className="flex items-center gap-3">
-              <HiShieldCheck className="w-6 h-6 text-orange-600" />
+              <HiShieldCheck className="w-6 h-6 text-white" />
               <div>
-                <div className="font-semibold text-gray-900 text-lg">100% Secure</div>
-                <div className="text-sm text-gray-500">Payment Protection</div>
+                <div className="font-semibold text-white text-lg">100% Secure</div>
+                <div className="text-sm text-white">Payment Protection</div>
               </div>
             </div>
           </div>
