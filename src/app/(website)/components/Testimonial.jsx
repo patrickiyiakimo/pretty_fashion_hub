@@ -228,15 +228,15 @@ export default function Testimonials() {
               Experience the difference that thousands of satisfied customers trust
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href="/shop">
-              <button className="bg-orange-600 text-white font-semibold px-8 py-3 rounded-lg hover:bg-orange-700 transition-colors">
+            <Link href="/shop" className="w-full sm:w-auto">
+              <button className="w-full bg-orange-600 text-white font-semibold px-8 py-3 rounded-lg hover:bg-orange-700 transition-colors">
                 Shop Now
               </button>
-              </Link>
-              <button className="border-2 border-gray-300 text-white font-semibold px-8 py-3 rounded-lg hover:bg-white hover:text-blue-500 transition-colors">
-                Read More Reviews
-              </button>
-            </div>
+            </Link>
+            <button className="border-2 border-gray-300 text-white font-semibold px-8 py-3 rounded-lg hover:bg-white hover:text-blue-500 transition-colors">
+              Read More Reviews
+            </button>
+          </div>
           </div>
         </motion.div>
       </div>

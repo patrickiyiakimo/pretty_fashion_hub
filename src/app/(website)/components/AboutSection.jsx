@@ -206,24 +206,25 @@ export default function AboutSection() {
 
           {/* CTA Buttons */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.6 }}
-            className="flex flex-col sm:flex-row gap-4 justify-center pt-8 font-grotesk"
-          >
-            <Link href="/shop">
-            <button className="inline-flex items-center justify-center gap-3 bg-gradient-to-r from-orange-600 to-blue-600 text-white font-semibold px-8 py-4 rounded-xl hover:from-orange-700 hover:to-blue-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105">
-              <HiShoppingBag className="w-5 h-5" />
-              Start Shopping
-            </button>
-            </Link>
-            <Link href="/partner">
-            <button className="inline-flex items-center justify-center gap-3 border-2 border-orange-200 bg-white/80 text-gray-700 font-semibold px-8 py-4 rounded-xl hover:border-orange-500 hover:text-orange-600 transition-all duration-300 backdrop-blur-sm">
-              <HiUsers className="w-5 h-5" />
-              Become a Seller
-            </button>
-            </Link>
-          </motion.div>
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.6 }}
+              className="flex flex-col sm:flex-row gap-4 justify-center pt-8 font-grotesk w-full max-w-md mx-auto"
+            >
+              <Link href="/shop" className="sm:flex-1 w-full">
+                <button className="w-full inline-flex items-center justify-center gap-3 bg-gradient-to-r from-orange-600 to-blue-600 text-white font-semibold px-8 py-4 rounded-xl hover:from-orange-700 hover:to-blue-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105">
+                  <HiShoppingBag className="w-5 h-5" />
+                  Start Shopping
+                </button>
+              </Link>
+              
+              <Link href="/partner" className="sm:flex-1 w-full">
+                <button className="w-full inline-flex items-center justify-center gap-3 border-2 border-orange-200 bg-white/80 text-gray-700 font-semibold px-8 py-4 rounded-xl hover:border-orange-500 hover:text-orange-600 transition-all duration-300 backdrop-blur-sm">
+                  <HiUsers className="w-5 h-5" />
+                  Become a Seller
+                </button>
+              </Link>
+            </motion.div>
         </div>
       </div>
     </section>
