@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
+import toast from "react-hot-toast";
 
 export default function CartPage() {
   const { cart, removeFromCart, updateQuantity, clearCart } = useCart();
@@ -18,7 +19,7 @@ export default function CartPage() {
     return `${item._id || item.id}-${item.productId || ''}-${item.name || ''}`;
   };
 
-  // ✅ FIXED: Image URL function that works with ALL formats
+    // ✅ FIXED: Image URL function that works with ALL formats
   const getImageUrl = (imagePath) => {
     if (!imagePath) return "/api/placeholder-image";
     
@@ -41,10 +42,20 @@ export default function CartPage() {
 
   const handleRemoveItem = async (itemId) => {
     setIsRemoving(itemId);
-    setTimeout(() => {
-      removeFromCart(itemId);
-      setIsRemoving(null);
-    }, 300);
+    
+    try {
+      const success = await removeFromCart(itemId);
+      if (success) {
+        toast.success("Item removed from cart");
+      }
+    } catch (error) {
+      console.error("Error removing item:", error);
+      toast.error(error.message || "Failed to remove item");
+    } finally {
+      setTimeout(() => {
+        setIsRemoving(null);
+      }, 300);
+    }
   };
 
   const handleQuantityChange = (itemId, newQuantity) => {
@@ -164,11 +175,11 @@ export default function CartPage() {
                       }}
                       layout
                       className={`p-4 sm:p-6 border-b border-gray-100 last:border-b-0 transition-all duration-300 ${
-                        isRemoving === (item._id || item.id) ? 'bg-red-50' : 'hover:bg-gray-50'
+                        isRemoving === (item._id || item.id) ? 'bg-red-50 opacity-50' : 'hover:bg-gray-50'
                       }`}
                     >
                       <div className="flex gap-4">
-                        {/* Product Image - FIXED */}
+                        {/* Product Image */}
                         <div className="flex-shrink-0">
                           <div className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-xl overflow-hidden bg-gray-100 shadow-sm border border-gray-200">
                             <Image
@@ -178,7 +189,6 @@ export default function CartPage() {
                               height={96}
                               className="w-full h-full object-cover hover:scale-110 transition-transform duration-300"
                               onError={(e) => {
-                                // Fallback to placeholder on error
                                 e.target.src = "/api/placeholder-image";
                               }}
                               unoptimized={true}
@@ -271,7 +281,7 @@ export default function CartPage() {
             </div>
           </div>
 
-          {/* Order Summary - Rest of your code stays exactly the same */}
+          {/* Order Summary */}
           <div className="lg:col-span-1">
             <motion.div
               initial={{ opacity: 0, x: 20 }}
@@ -292,19 +302,28 @@ export default function CartPage() {
                 {/* Price Breakdown */}
                 <div className="space-y-3">
                   <div className="flex justify-between items-center text-gray-600">
-                    <span>Subtotal ({cart.length} items)</span>
-                    <span>₦{total.toLocaleString()}</span>
-                  </div>
-                  <div className="flex justify-between items-center text-gray-600">
-                    <span>Shipping</span>
-                    <span className={shipping === 0 ? "text-green-600 font-semibold" : ""}>
-                      {shipping === 0 ? "FREE" : `₦${shipping.toLocaleString()}`}
-                    </span>
-                  </div>
-                  <div className="flex justify-between items-center text-gray-600">
-                    <span>Tax (7.5%)</span>
-                    <span>₦{tax.toLocaleString()}</span>
-                  </div>
+                      <span>Subtotal ({cart.length} items)</span>
+                      <span>₦{total.toLocaleString()}</span>
+                    </div>
+
+                    <div className="flex justify-between items-center">
+                      <span className="text-gray-600">Shipping</span>
+                      {total >= 50000 ? (
+                        <span className="text-green-600 font-semibold flex items-center gap-1">
+                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                          </svg>
+                          FREE
+                        </span>
+                      ) : (
+                        <span className="text-gray-600">₦{shipping.toLocaleString()}</span>
+                      )}
+                    </div>
+
+                    <div className="flex justify-between items-center text-gray-600">
+                      <span>Tax (7.5%)</span>
+                      <span>₦{tax.toLocaleString()}</span>
+                    </div>
                   
                   {/* Free Shipping Progress */}
                   {total < 50000 && (

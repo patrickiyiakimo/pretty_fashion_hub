@@ -181,39 +181,90 @@ export function CartProvider({ children }) {
     }
   };
 
-  const removeFromCart = async (id) => {
-    if (!isAuthenticated) {
-      toast.error("Please log in to manage cart");
-      return;
-    }
+  // const removeFromCart = async (id) => {
+  //   if (!isAuthenticated) {
+  //     toast.error("Please log in to manage cart");
+  //     return;
+  //   }
 
-    try {
-      const response = await fetchWithAuth("/api/cart/remove", {
-        method: "DELETE",
-        body: JSON.stringify({ id }),
-      });
+  //   try {
+  //     const response = await fetchWithAuth("/api/cart/remove", {
+  //       method: "DELETE",
+  //       body: JSON.stringify({ id }),
+  //     });
 
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        throw new Error(errorData.error || errorData.message || `HTTP error! status: ${response.status}`);
-      }
+  //     if (!response.ok) {
+  //       const errorData = await response.json().catch(() => ({}));
+  //       throw new Error(errorData.error || errorData.message || `HTTP error! status: ${response.status}`);
+  //     }
 
-      setCart((prev) => prev.filter((item) => item._id !== id));
-      toast.success("Item removed from cart");
-    } catch (error) {
-      console.error("Error removing from cart:", error);
+  //     setCart((prev) => prev.filter((item) => item._id !== id));
+  //     toast.success("Item removed from cart");
+  //   } catch (error) {
+  //     console.error("Error removing from cart:", error);
       
-      if (error.message.includes("401")) {
-        setIsAuthenticated(false);
-        toast.error("Session expired. Please log in again.");
-        setTimeout(() => {
-          router.push("/login");
-        }, 1500);
-      } else {
-        toast.error(error.message || "Failed to remove item");
-      }
+  //     if (error.message.includes("401")) {
+  //       setIsAuthenticated(false);
+  //       toast.error("Session expired. Please log in again.");
+  //       setTimeout(() => {
+  //         router.push("/login");
+  //       }, 1500);
+  //     } else {
+  //       toast.error(error.message || "Failed to remove item");
+  //     }
+  //   }
+  // };
+
+
+  const removeFromCart = async (id) => {
+  if (!isAuthenticated) {
+    toast.error("Please log in to manage cart");
+    return false; // ✅ Return false on auth failure
+  }
+
+  try {
+    console.log("🗑️ Removing item with ID:", id);
+    
+    const response = await fetchWithAuth("/api/cart/remove", {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ id }), // ✅ Make sure it's { id: id }
+    });
+
+    console.log("📡 Remove response status:", response.status);
+
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
+      throw new Error(errorData.error || errorData.message || `HTTP error! status: ${response.status}`);
     }
-  };
+
+    // ✅ Update local state - check both _id and id fields
+    setCart((prev) => prev.filter((item) => {
+      const itemId = item._id || item.id;
+      return itemId !== id;
+    }));
+    
+    toast.success("Item removed from cart");
+    return true; // ✅ Return true on success
+    
+  } catch (error) {
+    console.error("Error removing from cart:", error);
+    
+    if (error.message.includes("401")) {
+      setIsAuthenticated(false);
+      toast.error("Session expired. Please log in again.");
+      setTimeout(() => {
+        router.push("/login");
+      }, 1500);
+    } else {
+      toast.error(error.message || "Failed to remove item");
+    }
+    
+    return false; // ✅ Return false on error
+  }
+};
 
   const updateQuantity = async (id, quantity) => {
     if (!isAuthenticated) {
