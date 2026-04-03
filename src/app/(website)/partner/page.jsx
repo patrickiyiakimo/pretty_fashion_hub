@@ -346,7 +346,7 @@ export default function PartnerPage() {
   };
 
   const renderStep1 = () => (
-    <div className="space-y-6">
+    <div className="space-y-6 font-grotesk">
       <div className="text-center mb-6">
         <HiBuildingStorefront className="w-12 h-12 text-blue-600 mx-auto mb-4" />
         <h3 className="text-2xl font-bold text-gray-900">Business Information</h3>
@@ -443,7 +443,7 @@ export default function PartnerPage() {
   );
 
   const renderStep2 = () => (
-    <div className="space-y-6">
+    <div className="space-y-6 font-grotesk">
       <div className="text-center mb-6">
         <HiMapPin className="w-12 h-12 text-green-600 mx-auto mb-4" />
         <h3 className="text-2xl font-bold text-gray-900">Contact & Location</h3>
@@ -555,7 +555,7 @@ export default function PartnerPage() {
   );
 
   const renderStep3 = () => (
-    <div className="space-y-6">
+    <div className="space-y-6 font-grotesk">
       <div className="text-center mb-6">
         <HiBriefcase className="w-12 h-12 text-purple-600 mx-auto mb-4" />
         <h3 className="text-2xl font-bold text-gray-900">Business Details</h3>
@@ -669,7 +669,7 @@ export default function PartnerPage() {
   );
 
   const renderStep4 = () => (
-    <div className="space-y-6">
+    <div className="space-y-6 font-grotesk">
       <div className="text-center mb-6">
         <HiDocumentText className="w-12 h-12 text-orange-600 mx-auto mb-4" />
         <h3 className="text-2xl font-bold text-gray-900">Review & Submit</h3>
@@ -766,7 +766,7 @@ export default function PartnerPage() {
           transition={{ duration: 0.8, type: "spring" }}
           className="max-w-2xl w-full"
         >
-          <div className="bg-white/80 my-24 backdrop-blur-lg rounded-3xl shadow-2xl border border-emerald-200 overflow-hidden">
+          <div className="bg-white/80 font-oswald my-24 backdrop-blur-lg rounded-3xl shadow-2xl border border-emerald-200 overflow-hidden">
             <div className="bg-gradient-to-r from-emerald-600 to-green-600 p-8 text-center">
               <motion.div
                 initial={{ scale: 0 }}
@@ -844,7 +844,7 @@ export default function PartnerPage() {
     const StatusIcon = statusConfig.icon;
 
     return (
-      <section className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50 flex items-center justify-center pt-24">
+      <section className="min-h-screen font-oswald bg-gradient-to-br from-slate-50 via-white to-blue-50 flex items-center justify-center pt-24">
         <Toaster position="top-right" />
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -979,7 +979,7 @@ export default function PartnerPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
-          className="bg-white/80 backdrop-blur-lg rounded-3xl shadow-2xl border border-gray-200/50 overflow-hidden"
+          className="bg-white/80 font-grotesk backdrop-blur-lg rounded-3xl shadow-2xl border border-gray-200/50 overflow-hidden"
         >
           <div className="bg-gradient-to-r from-gray-900 to-gray-800 px-8 py-6">
             <h2 className="text-2xl font-bold text-white">Partnership Application</h2>

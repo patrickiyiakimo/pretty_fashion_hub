@@ -42,7 +42,7 @@ export default function CheckoutPage() {
 
   if (cart.length === 0) {
     return (
-      <section className="min-h-screen bg-gradient-to-br from-gray-50 to-white flex items-center justify-center px-4 py-20">
+      <section className="min-h-screen font-oswald bg-gradient-to-br from-gray-50 to-white flex items-center justify-center px-4 py-20">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -72,7 +72,7 @@ export default function CheckoutPage() {
   }
 
   return (
-    <section className="min-h-screen bg-gradient-to-br from-gray-50 to-white py-20 px-4">
+    <section className="min-h-screen font-oswald bg-gradient-to-br from-gray-50 to-white py-20 px-4">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <motion.div

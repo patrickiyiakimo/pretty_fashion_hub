@@ -68,7 +68,7 @@ export default function Footer() {
   ];
 
   return (
-    <footer className="relative bg-gray-900 text-white overflow-hidden">
+    <footer className="relative font-grotesk bg-gray-900 text-white overflow-hidden">
       {/* Trust Bar */}
       <div className="relative border-b border-gray-800 bg-gray-800/50 backdrop-blur-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -89,7 +89,7 @@ export default function Footer() {
       </div>
 
       {/* Main Footer Content */}
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+      <div className="relative font-grotesk max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
           {/* Brand Section */}
           <div className="space-y-6">

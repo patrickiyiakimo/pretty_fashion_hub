@@ -138,7 +138,7 @@ export default function Testimonials() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="group"
+              className="group bg-black"
             >
               <div className="bg-white rounded-2xl border border-gray-100 p-8 hover:shadow-xl transition-all duration-300">
                 {/* Quote Icon */}
@@ -186,7 +186,7 @@ export default function Testimonials() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.3 + (index * 0.05) }}
-              className="group"
+              className="group bg-black"
             >
               <div className="bg-white rounded-xl border border-gray-100 p-6 hover:shadow-lg transition-all duration-300 h-full">
                 {/* Rating */}

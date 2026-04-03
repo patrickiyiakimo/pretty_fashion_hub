@@ -1,64 +1,3 @@
-// "use client";
-// import { useCart } from "@/context/CartContext";
-// import Image from "next/image";
-// import Link from "next/link";
-// import { motion, AnimatePresence } from "framer-motion";
-// import { useState } from "react";
-
-// export default function CartPage() {
-//   const { cart, removeFromCart, updateQuantity, clearCart } = useCart();
-//   const [isRemoving, setIsRemoving] = useState(null);
-
-//   // const API_ENDPOINT = process.env.BACKEND_URL || "http://localhost:4000";
-
-//   const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
-//   const shipping = total > 50000 ? 0 : 1500; // Free shipping over ₦50,000
-//   const tax = total * 0.075; // 7.5% tax
-//   const grandTotal = total + shipping + tax;
-
-//   const getUniqueKey = (item) => {
-//     return `${item._id || item.id}-${item.productId || ''}-${item.name || ''}`;
-//   };
-
-//   // ✅ FIXED: Image URL function that works with ALL formats
-//   const getImageUrl = (imagePath) => {
-//     if (!imagePath) return "/api/placeholder-image";
-    
-//     // If it's already a full URL with proxy
-//     if (imagePath.includes('/api/proxy-image/')) {
-//       if (imagePath.startsWith('http')) return imagePath;
-//       if (imagePath.startsWith('/')) return `/${imagePath}`;
-//     }
-    
-//     // Extract filename from ANY format
-//     let filename = imagePath;
-//     if (imagePath.includes('/')) {
-//       filename = imagePath.split('/').pop();
-//     }
-//     filename = filename.split('?')[0];
-    
-//     return "/api/proxy-image/${filename}";
-//   };
-
-//   const handleRemoveItem = async (itemId) => {
-//     setIsRemoving(itemId);
-//     setTimeout(() => {
-//       removeFromCart(itemId);
-//       setIsRemoving(null);
-//     }, 300);
-//   };
-
-//   const handleQuantityChange = (itemId, newQuantity) => {
-//     if (newQuantity === 0) {
-//       handleRemoveItem(itemId);
-//     } else {
-//       updateQuantity(itemId, newQuantity);
-//     }
-//   };
-
-
-
-
 "use client";
 import { useCart } from "@/context/CartContext";
 import Image from "next/image";
@@ -118,7 +57,7 @@ export default function CartPage() {
 
   if (cart.length === 0) {
     return (
-      <section className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50 flex items-center justify-center px-4 py-8 sm:py-20">
+      <section className="min-h-screen font-oswald bg-gradient-to-br from-slate-50 via-white to-blue-50 flex items-center justify-center px-4 py-8 sm:py-20">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -149,7 +88,7 @@ export default function CartPage() {
   }
 
   return (
-    <section className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50 py-10 sm:py-12 lg:py-24 px-4 sm:px-6">
+    <section className="min-h-screen font-oswald bg-gradient-to-br from-slate-50 via-white to-blue-50 py-10 sm:py-12 lg:py-24 px-4 sm:px-6">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <motion.div
