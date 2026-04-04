@@ -7,6 +7,7 @@ import { usePathname } from 'next/navigation';
 import { FaTimes } from "react-icons/fa";
 import { useCart } from '@/context/CartContext';
 import { FaShoppingCart } from "react-icons/fa";
+import { useAuth } from '@/context/AuthContext'; // ✅ Add this import
 
 const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -14,6 +15,7 @@ const Navbar = () => {
   const mobileMenuRef = useRef(null);
   const pathname = usePathname();
   const { cart } = useCart();
+  const { user, isAuthenticated, logout } = useAuth(); // ✅ Get user from auth context
 
   const cartCount = Array.isArray(cart)
     ? cart.reduce((sum, item) => sum + (item.quantity || 0), 0)
@@ -120,7 +122,7 @@ const Navbar = () => {
               )}
             </Link>
             
-            {/* Profile icon */}
+            {/* Profile icon
             <Link href="/profile" className="flex items-center">
               <div className="w-9 h-9 hidden lg:block rounded-full bg-gradient-to-r from-orange-400 to-blue-500 overflow-hidden border-2 border-transparent hover:border-orange-300 transition-all duration-300">
                 <Image
@@ -131,7 +133,44 @@ const Navbar = () => {
                   className="object-cover w-full h-full"
                 />
               </div>
-            </Link>
+            </Link> */}
+
+            {/* Profile icon with user initials
+            <Link href="/profile" className="flex items-center">
+              <div className="w-9 h-9 hidden lg:flex items-center justify-center rounded-full bg-gradient-to-r from-orange-400 to-blue-500 text-white font-semibold text-sm border-2 border-transparent hover:border-orange-300 transition-all duration-300">
+                {user ? (
+                  `${user.firstName?.charAt(0) || ''}${user.lastName?.charAt(0) || ''}`.toUpperCase()
+                ) : (
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                  </svg>
+                )}
+              </div>
+            </Link> */}
+
+
+            {/* Profile icon with user initials */}
+<Link href="/profile" className="flex items-center">
+  <div className="w-9 h-9 hidden lg:flex items-center justify-center rounded-full bg-gradient-to-r from-orange-400 to-blue-500 text-white font-semibold text-sm border-2 border-transparent hover:border-orange-300 transition-all duration-300">
+    {user ? (
+      user.firstName && user.lastName ? (
+        `${user.firstName.charAt(0)}${user.lastName.charAt(0)}`.toUpperCase()
+      ) : user.firstName ? (
+        user.firstName.charAt(0).toUpperCase()
+      ) : user.fullname ? (
+        user.fullname.charAt(0).toUpperCase()
+      ) : user.email ? (
+        user.email.charAt(0).toUpperCase()
+      ) : (
+        'U'
+      )
+    ) : (
+      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+      </svg>
+    )}
+  </div>
+</Link>
           </div>
           <div className="flex items-center gap-4">
             <Link href="/signup" className="hidden lg:block text-sm text-gray-700 hover:text-orange-500 transition-colors">
