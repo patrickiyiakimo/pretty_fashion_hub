@@ -737,7 +737,13 @@ export default function PartnerPage() {
           animate={{ opacity: 1, scale: 1 }}
           className="text-center"
         >
-          <div className="w-16 h-16 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+            <div className="min-h-screen pt-32 pb-16 px-4 bg-gray-50">
+              <div className="max-w-7xl mx-auto">
+                <div className="flex items-center justify-center h-64">
+                  <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-600"></div>
+                </div>
+              </div>
+            </div>
           <p className="text-gray-600">Checking authentication...</p>
         </motion.div>
       </section>
@@ -941,7 +947,7 @@ export default function PartnerPage() {
   }
 
   return (
-    <section className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50 py-12 px-4 sm:px-6 lg:px-8">
+    <section className="min-h-screen font-oswald bg-gradient-to-br from-slate-50 via-white to-blue-50 py-12 px-4 sm:px-6 lg:px-8">
       <Toaster position="top-right" />
       
       <div className="max-w-4xl mx-auto">
@@ -952,16 +958,16 @@ export default function PartnerPage() {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <div className="inline-flex items-center gap-3 bg-white/80 backdrop-blur-sm rounded-2xl px-6 py-3 border border-gray-200 shadow-sm mb-8">
-            <HiBuildingStorefront className="w-6 h-6 text-blue-600" />
-            <span className="text-sm font-semibold text-blue-700 uppercase tracking-wide">
+          <div className="inline-flex items-center gap-3 bg-orange-50 backdrop-blur-sm rounded-full px-6 py-3 border border-orange-200 shadow-sm mb-8">
+            <HiBuildingStorefront className="w-6 h-6 text-orange-600" />
+            <span className="text-sm font-semibold text-orange-600 uppercase tracking-wide">
               Partner Program
             </span>
           </div>
           
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-6">
             Join the{" "}
-            <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-blue-800 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-orange-600 via-orange-600 to-blue-800 bg-clip-text text-transparent">
               Vefiri
             </span>
             <br />

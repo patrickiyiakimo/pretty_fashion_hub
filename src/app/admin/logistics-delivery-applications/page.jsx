@@ -429,10 +429,11 @@ export default function LogisticsDeliveryApplicationsPage() {
   // Show loading while checking auth
   if (!authChecked) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white pt-20 flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
-          <p className="mt-4 text-gray-600">Checking authentication...</p>
+      <div className="min-h-screen pt-32 pb-16 px-4 bg-gray-50">
+        <div className="max-w-7xl mx-auto">
+          <div className="flex items-center justify-center h-64">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-600"></div>
+          </div>
         </div>
       </div>
     );
@@ -478,13 +479,13 @@ export default function LogisticsDeliveryApplicationsPage() {
                 Logistics Delivery Applications
               </h1>
               <div className="flex items-center gap-3">
-                <div className="flex items-center gap-2 text-gray-600">
+                {/* <div className="flex items-center gap-2 text-gray-600">
                   <FaUserShield className="text-blue-600" />
                   <span>Welcome, {user.email || 'Admin'}</span>
                 </div>
                 <div className="text-sm text-gray-500">
                   Role: {user.role || 'Administrator'}
-                </div>
+                </div> */}
                 {/* <button
                   onClick={handleDebug}
                   className="text-xs text-gray-400 hover:text-gray-600"

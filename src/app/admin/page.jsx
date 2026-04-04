@@ -1461,9 +1461,11 @@ export default function AdminDashboard() {
   // Show loading while checking auth
   if (loading.auth) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white pt-10 flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
+      <div className="min-h-screen pt-32 pb-16 px-4 bg-gray-50">
+        <div className="max-w-7xl mx-auto">
+          <div className="flex items-center justify-center h-64">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-600"></div>
+          </div>
         </div>
       </div>
     );
@@ -1482,7 +1484,7 @@ export default function AdminDashboard() {
             <div className="space-y-3">
               <button
                 onClick={() => router.push('/login')}
-                className="w-full bg-blue-600 text-white font-bold py-3 rounded-xl hover:bg-blue-700 transition-colors"
+                className="w-full bg-orange-500 text-white font-bold py-3 rounded-xl hover:bg-orange-400 transition-colors"
               >
                 Go to Login
               </button>

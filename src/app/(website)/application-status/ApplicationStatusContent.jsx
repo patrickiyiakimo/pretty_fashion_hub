@@ -107,7 +107,7 @@ export default function ApplicationStatusContent() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white pt-10">
+    <div className="min-h-screen font-oswald bg-gradient-to-b from-gray-50 to-white pt-10">
       <div className="max-w-4xl mx-auto px-4 py-12">
         {/* Header */}
         <motion.div
