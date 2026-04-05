@@ -15,9 +15,6 @@ export default function ProductCard({ product }) {
   const [isAdding, setIsAdding] = useState(false);
   const imageWrapperRef = useRef(null);
 
-  // ✅ REMOVED - No longer needed with proxy
-  // const API_ENDPOINT = process.env.BACKEND_URL || "http://localhost:4000";
-
   const handleAddToCart = async (e) => {
     e.preventDefault();
     e.stopPropagation();
