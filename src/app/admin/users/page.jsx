@@ -869,49 +869,123 @@ export default function AdminUsers() {
     }
   };
 
-  const updateUserStatus = async (userId, status) => {
-    try {
-      const response = await fetch(`/api/auth/admin/users/${userId}/status`, {
-        method: 'PATCH', // Using PATCH for partial updates
-        credentials: "include",
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ status })
-      });
+  // const updateUserStatus = async (userId, status) => {
+  //   try {
+  //     const response = await fetch(`/api/auth/admin/users/${userId}/status`, {
+  //       method: 'PATCH', // Using PATCH for partial updates
+  //       credentials: "include",
+  //       headers: {
+  //         'Content-Type': 'application/json'
+  //       },
+  //       body: JSON.stringify({ status })
+  //     });
 
-      if (response.status === 401) {
-        toast.error("Session expired. Please login again.");
-        setTimeout(() => {
-          router.push("/login");
-        }, 1500);
-        return;
+  //     if (response.status === 401) {
+  //       toast.error("Session expired. Please login again.");
+  //       setTimeout(() => {
+  //         router.push("/login");
+  //       }, 1500);
+  //       return;
+  //     }
+
+  //     if (!response.ok) {
+  //       const errorData = await response.json().catch(() => ({}));
+  //       throw new Error(errorData.message || errorData.error || `Failed to update user status: ${response.status}`);
+  //     }
+
+  //     const data = await response.json();
+
+  //     // Update local state
+  //     setUsers(prev => 
+  //       prev.map(user => 
+  //         user._id === userId ? { ...user, status } : user
+  //       )
+  //     );
+
+  //     if (selectedUser?._id === userId) {
+  //       setSelectedUser(prev => ({ ...prev, status }));
+  //     }
+
+  //     toast.success(data.message || 'User status updated successfully');
+  //   } catch (error) {
+  //     console.error('Update user error:', error);
+  //     toast.error(error.message || 'Failed to update user status');
+  //   }
+  // };
+
+const handleSuspendUser = async (userId) => {
+  try {
+    const response = await fetch(`/api/auth/admin/users/${userId}/suspend`, {
+      method: 'PUT',
+      credentials: "include",
+      headers: {
+        'Content-Type': 'application/json'
       }
-
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        throw new Error(errorData.message || errorData.error || `Failed to update user status: ${response.status}`);
-      }
-
-      const data = await response.json();
-
-      // Update local state
-      setUsers(prev => 
-        prev.map(user => 
-          user._id === userId ? { ...user, status } : user
-        )
-      );
-
-      if (selectedUser?._id === userId) {
-        setSelectedUser(prev => ({ ...prev, status }));
-      }
-
-      toast.success(data.message || 'User status updated successfully');
-    } catch (error) {
-      console.error('Update user error:', error);
-      toast.error(error.message || 'Failed to update user status');
+    });
+    if (response.status === 401) {
+      toast.error("Session expired. Please login again.");
+      setTimeout(() => {
+        router.push("/login");
+      }, 1500);
+      return;
     }
-  };
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
+      throw new Error(errorData.message || errorData.error || `Failed to suspend user: ${response.status}`);
+    }
+    const data = await response.json();
+    setUsers(prev => 
+      prev.map(user =>
+        user._id === userId ? { ...user, status: 'suspended' } : user
+      )
+    );
+    if (selectedUser?._id === userId) {
+      setSelectedUser(prev => ({ ...prev, status: 'suspended' }));
+    }
+    toast.success(data.message || 'User suspended successfully');
+  }
+  catch (error) {
+    console.error('Suspend user error:', error);
+    toast.error(error.message || 'Failed to suspend user');
+  }
+};
+
+const handleReactivateUser = async (userId) => {
+  try {
+    const response = await fetch(`/api/auth/admin/users/${userId}/reactivate`, {
+      method: 'PUT',  
+      credentials: "include",
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+    if (response.status === 401) {
+      toast.error("Session expired. Please login again.");
+      setTimeout(() => {
+        router.push("/login");
+      }, 1500);
+      return;
+    }
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
+      throw new Error(errorData.message || errorData.error || `Failed to reactivate user: ${response.status}`);
+    }
+    const data = await response.json();
+    setUsers(prev => 
+      prev.map(user =>
+        user._id === userId ? { ...user, status: 'active' } : user
+      )
+    );
+    if (selectedUser?._id === userId) {
+      setSelectedUser(prev => ({ ...prev, status: 'active' }));
+    }
+    toast.success(data.message || 'User reactivated successfully');
+  }
+  catch (error) {
+    console.error('Reactivate user error:', error);
+    toast.error(error.message || 'Failed to reactivate user');
+  }
+};
 
   const openUserModal = async (user) => {
     try {
@@ -1200,7 +1274,7 @@ export default function AdminUsers() {
                           <div className="text-sm text-gray-900">{user.email}</div>
                           <div className="text-sm text-gray-500">{user.phone || 'N/A'}</div>
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap">
+                        {/* <td className="px-6 py-4 whitespace-nowrap">
                           <select
                             value={user.status?.toLowerCase() || 'active'}
                             onChange={(e) => updateUserStatus(user._id || user.id, e.target.value)}
@@ -1210,7 +1284,41 @@ export default function AdminUsers() {
                             <option value="inactive">Inactive</option>
                             <option value="suspended">Suspended</option>
                           </select>
-                        </td>
+                        </td> */}
+
+
+                        <td className="px-6 py-4 whitespace-nowrap">
+  <div className="flex items-center gap-2">
+    {/* Status Badge */}
+    <span className={`inline-flex px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(user.status || 'active')}`}>
+      {user.status || 'active'}
+    </span>
+    
+    {/* Action Buttons */}
+    {(user.status?.toLowerCase() || 'active') === 'active' ? (
+      <button
+        onClick={() => handleSuspendUser(user._id || user.id, user.fullname || user.email)}
+        className="px-3 py-1 bg-red-100 text-red-700 rounded-lg text-xs font-medium hover:bg-red-200 transition-colors"
+      >
+        Suspend
+      </button>
+    ) : (user.status?.toLowerCase() || 'active') === 'suspended' ? (
+      <button
+        onClick={() => handleReactivateUser(user._id || user.id, user.fullname || user.email)}
+        className="px-3 py-1 bg-green-100 text-green-700 rounded-lg text-xs font-medium hover:bg-green-200 transition-colors"
+      >
+        Activate
+      </button>
+    ) : (
+      <button
+        onClick={() => handleReactivateUser(user._id || user.id, user.fullname || user.email)}
+        className="px-3 py-1 bg-green-100 text-green-700 rounded-lg text-xs font-medium hover:bg-green-200 transition-colors"
+      >
+        Activate
+      </button>
+    )}
+  </div>
+</td>
                         <td className="px-6 py-4 whitespace-nowrap">
                           <span className={`inline-flex px-2 py-1 rounded-full text-xs font-medium ${getRoleColor(user.role || 'customer')}`}>
                             {user.role || 'customer'}
@@ -1228,7 +1336,7 @@ export default function AdminUsers() {
                             >
                               <HiEye className="w-5 h-5" />
                             </button>
-                            {(user.status?.toLowerCase() || 'active') === 'active' ? (
+                            {/* {(user.status?.toLowerCase() || 'active') === 'active' ? (
                               <button
                                 onClick={() => updateUserStatus(user._id || user.id, 'suspended')}
                                 className="text-red-600 hover:text-red-900 transition-colors"
@@ -1244,7 +1352,7 @@ export default function AdminUsers() {
                               >
                                 <HiCheck className="w-5 h-5" />
                               </button>
-                            )}
+                            )} */}
                           </div>
                         </td>
                       </tr>
