@@ -190,30 +190,6 @@ export default function AboutSection() {
             </div>
           ))}
         </motion.div>
-
-        {/* CTA Buttons */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.6 }}
-          className="flex flex-col sm:flex-row gap-4 justify-center font-oswald"
-        >
-          <Link
-            href="/shop"
-            className="inline-flex items-center justify-center gap-2 bg-orange-600 text-white font-semibold px-8 py-3 rounded-lg hover:bg-orange-700 transition-colors"
-          >
-            <HiShoppingBag className="w-5 h-5" />
-            Start Shopping
-            <HiArrowRight className="w-4 h-4" />
-          </Link>
-          <Link
-            href="/partner"
-            className="inline-flex items-center justify-center gap-2 border-2 border-orange-600 text-orange-600 font-semibold px-8 py-3 rounded-lg hover:bg-orange-50 transition-colors"
-          >
-            <HiUsers className="w-5 h-5" />
-            Become a Seller
-          </Link>
-        </motion.div>
       </div>
     </section>
   );
