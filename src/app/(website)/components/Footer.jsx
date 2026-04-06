@@ -94,8 +94,8 @@ export default function Footer() {
           {/* Brand Section */}
           <div className="space-y-6">
             <div className="flex items-center gap-3 mb-6">
-              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-600 to-purple-600 flex items-center justify-center">
-                <div className="relative w-12 h-12 rounded-xl overflow-hidden transition-all duration-500 shadow-lg">
+              <div className="w-12 h-12 rounded-full bg-orange-500 flex items-center justify-center">
+                <div className="relative w-12 h-12 rounded-full overflow-hidden transition-all duration-500 shadow-lg">
                   <Image
                     src="/images/0ddb8c41-20a9-446e-a056-9b6290b33d6b.JPG"
                     alt="Vefiri - Premium Fashion"
@@ -106,7 +106,7 @@ export default function Footer() {
                 </div>
               </div>
               <div>
-                <h3 className="text-2xl font-bold bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
+                <h3 className="text-2xl font-bold text-orange-500">
                   Vefiri
                 </h3>
                 <p className="text-sm text-gray-400">Premium Fashion & Lifestyle</p>
@@ -226,7 +226,7 @@ export default function Footer() {
               </div>
               <button
                 type="submit"
-                className="px-8 py-3 bg-gradient-to-r from-orange-600 to-blue-600 text-white font-semibold hover:from-blue-700 hover:to-orange-700 transition-all duration-300 shadow-lg hover:scale-105"
+                className="px-8 py-3 bg-orange-500 text-white font-semibold hover:bg-orange-400 duration-300 shadow-lg"
               >
                 Subscribe
               </button>

@@ -153,7 +153,7 @@ export default function VendorsPage() {
                 className="bg-white rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden border border-gray-100"
               >
                 {/* Vendor Image */}
-                <div className="relative h-48 bg-blue-500">
+                <div className="relative h-48 bg-orange-200">
                   {vendor.logo ? (
                     <Image
                       src={vendor.logo}
