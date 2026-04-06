@@ -153,7 +153,7 @@ export default function VendorsPage() {
                 className="bg-white rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden border border-gray-100"
               >
                 {/* Vendor Image */}
-                <div className="relative h-48 bg-gradient-to-r from-orange-100 to-blue-100">
+                <div className="relative h-48 bg-blue-500">
                   {vendor.logo ? (
                     <Image
                       src={vendor.logo}
@@ -217,7 +217,7 @@ export default function VendorsPage() {
                   {/* CTA Button */}
                   <Link
                     href={`/vendor/${vendor._id}`}
-                    className="block w-full text-center bg-gradient-to-r from-orange-600 to-blue-600 text-white font-semibold py-2 px-4 rounded-lg hover:from-orange-700 hover:to-blue-700 transition-all duration-300"
+                    className="block w-full text-center bg-orange-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-orange-700 transition-all duration-300"
                   >
                     View Store
                   </Link>

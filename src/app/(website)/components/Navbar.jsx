@@ -106,7 +106,7 @@ const Navbar = () => {
                 className="object-cover w-full h-full"
               />
             </div>
-            <span className="text-xl lg:text-2xl font-bold bg-gradient-to-r from-orange-500 to-blue-600 bg-clip-text text-transparent">
+            <span className="text-xl lg:text-2xl font-bold text-orange-500">
               Vefiri
             </span>
           </Link>
@@ -121,56 +121,29 @@ const Navbar = () => {
                 </span>
               )}
             </Link>
-            
-            {/* Profile icon
-            <Link href="/profile" className="flex items-center">
-              <div className="w-9 h-9 hidden lg:block rounded-full bg-gradient-to-r from-orange-400 to-blue-500 overflow-hidden border-2 border-transparent hover:border-orange-300 transition-all duration-300">
-                <Image
-                  src="/images/0ddb8c41-20a9-446e-a056-9b6290b33d6b.JPG"
-                  alt="Profile"
-                  width={36}
-                  height={36}
-                  className="object-cover w-full h-full"
-                />
-              </div>
-            </Link> */}
-
-            {/* Profile icon with user initials
-            <Link href="/profile" className="flex items-center">
-              <div className="w-9 h-9 hidden lg:flex items-center justify-center rounded-full bg-gradient-to-r from-orange-400 to-blue-500 text-white font-semibold text-sm border-2 border-transparent hover:border-orange-300 transition-all duration-300">
-                {user ? (
-                  `${user.firstName?.charAt(0) || ''}${user.lastName?.charAt(0) || ''}`.toUpperCase()
-                ) : (
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                  </svg>
-                )}
-              </div>
-            </Link> */}
-
-
+        
             {/* Profile icon with user initials */}
-<Link href="/profile" className="flex items-center">
-  <div className="w-9 h-9 hidden lg:flex items-center justify-center rounded-full bg-gradient-to-r from-orange-400 to-blue-500 text-white font-semibold text-sm border-2 border-transparent hover:border-orange-300 transition-all duration-300">
-    {user ? (
-      user.firstName && user.lastName ? (
-        `${user.firstName.charAt(0)}${user.lastName.charAt(0)}`.toUpperCase()
-      ) : user.firstName ? (
-        user.firstName.charAt(0).toUpperCase()
-      ) : user.fullname ? (
-        user.fullname.charAt(0).toUpperCase()
-      ) : user.email ? (
-        user.email.charAt(0).toUpperCase()
-      ) : (
-        'U'
-      )
-    ) : (
-      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-      </svg>
-    )}
-  </div>
-</Link>
+              <Link href="/profile" className="flex items-center">
+                <div className="w-9 h-9 hidden lg:flex items-center justify-center rounded-full bg-orange-500 text-white font-semibold text-sm border-2 border-transparent hover:border-orange-300 transition-all duration-300">
+                  {user ? (
+                    user.firstName && user.lastName ? (
+                      `${user.firstName.charAt(0)}${user.lastName.charAt(0)}`.toUpperCase()
+                    ) : user.firstName ? (
+                      user.firstName.charAt(0).toUpperCase()
+                    ) : user.fullname ? (
+                      user.fullname.charAt(0).toUpperCase()
+                    ) : user.email ? (
+                      user.email.charAt(0).toUpperCase()
+                    ) : (
+                      'U'
+                    )
+                  ) : (
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                    </svg>
+                  )}
+                </div>
+              </Link>
           </div>
           <div className="flex items-center gap-4">
             <Link href="/signup" className="hidden lg:block text-sm text-gray-700 hover:text-orange-500 transition-colors">
