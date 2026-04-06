@@ -47,7 +47,7 @@ export default function VendorsPage() {
       }
 
       if (!response.ok) {
-        throw new Error("Failed to fetch vendors");
+        console.log("Failed to fetch vendors");
       }
 
       const data = await response.json();
