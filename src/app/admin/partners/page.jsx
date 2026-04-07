@@ -198,15 +198,16 @@ export default function PartnersManagement() {
 
       if (!res.ok) {
         console.warn("Failed to load stats, using calculated stats");
-        // Calculate stats from current partners data
-        setStats({
+        // get stats from backend to get the correct available slots based on total approved partners
+        const fallbackStats = {
           total: partners.length,
           approved: partners.filter(p => normalizeStatus(p.status) === 'approved').length,
           pending: partners.filter(p => normalizeStatus(p.status) === 'pending').length,
           rejected: partners.filter(p => normalizeStatus(p.status) === 'rejected').length,
-          suspended: partners.filter(p => normalizeStatus(p.status) === 'suspended').length,
+          // suspended: partners.filter(p => normalizeStatus(p.status) === 'suspended').length,
           availableSlots: Math.max(0, 50 - partners.filter(p => normalizeStatus(p.status) === 'approved').length)
-        });
+        };
+        setStats(fallbackStats);
         return;
       }
 
@@ -228,7 +229,7 @@ export default function PartnersManagement() {
           approved: partners.filter(p => normalizeStatus(p.status) === 'approved').length,
           pending: partners.filter(p => normalizeStatus(p.status) === 'pending').length,
           rejected: partners.filter(p => normalizeStatus(p.status) === 'rejected').length,
-          suspended: partners.filter(p => normalizeStatus(p.status) === 'suspended').length,
+          // suspended: partners.filter(p => normalizeStatus(p.status) === 'suspended').length,
           availableSlots: Math.max(0, 50 - partners.filter(p => normalizeStatus(p.status) === 'approved').length)
         };
       }
@@ -243,7 +244,7 @@ export default function PartnersManagement() {
         approved: partners.filter(p => normalizeStatus(p.status) === 'approved').length,
         pending: partners.filter(p => normalizeStatus(p.status) === 'pending').length,
         rejected: partners.filter(p => normalizeStatus(p.status) === 'rejected').length,
-        suspended: partners.filter(p => normalizeStatus(p.status) === 'suspended').length,
+        // suspended: partners.filter(p => normalizeStatus(p.status) === 'suspended').length,
         availableSlots: Math.max(0, 50 - partners.filter(p => normalizeStatus(p.status) === 'approved').length)
       });
     }
