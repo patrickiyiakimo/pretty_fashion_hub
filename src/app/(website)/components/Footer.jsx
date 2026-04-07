@@ -152,7 +152,7 @@ export default function Footer() {
           {/* Links Grid */}
           <div className="grid grid-cols-2 md:grid-cols-3 gap-8">
             {/* Shop Links */}
-            <div>
+            {/* <div>
               <h4 className="text-lg font-semibold text-white mb-4">Shop</h4>
               <ul className="space-y-3">
                 {quickLinks.map((link, index) => (
@@ -166,7 +166,7 @@ export default function Footer() {
                   </li>
                 ))}
               </ul>
-            </div>
+            </div> */}
 
             {/* Company Links */}
             <div>

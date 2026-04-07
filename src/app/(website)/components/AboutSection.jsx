@@ -97,9 +97,9 @@ export default function AboutSection() {
           className="text-center mb-8 font-oswald"
         >
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 leading-tight mb-4">
-            Nigeria's Premier
+            Shop Safely with Verified<br />
             <span className="block text-orange-600">
-              Online Marketplace
+              Sellers Across Nigeria
             </span>
           </h2>
           <p className="text-lg text-gray-600 max-w-3xl mx-auto">

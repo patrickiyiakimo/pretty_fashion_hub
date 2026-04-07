@@ -17,7 +17,7 @@ export default function LogisticsCTA() {
                 Become a Vefiri Logistics Partner
               </h2>
               <p className="text-blue-100 text-lg md:text-xl mb-6 max-w-3xl">
-                Earn money by delivering Kingz-Stylez products to customers in your area. 
+                Earn money by delivering Vefiri products to customers in your area. 
                 Join our growing network of logistics partners and help us provide exceptional 
                 delivery service across the region.
               </p>
