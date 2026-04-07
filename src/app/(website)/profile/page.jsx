@@ -203,7 +203,7 @@ export default function ProfilePage() {
           >
             <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden sticky top-24">
               {/* Profile Initials */}
-              <div className="bg-gradient-to-r from-orange-600 to-blue-600 p-6 text-center">
+              <div className="bg-orange-600 p-6 text-center">
                 <div className="w-24 h-24 mx-auto bg-white/20 rounded-full flex items-center justify-center mb-4">
                   <span className="text-4xl font-bold text-white">
                     {user.fullname?.charAt(0).toUpperCase() || user.email?.charAt(0).toUpperCase() || 'U'}
