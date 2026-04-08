@@ -225,7 +225,7 @@ export default function Footer() {
               </div>
               <button
                 type="submit"
-                className="px-8 py-3 bg-orange-500 text-white font-semibold hover:bg-orange-400 duration-300 shadow-lg"
+                className="px-8 py-3 bg-orange-500 text-white rounded-md font-semibold hover:bg-orange-400 duration-300 shadow-lg"
               >
                 Subscribe
               </button>

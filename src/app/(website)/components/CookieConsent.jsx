@@ -79,7 +79,7 @@ export default function CookieConsent() {
           transition={{ type: "spring", damping: 25 }}
           className="fixed bottom-0 left-0 right-0 z-50"
         >
-          <div className="bg-white/95 backdrop-blur-md shadow-2xl border-t border-gray-200">
+          <div className="bg-white/95 font-grotesk backdrop-blur-md shadow-2xl border-t border-gray-200">
             <div className="max-w-7xl mx-auto px-4 py-5 sm:px-6 lg:px-8">
               {!showDetails ? (
                 // Simple Banner View
