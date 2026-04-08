@@ -29,13 +29,13 @@ export default function Footer() {
     { icon: <FaTiktok size={16} />, href: "#", label: "TikTok" },
   ];
 
-  const quickLinks = [
-    { name: "New Arrivals", href: "/shop?category=new" },
-    { name: "Best Sellers", href: "/shop?category=bestsellers" },
-    { name: "Men's Collection", href: "/shop?category=men" },
-    { name: "Women's Collection", href: "/shop?category=women" },
-    { name: "Accessories", href: "/shop?category=accessories" },
-  ];
+  // const quickLinks = [
+  //   { name: "New Arrivals", href: "/shop?category=new" },
+  //   { name: "Best Sellers", href: "/shop?category=bestsellers" },
+  //   { name: "Men's Collection", href: "/shop?category=men" },
+  //   { name: "Women's Collection", href: "/shop?category=women" },
+  //   { name: "Accessories", href: "/shop?category=accessories" },
+  // ];
 
   const companyLinks = [
     { name: "About Us", href: "/about" },
