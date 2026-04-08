@@ -109,13 +109,12 @@ export default function Footer() {
                 <h3 className="text-2xl font-bold text-orange-500">
                   Vefiri
                 </h3>
-                <p className="text-sm text-gray-400">Premium Fashion & Lifestyle</p>
+                <p className="text-sm text-gray-400">Shop with Confidence</p>
               </div>
             </div>
 
             <p className="text-gray-400 leading-relaxed max-w-md">
-              Where exceptional craftsmanship meets timeless elegance. We're dedicated to 
-              transforming your style journey with premium quality and unparalleled service.
+             Experience a marketplace built on trust, quality, and secure transactions.
             </p>
 
             {/* Contact Info */}
@@ -150,7 +149,7 @@ export default function Footer() {
           </div>
 
           {/* Links Grid */}
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-2 md:grid-cols-2 gap-8">
             {/* Shop Links */}
             {/* <div>
               <h4 className="text-lg font-semibold text-white mb-4">Shop</h4>

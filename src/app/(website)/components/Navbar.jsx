@@ -219,7 +219,7 @@ const Navbar = () => {
                 <FaTimes className="w-7 h-7 text-orange-500"/>
               </button>
             </div>
-            <p className="text-sm text-gray-600 mt-4">Welcome to Vefiri! Find your perfect style.</p>
+            <p className="text-sm text-gray-600 mt-4">Welcome to Vefiri! Shop with Confidence.</p>
           </div>
 
           {/* Scrollable Content */}
