@@ -362,7 +362,7 @@ const Navbar = () => {
           {/* Footer with app info */}
           <div className="p-6 border-t border-gray-100 bg-gray-50">
             <p className="text-xs text-center text-gray-500">
-              © 2024 Vefiri. All rights reserved.
+              © 2026 Vefiri. All rights reserved.
             </p>
           </div>
         </div>
