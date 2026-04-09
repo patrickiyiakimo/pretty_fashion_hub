@@ -264,7 +264,7 @@ export default function Footer() {
                 <span>•</span>
                 <span>Mastercard</span>
                 <span>•</span>
-                <span>PayPal</span>
+                <span>Verve</span>
               </div>
             </div>
           </div>
