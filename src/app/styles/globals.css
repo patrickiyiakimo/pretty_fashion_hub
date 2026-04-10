@@ -31,3 +31,81 @@
 .animation-delay-4000 {
   animation-delay: 4s;
 }
+
+
+/* 1. Text Selection Highlight */
+::selection {
+  background-color: #F97316; /* Orange */
+  color: white;
+}
+
+::-moz-selection {
+  background-color: #F97316; /* Orange */
+  color: white;
+}
+
+/* 2. Focus Rings (Inputs, Buttons, Links) */
+*:focus {
+  outline: none;
+}
+
+*:focus-visible {
+  outline: 2px solid #F97316;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* 3. Input Focus Border */
+input:focus,
+textarea:focus,
+select:focus,
+button:focus {
+  outline: none;
+  border-color: #F97316 !important;
+  box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.2) !important;
+}
+
+/* 4. Link Focus */
+a:focus-visible {
+  outline: 2px solid #F97316;
+  outline-offset: 2px;
+  border-radius: 4px;
+  text-decoration: underline;
+}
+
+/* 5. Button Focus */
+button:focus-visible {
+  outline: 2px solid #F97316;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.3);
+}
+
+/* 6. Checkbox & Radio Focus */
+input[type="checkbox"]:focus-visible,
+input[type="radio"]:focus-visible {
+  outline: 2px solid #F97316;
+  outline-offset: 2px;
+}
+
+/* 7. Range/Slider Focus */
+input[type="range"]:focus-visible {
+  outline: 2px solid #F97316;
+}
+
+/* 8. Select Dropdown Focus */
+select:focus-visible {
+  outline: 2px solid #F97316;
+  border-color: #F97316;
+}
+
+/* 9. Active Link Highlight */
+a:active {
+  color: #EA580C; /* Darker orange */
+}
+
+/* 10. Input Placeholder Focus (optional) */
+input:focus::placeholder,
+textarea:focus::placeholder {
+  color: #F97316;
+  opacity: 0.5;
+}
