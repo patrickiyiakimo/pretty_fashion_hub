@@ -323,7 +323,7 @@ export default function ProductCard({ product }) {
                 ? 'bg-green-500 cursor-default'
                 : isAdding
                 ? 'bg-purple-500 cursor-wait'
-                : 'bg-gradient-to-r from-purple-600 to-blue-600 hover:from-blue-700 hover:to-purple-700 shadow-lg hover:shadow-xl'
+                : 'bg-orange-500 hover:to-purple-700 shadow-lg hover:shadow-xl'
             }`}
           >
             {/* Ripple effect */}
